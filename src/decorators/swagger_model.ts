@@ -11,7 +11,7 @@ import { SwaggerHandler } from "../handlers/swagger_handler";
 //     }
 // }
 
-export const responseModel = (target: any) => {
+export const SwaggerModel = (target: any) => {
     const className = target.name;
     SwaggerHandler.saveModel({
         classInstance: new target(),

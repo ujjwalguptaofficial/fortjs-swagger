@@ -1,9 +1,7 @@
-#################
-## Directories
-#################
-
+# node module
 node_modules
-build
-deploy_key
-dist
+
+#packed files
 *.tgz
+
+output/

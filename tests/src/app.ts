@@ -2,6 +2,9 @@ import { Fort } from 'fortjs';
 import { routes } from './routes';
 import { FortViewEngine } from 'eshtml';
 import * as path from "path";
+import { Swagger } from '@fortjs/swagger';
+
+
 
 export class App extends Fort {
     constructor() {
@@ -18,6 +21,13 @@ new App().create({
         path: path.join(__dirname, "../static")
     }]
 }).then(() => {
-    console.log("Your fort is located at address - localhost:4000");
+    // const Path = path.join(__dirname, "../src/controllers/user_controller.ts");
+    // console.log(jsdoc);
+    // jsdoc(Path, (err, ast) => {
+    //     console.log("err", err);
+    //     console.log("ast", ast);
+    // })
+    new Swagger().create();
 })
 
+console.log("Your fort is located at address - localhost:4000");

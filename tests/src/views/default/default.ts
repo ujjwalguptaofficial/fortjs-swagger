@@ -6,11 +6,11 @@ import {
 // you can give any name but make sure its unique among all other views.
 @declareView('controller:default,action:default')
 export class DefaultView extends View {
-    render(model) {
+    render(model: object) {
         return `<!doctype html>
         <html>
         <head>
-        <title>${model.title}</title>
+        <title>FortJs</title>
         </head>
         <body>
         <div class="text-center" style="margin-top:50px;">

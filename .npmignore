@@ -1,0 +1,13 @@
+example
+logos
+node_modules
+src
+tests
+
+#build tools
+.travis.yml
+.vscode
+*.tgz
+
+#definition
+!dist/src

@@ -4,6 +4,7 @@ import { QueryInfo } from "../types/query_info";
 import { WorkerInfo } from "../types/worker_info";
 import { BodyInfo } from "../types/body_info";
 import { SwaggerModelInfo } from "../types/swagger_model_info";
+import { MIME_TYPE } from "fortjs";
 
 const swaggerRoutes: SwaggerInfo[] = [];
 const swaggerModels: SwaggerModelInfo[] = [];
@@ -13,16 +14,18 @@ const getNewWorker = (methodName: string) => {
         body: {},
         file: {},
         methodName: methodName,
-        query: {},
+        queries: [],
         response: {}
     } as WorkerInfo
 }
 export class SwaggerHandler {
-    static saveResponse(className: string, methodName: string, response: ResponseInfo) {
-        const value = swaggerRoutes.find(qry => qry.className === className)
+    static saveResponse(className: string, methodName: string, contentType: MIME_TYPE, response: ResponseInfo) {
+        const value = swaggerRoutes.find(qry => qry.className === className);
+        const worker = getNewWorker(methodName);
+        worker.response[response.statusCode] = {
+            [contentType]: response.value
+        }
         if (value == null) {
-            const worker = getNewWorker(methodName);
-            worker.response = response;
             swaggerRoutes.push({
                 className: className,
                 workers: [worker]
@@ -30,8 +33,14 @@ export class SwaggerHandler {
         }
         else {
             const savedWorker = value.workers.find(qry => qry.methodName === methodName);
-            if (savedWorker != null) {
-                savedWorker.response[response.statusCode] = response.value;
+            if (savedWorker != null) { // add another response for that worker
+                if (savedWorker.response[response.statusCode] == null) {
+                    savedWorker.response[response.statusCode] = {};
+                }
+                savedWorker.response[response.statusCode][contentType] = response.value;
+            }
+            else { //add the worker
+                value.workers.push(worker);
             }
         }
     }
@@ -40,7 +49,7 @@ export class SwaggerHandler {
         const value = swaggerRoutes.find(qry => qry.className === className)
         if (value == null) {
             const worker = getNewWorker(methodName);
-            worker.query = query;
+            worker.queries.push(query);
             swaggerRoutes.push({
                 className: className,
                 workers: [worker]
@@ -49,7 +58,7 @@ export class SwaggerHandler {
         else {
             const savedWorker = value.workers.find(qry => qry.methodName === methodName);
             if (savedWorker != null) {
-                savedWorker.query[query.variableName] = query.type;
+                savedWorker.queries[query.variableName] = query.type;
             }
         }
     }
@@ -94,5 +103,13 @@ export class SwaggerHandler {
         else {
             value.ignoredProperty.push(propertyName);
         }
+    }
+
+    static get routes() {
+        return swaggerRoutes;
+    }
+
+    static get models() {
+        return swaggerModels;
     }
 }

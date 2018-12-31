@@ -1,4 +1,7 @@
 export enum DATA_TYPE {
     String = "string",
-    Number = "number"
+    Number = "number",
+    Array = "array",
+    Object = "object",
+    Function = "function"
 }

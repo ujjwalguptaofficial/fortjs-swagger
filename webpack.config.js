@@ -1,13 +1,19 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const nodemonPlugin = require('nodemon-webpack-plugin')
-module.exports = {
-    entry: [
-        path.resolve(__dirname, 'src/index.ts')
-    ],
-    devtool: 'source-map',
+//const SmartBannerPlugin = require('smart-banner-webpack-plugin');
+//const banner = require('./license');
+
+module.exports = [{
+    name: "fort-swagger",
     target: "node",
-    mode: 'development',
+    entry: "./src/index.ts",
+    devtool: 'source-map',
+    output: {
+        path: path.join(__dirname, "./build"),
+        filename: "fortjs_swagger.js",
+        library: 'fortjs-swagger',
+        libraryTarget: "commonjs2"
+    },
     node: {
         console: false,
         global: false,
@@ -25,14 +31,12 @@ module.exports = {
             }
         }]
     },
+    mode: 'development',
     resolve: {
-        extensions: ['.ts']
+        extensions: ['.ts'] // '' is needed to find modules like "jquery"
     },
-    output: {
-        filename: 'app.js',
-        path: path.resolve(__dirname, 'build/'),
-        library: '@fortjs/swagger',
-    },
-    plugins: [new nodemonPlugin()],
+    plugins: [
+        //new SmartBannerPlugin(banner)
+    ],
     externals: [nodeExternals()]
-};
+}];

@@ -1,4 +1,4 @@
-import { RouteInfo } from "fortjs/dist/ts/types/route_info";
+import { RouteInfo } from "fortjs";
 
 export class Global {
     static routes: RouteInfo[] = [];

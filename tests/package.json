@@ -9,7 +9,7 @@
     "lint": "tslint src/**/*.ts",
     "build": "npm run webpack",
     "start": "npm run webpack:watch && opn http://localhost:4000",
-    "install:lib": "npm i @fortjs/swagger-1.0.0.tgz --no-save"
+    "install:lib": "npm i ../fortjs-swagger-1.0.0.tgz --no-save"
   },
   "repository": {
     "type": "git",
@@ -22,8 +22,11 @@
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-typescript-starter#readme",
   "dependencies": {
+    "class-validator": "^0.9.1",
     "eshtml": "^0.2.2",
-    "fortjs": "^1.4.4"
+    "fortjs": "file:../../fortjs/fortjs-1.4.4.tgz",
+    "jsdoc": "^3.5.5",
+    "jsdoc3-parser": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^10.12.15",
