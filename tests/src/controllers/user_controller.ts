@@ -1,6 +1,6 @@
-import { Controller, textResult, defaultWorker, jsonResult, worker, route, HTTP_STATUS_CODE, HTTP_METHOD, guards } from 'fortjs';
+import { Controller, textResult, DefaultWorker, jsonResult, Worker, Route, HTTP_STATUS_CODE, HTTP_METHOD, Guards } from 'fortjs';
 import { UserService } from '../services/user_service';
-import { ModelUserGuard } from '../guards/model_user_guard';
+import { ModelUserGuard } from '../Guards/model_user_guard';
 import { User } from '../models/user';
 import { Response } from '@fortjs/swagger';
 
@@ -14,16 +14,16 @@ export class UserController extends Controller {
      * @returns
      * @memberof UserController
      */
-    @defaultWorker()
+    @DefaultWorker()
     @Response(HTTP_STATUS_CODE.Ok, [User])
     async getUsers() {
         const service = new UserService();
         return jsonResult(service.getUsers());
     }
 
-    @worker([HTTP_METHOD.Post])
-    @route("/")
-    @guards([ModelUserGuard])
+    @Worker([HTTP_METHOD.Post])
+    @Route("/")
+    @Guards([ModelUserGuard])
     @Response(HTTP_STATUS_CODE.Created, User)
     async addUser() {
         const user = this.data.user;
@@ -34,9 +34,9 @@ export class UserController extends Controller {
 
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @worker([HTTP_METHOD.Put])
-    @guards([ModelUserGuard])
-    @route("/")
+    @Worker([HTTP_METHOD.Put])
+    @Guards([ModelUserGuard])
+    @Route("/")
     async updateUser() {
 
         const user: User = this.data.user;
@@ -52,8 +52,8 @@ export class UserController extends Controller {
 
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @worker([HTTP_METHOD.Get])
-    @route("/{id}")
+    @Worker([HTTP_METHOD.Get])
+    @Route("/{id}")
     async getUser() {
 
         const userId = Number(this.param.id);
@@ -67,8 +67,8 @@ export class UserController extends Controller {
 
     @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @worker([HTTP_METHOD.Delete])
-    @route("/{id}")
+    @Worker([HTTP_METHOD.Delete])
+    @Route("/{id}")
     async removeUser() {
 
         const userId = Number(this.param.id);

@@ -99,12 +99,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Body", function() { return Body; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var Body = function (variableName, type) {
+var Body = function (value, description) {
     return function (target, methodName, descriptor) {
         var className = target.constructor.name;
-        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveQuery(className, methodName, {
-            type: type,
-            variableName: variableName
+        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveBody(className, methodName, {
+            value: value,
+            variableName: "body",
+            description: description
         });
     };
 };
@@ -177,12 +178,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Query", function() { return Query; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var Query = function (variableName, type) {
+var Query = function (variableName, value, description) {
     return function (target, methodName, descriptor) {
         var className = target.constructor.name;
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveQuery(className, methodName, {
-            type: type,
-            variableName: variableName
+            value: value,
+            variableName: variableName,
+            description: description
         });
     };
 };
@@ -203,26 +205,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fortjs */ "fortjs");
 /* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fortjs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
-/* harmony import */ var _helpers_get_data_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/get_data_type */ "./src/helpers/get_data_type.ts");
-/* harmony import */ var _helpers_extract_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/extract_model */ "./src/helpers/extract_model.ts");
-/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../enums */ "./src/enums/index.ts");
-
-
+/* harmony import */ var _helpers_extract_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/extract_model */ "./src/helpers/extract_model.ts");
 
 
 
 var Response = function (statusCode, value, contentType) {
     return function (target, methodName, descriptor) {
         var className = target.constructor.name;
-        var modelName = Object(_helpers_extract_model__WEBPACK_IMPORTED_MODULE_3__["extractAndSaveModel"])(value);
-        var responseValue = getResponseValue(value);
+        var modelName = Object(_helpers_extract_model__WEBPACK_IMPORTED_MODULE_2__["extractAndSaveModel"])(value);
         var saveResponse = function (mimeType) {
-            _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_1__["SwaggerHandler"].saveResponse(className, methodName, mimeType, {
+            _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_1__["SwaggerHandler"].saveResponse(className, methodName, {
+                contentType: mimeType,
                 statusCode: statusCode,
-                value: responseValue
+                value: value
             });
         };
-        //responseValue.description = contentType;
         if (modelName.length > 0) {
             [fortjs__WEBPACK_IMPORTED_MODULE_0__["MIME_TYPE"].Json, fortjs__WEBPACK_IMPORTED_MODULE_0__["MIME_TYPE"].Xml].forEach(function (type) {
                 saveResponse(type);
@@ -234,39 +231,59 @@ var Response = function (statusCode, value, contentType) {
             }
             saveResponse(contentType);
         }
+        // const modelName = extractAndSaveModel(value);
+        // const responseValue = getResponseValue(value);
+        // const saveResponse = (mimeType) => {
+        //     SwaggerHandler.saveResponse(className, methodName, mimeType, {
+        //         statusCode: statusCode,
+        //         value: responseValue
+        //     })
+        // };
+        // //responseValue.description = contentType;
+        // if (modelName.length > 0) {
+        //     [MIME_TYPE.Json, MIME_TYPE.Xml].forEach(type => {
+        //         saveResponse(type);
+        //     });
+        // }
+        // else {
+        //     if (contentType == null) {
+        //         contentType = MIME_TYPE.Text;
+        //     }
+        //     saveResponse(contentType);
+        // }
     };
 };
-var getResponseValue = function (value) {
-    var modelName = Object(_helpers_extract_model__WEBPACK_IMPORTED_MODULE_3__["extractAndSaveModel"])(value);
-    var dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_2__["getDataType"])(value);
-    if (modelName.length > 0) { // value is model
-        var modelRefString = "#/models/" + modelName;
-        var swaggerModelSchema = {
-            $ref: modelRefString
-        };
-        if (dataType === _enums__WEBPACK_IMPORTED_MODULE_4__["DATA_TYPE"].Function) {
-            return {
-                schema: swaggerModelSchema
-            };
-        }
-        else {
-            return {
-                schema: {
-                    type: _enums__WEBPACK_IMPORTED_MODULE_4__["DATA_TYPE"].Array,
-                    items: swaggerModelSchema
-                }
-            };
-        }
-    }
-    else {
-        return {
-            schema: {
-                type: dataType,
-                example: value
-            }
-        };
-    }
-};
+// const getResponseValue = (value) => {
+//     const modelName = extractAndSaveModel(value);
+//     const dataType = getDataType(value);
+//     if (modelName.length > 0) { // value is model
+//         const modelRefString = `#/models/${modelName}`;
+//         const swaggerModelSchema: SwaggerModelResponse = {
+//             $ref: modelRefString
+//         };
+//         if (dataType === DATA_TYPE.Function) {
+//             return {
+//                 schema: swaggerModelSchema
+//             } as SwaggerResponse;
+//         }
+//         else {
+//             return {
+//                 schema: {
+//                     type: DATA_TYPE.Array,
+//                     items: swaggerModelSchema
+//                 } as SwaggerCustomTypeResponse
+//             } as SwaggerResponse;
+//         }
+//     }
+//     else {
+//         return {
+//             schema: {
+//                 type: dataType,
+//                 example: value
+//             } as SwaggerCustomTypeResponse
+//         } as SwaggerResponse;
+//     }
+// }
 
 
 /***/ }),
@@ -382,20 +399,44 @@ var getNewWorker = function (methodName) {
         body: {},
         file: {},
         methodName: methodName,
-        query: {},
-        response: {}
+        queries: [],
+        responses: [],
+        params: []
     };
 };
 var SwaggerHandler = /** @class */ (function () {
     function SwaggerHandler() {
     }
-    SwaggerHandler.saveResponse = function (className, methodName, contentType, response) {
-        var _a;
+    // static saveResponse(className: string, methodName: string, contentType: MIME_TYPE, response: ResponseInfo) {
+    //     const value = swaggerRoutes.find(qry => qry.className === className);
+    //     const worker = getNewWorker(methodName);
+    //     worker.response[response.statusCode] = {
+    //         [contentType]: response.value
+    //     }
+    //     if (value == null) {
+    //         swaggerRoutes.push({
+    //             className: className,
+    //             workers: [worker]
+    //         })
+    //     }
+    //     else {
+    //         const savedWorker = value.workers.find(qry => qry.methodName === methodName);
+    //         if (savedWorker != null) { // add another response for that worker
+    //             if (savedWorker.response[response.statusCode] == null) {
+    //                 savedWorker.response[response.statusCode] = {};
+    //             }
+    //             savedWorker.response[response.statusCode][contentType] = response.value;
+    //         }
+    //         else { //add the worker
+    //             value.workers.push(worker);
+    //         }
+    //     }
+    // }
+    SwaggerHandler.saveResponse = function (className, methodName, response) {
         var value = swaggerRoutes.find(function (qry) { return qry.className === className; });
         var worker = getNewWorker(methodName);
-        worker.response[response.statusCode] = (_a = {},
-            _a[contentType] = response.value,
-            _a);
+        worker.responses.push(response);
+        console.log("response", response);
         if (value == null) {
             swaggerRoutes.push({
                 className: className,
@@ -404,22 +445,19 @@ var SwaggerHandler = /** @class */ (function () {
         }
         else {
             var savedWorker = value.workers.find(function (qry) { return qry.methodName === methodName; });
-            if (savedWorker != null) { // add another response for that worker
-                if (savedWorker.response[response.statusCode] == null) {
-                    savedWorker.response[response.statusCode] = {};
-                }
-                savedWorker.response[response.statusCode][contentType] = response.value;
+            if (savedWorker != null) { // add query for that worker
+                savedWorker.responses.push(response);
             }
-            else { //add the worker
+            else { // add worker for the route
                 value.workers.push(worker);
             }
         }
     };
     SwaggerHandler.saveQuery = function (className, methodName, query) {
         var value = swaggerRoutes.find(function (qry) { return qry.className === className; });
+        var worker = getNewWorker(methodName);
+        worker.queries.push(query);
         if (value == null) {
-            var worker = getNewWorker(methodName);
-            worker.query = query;
             swaggerRoutes.push({
                 className: className,
                 workers: [worker]
@@ -427,16 +465,39 @@ var SwaggerHandler = /** @class */ (function () {
         }
         else {
             var savedWorker = value.workers.find(function (qry) { return qry.methodName === methodName; });
-            if (savedWorker != null) {
-                savedWorker.query[query.variableName] = query.type;
+            if (savedWorker != null) { // add query for that worker
+                savedWorker.queries.push(query);
+            }
+            else { // add worker for the route
+                value.workers.push(worker);
+            }
+        }
+    };
+    SwaggerHandler.saveParam = function (className, methodName, query) {
+        var value = swaggerRoutes.find(function (qry) { return qry.className === className; });
+        var worker = getNewWorker(methodName);
+        worker.params.push(query);
+        if (value == null) {
+            swaggerRoutes.push({
+                className: className,
+                workers: [worker]
+            });
+        }
+        else {
+            var savedWorker = value.workers.find(function (qry) { return qry.methodName === methodName; });
+            if (savedWorker != null) { // add query for that worker
+                savedWorker.params.push(query);
+            }
+            else { // add worker for the route
+                value.workers.push(worker);
             }
         }
     };
     SwaggerHandler.saveBody = function (className, methodName, body) {
         var value = swaggerRoutes.find(function (qry) { return qry.className === className; });
+        var worker = getNewWorker(methodName);
+        worker.body = body;
         if (value == null) {
-            var worker = getNewWorker(methodName);
-            worker.body = body;
             swaggerRoutes.push({
                 className: className,
                 workers: [worker]
@@ -444,8 +505,11 @@ var SwaggerHandler = /** @class */ (function () {
         }
         else {
             var savedWorker = value.workers.find(function (qry) { return qry.methodName === methodName; });
-            if (savedWorker != null) {
-                savedWorker.body[body.variableName] = body.type;
+            if (savedWorker != null) { // add query for that worker
+                savedWorker.body = body;
+            }
+            else { // add worker for the route
+                value.workers.push(worker);
             }
         }
     };
@@ -454,9 +518,9 @@ var SwaggerHandler = /** @class */ (function () {
         if (value == null) {
             swaggerModels.push(model);
         }
-        else {
-            value.classInstance = model.classInstance;
-        }
+        // else {
+        //     value.classInstance = model.classInstance;
+        // }
     };
     SwaggerHandler.addIgnoreProperty = function (className, propertyName) {
         var value = swaggerModels.find(function (qry) { return qry.className === className; });
@@ -697,6 +761,7 @@ var Swagger = /** @class */ (function (_super) {
     }
     Swagger.prototype.create = function (option) {
         return __awaiter(this, void 0, void 0, function () {
+            var responses;
             return __generator(this, function (_a) {
                 // const extension = this.getExtension_(option.extension);
                 // if (extension == null) {
@@ -711,6 +776,13 @@ var Swagger = /** @class */ (function (_super) {
                 // }
                 console.log("routes", JSON.stringify(_handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].routes));
                 console.log("models", _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].models);
+                responses = [];
+                _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].routes.forEach(function (value) {
+                    value.workers.forEach(function (worker) {
+                        responses.push(worker.responses);
+                    });
+                });
+                console.log("responses", responses);
                 return [2 /*return*/];
             });
         });

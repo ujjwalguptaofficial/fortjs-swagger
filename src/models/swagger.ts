@@ -29,6 +29,13 @@ export class Swagger extends Router {
         // }
         console.log("routes", JSON.stringify(SwaggerHandler.routes));
         console.log("models", SwaggerHandler.models);
+        const responses = [];
+        SwaggerHandler.routes.forEach(value => {
+            value.workers.forEach(worker => {
+                responses.push(worker.responses);
+            })
+        })
+        console.log("responses",responses)
     }
 
     private getExtension_(extension: string) {

@@ -1,10 +1,12 @@
 import { QueryInfo } from "./query_info";
+import { ResponseInfo } from "./response_info";
 
 
 export type WorkerInfo = {
     methodName: string;
-    response: { [statusCode: number]: any };
+    responses: ResponseInfo[];
     queries: QueryInfo[];
-    body: { [variableName: string]: any };
+    params: QueryInfo[];
+    body: null;
     file: { [variableName: string]: any };
 }

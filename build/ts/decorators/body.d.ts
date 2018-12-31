@@ -1,2 +1,1 @@
-import { DATA_TYPE } from "../enums/data_type";
-export declare const Body: (variableName: string, type: DATA_TYPE) => MethodDecorator;
+export declare const Body: (value: any, description?: string) => MethodDecorator;
