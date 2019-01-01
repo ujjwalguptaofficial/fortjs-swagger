@@ -1,0 +1,93 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger Test",
+        "description": "Swagger Test",
+        "version": "1.0"
+    },
+    "servers": [{
+        "description": "local",
+        "url": "localhost:4000"
+    }],
+    "models": {
+        "User": {
+            "required": ["id", "password", "name", "gender", "address", "init"],
+            "properties": {
+                "id": {
+                    "type": "undefined"
+                },
+                "password": {
+                    "type": "undefined"
+                },
+                "name": {
+                    "type": "undefined"
+                },
+                "gender": {
+                    "type": "undefined"
+                },
+                "address": {
+                    "type": "undefined"
+                },
+                "init": {
+                    "type": "undefined"
+                }
+            }
+        }
+    },
+    "paths": {
+        "/user": {
+            "/user/": {
+                "operationId": "updateUser",
+                "parameters": [{
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "type": "undefined"
+                    }
+                }],
+                "tags": ["user"],
+                "responses": {
+                    "content": {
+                        "text/plain": {
+                            "schema": {
+                                "type": "string",
+                                "example": "invalid user"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/models/User"
+                            }
+                        },
+                        "application/xml": {
+                            "schema": {
+                                "$ref": "#/models/User"
+                            }
+                        }
+                    }
+                }
+            },
+            "/user/{id}": {
+                "operationId": "removeUser",
+                "parameters": [{
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                        "type": "undefined"
+                    }
+                }],
+                "tags": ["user"],
+                "responses": {
+                    "content": {
+                        "text/plain": {
+                            "schema": {
+                                "type": "string",
+                                "example": "user deleted"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

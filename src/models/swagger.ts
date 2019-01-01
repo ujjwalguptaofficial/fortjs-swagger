@@ -5,6 +5,7 @@ import { FileHelper } from "../helpers/file_helper";
 import { ApplicationInfo } from "../types/application_info";
 import { ServerInfo } from "../types/server_info";
 import { SwaggerFormatter } from "./swagger_formatter";
+import * as Path from "path";
 
 
 export type SwaggerOption = {
@@ -12,6 +13,7 @@ export type SwaggerOption = {
     srcFolder: string;
     appInfo: ApplicationInfo;
     servers: ServerInfo[];
+    contentsPath: string;
 }
 
 export class Swagger extends Router {
@@ -20,8 +22,16 @@ export class Swagger extends Router {
         // Global.routes = this.routes;
     }
     async create(option?: SwaggerOption) {
+        // if (option.contentsPath == null) {
+        //     option.contentsPath = Path.join(__dirname, "../swagger/");
+        // }
         const formmatedData = new SwaggerFormatter().format(option, this.routes);
-        console.log("formmated data", JSON.stringify(formmatedData));
+        //console.log("formmated data", JSON.stringify(formmatedData));
+        const isPathExist = await FileHelper.isPathExist(option.contentsPath);
+        if (isPathExist === false) {
+            await FileHelper.createDir(option.contentsPath);
+        }
+        await FileHelper.writeFile(`${option.contentsPath}/swagger.json`, JSON.stringify(formmatedData));
         // const extension = this.getExtension_(option.extension);
         // if (extension == null) {
         //     throw "Invalid Files extension. Allowed extension are - ts, js."

@@ -6,6 +6,7 @@ export declare type SwaggerOption = {
     srcFolder: string;
     appInfo: ApplicationInfo;
     servers: ServerInfo[];
+    contentsPath: string;
 };
 export declare class Swagger extends Router {
     constructor();

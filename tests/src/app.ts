@@ -3,7 +3,7 @@ import { routes } from './routes';
 import { FortViewEngine } from 'eshtml';
 import * as path from "path";
 import { Swagger } from '@fortjs/swagger';
-
+import * as Path from "path";
 
 
 export class App extends Fort {
@@ -38,7 +38,8 @@ new App().create({
             url: "localhost:4000"
         }],
         extension: "",
-        srcFolder: ""
+        srcFolder: "",
+        contentsPath: Path.join(__dirname, "../swagger/")
     });
 })
 

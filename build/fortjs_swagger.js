@@ -589,6 +589,129 @@ var getModelinfo = function (value) {
 
 /***/ }),
 
+/***/ "./src/helpers/file_helper.ts":
+/*!************************************!*\
+  !*** ./src/helpers/file_helper.ts ***!
+  \************************************/
+/*! exports provided: FileHelper */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FileHelper", function() { return FileHelper; });
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fs */ "fs");
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path */ "path");
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);
+
+
+var FileHelper = /** @class */ (function () {
+    function FileHelper() {
+    }
+    FileHelper.getAllFilesFrom = function (src) {
+        return new Promise(function (res, rej) {
+            fs__WEBPACK_IMPORTED_MODULE_0__["readdir"](src, function (err, filenames) {
+                if (err) {
+                    rej(err);
+                }
+                else {
+                    res(filenames);
+                }
+            });
+        });
+    };
+    FileHelper.filterFiles = function (files, extension) {
+        var filteredFiles = [];
+        files.forEach(function (file) {
+            var parsedinfo = path__WEBPACK_IMPORTED_MODULE_1__["parse"](file);
+            if (parsedinfo.ext === extension) {
+                filteredFiles.push(file);
+            }
+        });
+        return filteredFiles;
+    };
+    FileHelper.readFile = function (src) {
+        return new Promise(function (res, rej) {
+            fs__WEBPACK_IMPORTED_MODULE_0__["readFile"](src, function (err, data) {
+                if (err) {
+                    rej(err);
+                }
+                else {
+                    res(data);
+                }
+            });
+        });
+    };
+    FileHelper.isPathExist = function (path) {
+        return new Promise(function (resolve, reject) {
+            try {
+                fs__WEBPACK_IMPORTED_MODULE_0__["exists"](path, function (isExist) {
+                    resolve(isExist);
+                });
+            }
+            catch (ex) {
+                reject(ex);
+            }
+        });
+    };
+    FileHelper.isDirectory = function (path) {
+        return new Promise(function (resolve, reject) {
+            try {
+                fs__WEBPACK_IMPORTED_MODULE_0__["lstat"](path, function (err, status) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve(status.isDirectory());
+                    }
+                });
+            }
+            catch (ex) {
+                reject(ex);
+            }
+        });
+    };
+    FileHelper.createDir = function (path) {
+        return new Promise(function (resolve, reject) {
+            try {
+                fs__WEBPACK_IMPORTED_MODULE_0__["mkdir"](path, function (err) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            }
+            catch (ex) {
+                reject(ex);
+            }
+        });
+    };
+    FileHelper.writeFile = function (path, contents) {
+        return new Promise(function (resolve, reject) {
+            try {
+                fs__WEBPACK_IMPORTED_MODULE_0__["writeFile"](path, contents, { flag: 'w' }, function (err) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            }
+            catch (ex) {
+                reject(ex);
+            }
+        });
+    };
+    return FileHelper;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/helpers/get_data_type.ts":
 /*!**************************************!*\
   !*** ./src/helpers/get_data_type.ts ***!
@@ -723,7 +846,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Swagger", function() { return Swagger; });
 /* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fortjs */ "fortjs");
 /* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fortjs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _swagger_formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./swagger_formatter */ "./src/models/swagger_formatter.ts");
+/* harmony import */ var _helpers_file_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/file_helper */ "./src/helpers/file_helper.ts");
+/* harmony import */ var _swagger_formatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./swagger_formatter */ "./src/models/swagger_formatter.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -774,6 +898,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 };
 
 
+
 var Swagger = /** @class */ (function (_super) {
     __extends(Swagger, _super);
     function Swagger() {
@@ -782,11 +907,24 @@ var Swagger = /** @class */ (function (_super) {
     }
     Swagger.prototype.create = function (option) {
         return __awaiter(this, void 0, void 0, function () {
-            var formmatedData;
+            var formmatedData, isPathExist;
             return __generator(this, function (_a) {
-                formmatedData = new _swagger_formatter__WEBPACK_IMPORTED_MODULE_1__["SwaggerFormatter"]().format(option, this.routes);
-                console.log("formmated data", JSON.stringify(formmatedData));
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        formmatedData = new _swagger_formatter__WEBPACK_IMPORTED_MODULE_2__["SwaggerFormatter"]().format(option, this.routes);
+                        return [4 /*yield*/, _helpers_file_helper__WEBPACK_IMPORTED_MODULE_1__["FileHelper"].isPathExist(option.contentsPath)];
+                    case 1:
+                        isPathExist = _a.sent();
+                        if (!(isPathExist === false)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, _helpers_file_helper__WEBPACK_IMPORTED_MODULE_1__["FileHelper"].createDir(option.contentsPath)];
+                    case 2:
+                        _a.sent();
+                        _a.label = 3;
+                    case 3: return [4 /*yield*/, _helpers_file_helper__WEBPACK_IMPORTED_MODULE_1__["FileHelper"].writeFile(option.contentsPath + "/swagger.json", JSON.stringify(formmatedData))];
+                    case 4:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -966,6 +1104,28 @@ var SwaggerFormatter = /** @class */ (function () {
 /***/ (function(module, exports) {
 
 module.exports = require("fortjs");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
 
 /***/ })
 
