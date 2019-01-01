@@ -759,7 +759,7 @@ var getParamSchema = function (value) {
     var modelName = Object(_extract_model__WEBPACK_IMPORTED_MODULE_0__["extractAndSaveModel"])(value);
     var dataType = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_1__["getDataType"])(value);
     if (modelName.length > 0) { // value is model
-        var modelRefString = "#/models/" + modelName;
+        var modelRefString = "#/components/schemas/" + modelName;
         var refValue = {
             $ref: modelRefString
         };
@@ -912,6 +912,7 @@ var Swagger = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         formmatedData = new _swagger_formatter__WEBPACK_IMPORTED_MODULE_2__["SwaggerFormatter"]().format(option, this.routes);
+                        console.log("formmated data", JSON.stringify(formmatedData));
                         return [4 /*yield*/, _helpers_file_helper__WEBPACK_IMPORTED_MODULE_1__["FileHelper"].isPathExist(option.contentsPath)];
                     case 1:
                         isPathExist = _a.sent();
@@ -982,7 +983,9 @@ var SwaggerFormatter = /** @class */ (function () {
             openapi: "3.0.0",
             info: option.appInfo,
             servers: option.servers,
-            models: this.getModels_()
+            components: {
+                schemas: this.getModels_()
+            }
         };
         var swaggerPaths = {};
         routes.forEach(function (route) {
@@ -992,15 +995,21 @@ var SwaggerFormatter = /** @class */ (function () {
                 if (pathName_1[0] === "/") {
                     pathName_1 = route.path.substr(1);
                 }
-                var swaggerPath_1 = {};
                 route.workers.forEach(function (worker) {
                     var pattern = worker.pattern;
                     if (pattern[0] !== "/") {
                         pattern = "/" + pattern;
                     }
+                    // const swaggerPath = {
+                    //     [pattern]: {
+                    //     }
+                    // }
+                    if (swaggerPaths[pattern] == null) {
+                        swaggerPaths[pattern] = {};
+                    }
                     // add multiple route for all http method allowed for a single path 
                     worker.methodsAllowed.forEach(function (httpMethod) {
-                        swaggerPath_1[pattern] = {
+                        swaggerPaths[pattern][httpMethod.toLowerCase()] = {
                             operationId: worker.workerName,
                             parameters: _this.getParams_(route.controllerName, worker.workerName),
                             tags: [pathName_1],
@@ -1008,7 +1017,7 @@ var SwaggerFormatter = /** @class */ (function () {
                         };
                     });
                 });
-                swaggerPaths["/" + pathName_1] = swaggerPath_1;
+                // swaggerPaths[`/${pathName}`] = swaggerPath;
             }
         });
         swaggerJson.paths = swaggerPaths;
@@ -1016,17 +1025,17 @@ var SwaggerFormatter = /** @class */ (function () {
     };
     SwaggerFormatter.prototype.getModels_ = function () {
         var models = {};
-        console.log('models', _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].models);
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].models.forEach(function (model) {
-            var keys = Object.keys(model.classInstance);
+            var obj = model.classInstance;
+            var keys = Object.keys(obj);
             // remove ignored prop
             model.ignoredProperty.forEach(function (prop) {
                 var index = keys.indexOf(prop);
-                keys.splice(index, 1, prop);
+                keys.splice(index, 1);
             });
             var properties = {};
             keys.forEach(function (key) {
-                var propValue = model[key];
+                var propValue = obj[key];
                 var dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_2__["getDataType"])(propValue);
                 properties[key] = {
                     type: dataType

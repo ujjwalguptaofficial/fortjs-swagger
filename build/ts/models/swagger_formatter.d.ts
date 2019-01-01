@@ -35,7 +35,10 @@ export declare type SwaggerStructure = {
     info: ApplicationInfo;
     servers: ServerInfo[];
     paths: any;
-    models: {
+    components: SwaggerComponent;
+};
+export declare type SwaggerComponent = {
+    schemas: {
         [modelName: string]: SwaggerModelInfo;
     };
 };

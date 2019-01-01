@@ -9,7 +9,7 @@ export const getParamSchema = (value) => {
     const modelName = extractAndSaveModel(value);
     const dataType = getDataType(value);
     if (modelName.length > 0) { // value is model
-        const modelRefString = `#/models/${modelName}`;
+        const modelRefString = `#/components/schemas/${modelName}`;
         const refValue: SwaggerRef = {
             $ref: modelRefString
         };

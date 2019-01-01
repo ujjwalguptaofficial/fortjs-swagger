@@ -19,6 +19,9 @@ new App().create({
     folders: [{
         alias: "/",
         path: path.join(__dirname, "../static")
+    }, {
+        alias: "swagger",
+        path: Path.join(__dirname, "../swagger")
     }]
 }).then(() => {
     // const Path = path.join(__dirname, "../src/controllers/user_controller.ts");

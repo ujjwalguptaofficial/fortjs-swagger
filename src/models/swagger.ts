@@ -26,7 +26,7 @@ export class Swagger extends Router {
         //     option.contentsPath = Path.join(__dirname, "../swagger/");
         // }
         const formmatedData = new SwaggerFormatter().format(option, this.routes);
-        //console.log("formmated data", JSON.stringify(formmatedData));
+        console.log("formmated data", JSON.stringify(formmatedData));
         const isPathExist = await FileHelper.isPathExist(option.contentsPath);
         if (isPathExist === false) {
             await FileHelper.createDir(option.contentsPath);

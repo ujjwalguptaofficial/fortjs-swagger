@@ -50,7 +50,12 @@ export type SwaggerStructure = {
     info: ApplicationInfo;
     servers: ServerInfo[];
     paths: any;
-    models: { [modelName: string]: SwaggerModelInfo }
+    components: SwaggerComponent;
+    //models: { [modelName: string]: SwaggerModelInfo }
+}
+
+export type SwaggerComponent = {
+    schemas: { [modelName: string]: SwaggerModelInfo }
 }
 
 export type SwaggerModelInfo = {
@@ -64,7 +69,9 @@ export class SwaggerFormatter {
             openapi: "3.0.0",
             info: option.appInfo,
             servers: option.servers,
-            models: this.getModels_()
+            components: {
+                schemas: this.getModels_()
+            }
         } as SwaggerStructure;
         const swaggerPaths = {};
         routes.forEach(route => {
@@ -74,18 +81,27 @@ export class SwaggerFormatter {
                 if (pathName[0] === "/") {
                     pathName = route.path.substr(1)
                 }
-                const swaggerPath = {
 
-                }
                 route.workers.forEach(worker => {
                     let pattern = worker.pattern;
                     if (pattern[0] !== "/") {
                         pattern = `/${pattern}`;
                     }
+                    // const swaggerPath = {
+                    //     [pattern]: {
+
+                    //     }
+                    // }
+                    if (swaggerPaths[pattern] == null) {
+                        swaggerPaths[pattern] = {
+
+                        }
+                    }
+
 
                     // add multiple route for all http method allowed for a single path 
                     worker.methodsAllowed.forEach(httpMethod => {
-                        swaggerPath[pattern] = {
+                        swaggerPaths[pattern][httpMethod.toLowerCase()] = {
                             operationId: worker.workerName,
                             parameters: this.getParams_(route.controllerName, worker.workerName),
                             tags: [pathName],
@@ -94,7 +110,7 @@ export class SwaggerFormatter {
                     })
 
                 });
-                swaggerPaths[`/${pathName}`] = swaggerPath;
+                // swaggerPaths[`/${pathName}`] = swaggerPath;
             }
         });
         swaggerJson.paths = swaggerPaths;
@@ -105,17 +121,17 @@ export class SwaggerFormatter {
         const models = {
 
         }
-        console.log('models', SwaggerHandler.models);
         SwaggerHandler.models.forEach(model => {
-            const keys = Object.keys(model.classInstance);
+            const obj = model.classInstance;
+            const keys = Object.keys(obj);
             // remove ignored prop
             model.ignoredProperty.forEach(prop => {
                 const index = keys.indexOf(prop);
-                keys.splice(index, 1, prop);
+                keys.splice(index, 1);
             })
             const properties = {};
             keys.forEach(key => {
-                const propValue = model[key];
+                const propValue = obj[key];
                 const dataType = getDataType(propValue);
                 properties[key] = {
                     type: dataType
