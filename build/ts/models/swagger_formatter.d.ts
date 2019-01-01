@@ -2,6 +2,9 @@ import { RouteInfo } from "fortjs";
 import { SwaggerParamSchema } from "../types/swagger_param_schema";
 import { SwaggerRef } from "../types/swagger_ref";
 import { SwaggerCustomParam } from "../types/swagger_custom_param";
+import { SwaggerOption } from "./swagger";
+import { ApplicationInfo } from "../types/application_info";
+import { ServerInfo } from "../types/server_info";
 export declare type SwaggerOutputPath = {
     summary?: string;
     operationId: string;
@@ -27,9 +30,24 @@ export declare enum SWAGGER_OUTPUT_PARAM {
     Path = "path",
     Body = "body"
 }
+export declare type SwaggerStructure = {
+    openapi: string;
+    info: ApplicationInfo;
+    servers: ServerInfo[];
+    paths: any;
+    models: {
+        [modelName: string]: SwaggerModelInfo;
+    };
+};
+export declare type SwaggerModelInfo = {
+    required: string[];
+    properties: {
+        [propName: string]: SwaggerCustomParam;
+    };
+};
 export declare class SwaggerFormatter {
-    format(routes: RouteInfo[]): void;
+    format(option: SwaggerOption, routes: RouteInfo[]): SwaggerStructure;
+    private getModels_;
     private getResponses_;
     private getParams_;
-    private formatResponse_;
 }

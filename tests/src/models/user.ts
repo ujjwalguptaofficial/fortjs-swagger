@@ -1,25 +1,24 @@
 import { Length, Contains, IsIn, IsEmail } from "class-validator";
-import { SwaggerModel, IgnoreProperty } from "@fortjs/swagger";
+import { IgnoreProperty } from "@fortjs/swagger";
 
 // @SwaggerModel
 export class User {
-    id?: number;
+    id?: number = 0;
 
     @Length(5)
-    password?: string;
+    password?: string = "";
 
     @Length(5)
-    name: string;
+    name: string = "";
 
     @IsIn(["male", "female"])
-    gender: string;
+    gender: string = "";
 
     @Length(10, 100)
-    address: string;
+    address: string = ""
 
     @IsEmail()
-    emailId: string;
-
+    emailId: string = ""
     // constructor(user: any) {
     //     this.id = Number(user.id);
     //     this.name = user.name;

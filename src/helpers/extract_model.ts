@@ -36,7 +36,7 @@ const getModelinfo = (value) => {
         } as SwaggerModelInfo;
     }
     catch (ex) {
-
+        console.log("getModelinfo", ex);
     }
     return null;
 }

@@ -361,27 +361,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/global.ts":
-/*!***********************!*\
-  !*** ./src/global.ts ***!
-  \***********************/
-/*! exports provided: Global */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Global", function() { return Global; });
-var Global = /** @class */ (function () {
-    function Global() {
-    }
-    Global.routes = [];
-    return Global;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/handlers/swagger_handler.ts":
 /*!*****************************************!*\
   !*** ./src/handlers/swagger_handler.ts ***!
@@ -436,7 +415,6 @@ var SwaggerHandler = /** @class */ (function () {
         var value = swaggerRoutes.find(function (qry) { return qry.className === className; });
         var worker = getNewWorker(methodName);
         worker.responses.push(response);
-        console.log("response", response);
         if (value == null) {
             swaggerRoutes.push({
                 className: className,
@@ -518,9 +496,9 @@ var SwaggerHandler = /** @class */ (function () {
         if (value == null) {
             swaggerModels.push(model);
         }
-        // else {
-        //     value.classInstance = model.classInstance;
-        // }
+        else if (value.classInstance == null) {
+            value.classInstance = model.classInstance;
+        }
     };
     SwaggerHandler.addIgnoreProperty = function (className, propertyName) {
         var value = swaggerModels.find(function (qry) { return qry.className === className; });
@@ -603,6 +581,7 @@ var getModelinfo = function (value) {
         };
     }
     catch (ex) {
+        console.log("getModelinfo", ex);
     }
     return null;
 };
@@ -631,6 +610,51 @@ var getDataType = function (value) {
             }
         default:
             return type;
+    }
+};
+
+
+/***/ }),
+
+/***/ "./src/helpers/get_param_schema.ts":
+/*!*****************************************!*\
+  !*** ./src/helpers/get_param_schema.ts ***!
+  \*****************************************/
+/*! exports provided: getParamSchema */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getParamSchema", function() { return getParamSchema; });
+/* harmony import */ var _extract_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./extract_model */ "./src/helpers/extract_model.ts");
+/* harmony import */ var _get_data_type__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./get_data_type */ "./src/helpers/get_data_type.ts");
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! .. */ "./src/index.ts");
+
+
+
+var getParamSchema = function (value) {
+    var modelName = Object(_extract_model__WEBPACK_IMPORTED_MODULE_0__["extractAndSaveModel"])(value);
+    var dataType = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_1__["getDataType"])(value);
+    if (modelName.length > 0) { // value is model
+        var modelRefString = "#/models/" + modelName;
+        var refValue = {
+            $ref: modelRefString
+        };
+        if (dataType === ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Function) {
+            return refValue;
+        }
+        else {
+            return {
+                type: ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Array,
+                items: refValue
+            };
+        }
+    }
+    else {
+        return {
+            type: dataType,
+            example: value
+        };
     }
 };
 
@@ -699,8 +723,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Swagger", function() { return Swagger; });
 /* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fortjs */ "fortjs");
 /* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fortjs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../global */ "./src/global.ts");
-/* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
+/* harmony import */ var _swagger_formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./swagger_formatter */ "./src/models/swagger_formatter.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -751,38 +774,18 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 };
 
 
-
 var Swagger = /** @class */ (function (_super) {
     __extends(Swagger, _super);
     function Swagger() {
-        var _this = _super.call(this) || this;
-        _global__WEBPACK_IMPORTED_MODULE_1__["Global"].routes = _this.routes;
-        return _this;
+        return _super.call(this) || this;
+        // Global.routes = this.routes;
     }
     Swagger.prototype.create = function (option) {
         return __awaiter(this, void 0, void 0, function () {
-            var responses;
+            var formmatedData;
             return __generator(this, function (_a) {
-                // const extension = this.getExtension_(option.extension);
-                // if (extension == null) {
-                //     throw "Invalid Files extension. Allowed extension are - ts, js."
-                // }
-                // const files = await FileHelper.getAllFilesFrom(option.srcFolder);
-                // if (files.length > 0) {
-                //     const filterFiles = FileHelper.filterFiles(files, option.extension);
-                // }
-                // else {
-                //     throw `No files found in directory - ${option.srcFolder}`;
-                // }
-                console.log("routes", JSON.stringify(_handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].routes));
-                console.log("models", _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].models);
-                responses = [];
-                _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].routes.forEach(function (value) {
-                    value.workers.forEach(function (worker) {
-                        responses.push(worker.responses);
-                    });
-                });
-                console.log("responses", responses);
+                formmatedData = new _swagger_formatter__WEBPACK_IMPORTED_MODULE_1__["SwaggerFormatter"]().format(option, this.routes);
+                console.log("formmated data", JSON.stringify(formmatedData));
                 return [2 /*return*/];
             });
         });
@@ -800,6 +803,156 @@ var Swagger = /** @class */ (function (_super) {
     };
     return Swagger;
 }(fortjs__WEBPACK_IMPORTED_MODULE_0__["Router"]));
+
+
+
+/***/ }),
+
+/***/ "./src/models/swagger_formatter.ts":
+/*!*****************************************!*\
+  !*** ./src/models/swagger_formatter.ts ***!
+  \*****************************************/
+/*! exports provided: SWAGGER_OUTPUT_PARAM, SwaggerFormatter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SWAGGER_OUTPUT_PARAM", function() { return SWAGGER_OUTPUT_PARAM; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerFormatter", function() { return SwaggerFormatter; });
+/* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
+/* harmony import */ var _helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/get_param_schema */ "./src/helpers/get_param_schema.ts");
+/* harmony import */ var _helpers_get_data_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/get_data_type */ "./src/helpers/get_data_type.ts");
+
+
+
+// export type SwaggerParamSchemaType = {
+//     type: DATA_TYPE;
+//     format: string;
+// }
+var SWAGGER_OUTPUT_PARAM;
+(function (SWAGGER_OUTPUT_PARAM) {
+    SWAGGER_OUTPUT_PARAM["Query"] = "query";
+    SWAGGER_OUTPUT_PARAM["Path"] = "path";
+    SWAGGER_OUTPUT_PARAM["Body"] = "body";
+})(SWAGGER_OUTPUT_PARAM || (SWAGGER_OUTPUT_PARAM = {}));
+var SwaggerFormatter = /** @class */ (function () {
+    function SwaggerFormatter() {
+    }
+    SwaggerFormatter.prototype.format = function (option, routes) {
+        var _this = this;
+        var swaggerJson = {
+            openapi: "3.0.0",
+            info: option.appInfo,
+            servers: option.servers,
+            models: this.getModels_()
+        };
+        var swaggerPaths = {};
+        routes.forEach(function (route) {
+            var swaggerRouteData = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].routes.find(function (qry) { return qry.className === route.controllerName; });
+            if (swaggerRouteData != null) {
+                var pathName_1 = route.path;
+                if (pathName_1[0] === "/") {
+                    pathName_1 = route.path.substr(1);
+                }
+                var swaggerPath_1 = {};
+                route.workers.forEach(function (worker) {
+                    var pattern = worker.pattern;
+                    if (pattern[0] !== "/") {
+                        pattern = "/" + pattern;
+                    }
+                    // add multiple route for all http method allowed for a single path 
+                    worker.methodsAllowed.forEach(function (httpMethod) {
+                        swaggerPath_1[pattern] = {
+                            operationId: worker.workerName,
+                            parameters: _this.getParams_(route.controllerName, worker.workerName),
+                            tags: [pathName_1],
+                            responses: _this.getResponses_(route.controllerName, worker.workerName)
+                        };
+                    });
+                });
+                swaggerPaths["/" + pathName_1] = swaggerPath_1;
+            }
+        });
+        swaggerJson.paths = swaggerPaths;
+        return swaggerJson;
+    };
+    SwaggerFormatter.prototype.getModels_ = function () {
+        var models = {};
+        console.log('models', _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].models);
+        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].models.forEach(function (model) {
+            var keys = Object.keys(model.classInstance);
+            // remove ignored prop
+            model.ignoredProperty.forEach(function (prop) {
+                var index = keys.indexOf(prop);
+                keys.splice(index, 1, prop);
+            });
+            var properties = {};
+            keys.forEach(function (key) {
+                var propValue = model[key];
+                var dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_2__["getDataType"])(propValue);
+                properties[key] = {
+                    type: dataType
+                };
+            });
+            models[model.className] = {
+                required: keys,
+                properties: properties
+            };
+        });
+        return models;
+    };
+    SwaggerFormatter.prototype.getResponses_ = function (className, methodName) {
+        var result = { content: {} };
+        var workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].routes.find(function (qry) { return qry.className === className; }).
+            workers.find(function (qry) { return qry.methodName === methodName; });
+        workerInfo.responses.forEach(function (response) {
+            result.content[response.contentType] = {
+                schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(response.value)
+            };
+        });
+        return result;
+    };
+    SwaggerFormatter.prototype.getParams_ = function (className, methodName) {
+        var params = [];
+        // const swaggerRouteInfo = 
+        // if (swaggerRouteInfo != null) {
+        var workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].routes.find(function (qry) { return qry.className === className; })
+            .workers.find(function (qry) { return qry.methodName === methodName; });
+        if (workerInfo != null) {
+            // from route params
+            workerInfo.params.forEach(function (param) {
+                params.push({
+                    in: SWAGGER_OUTPUT_PARAM.Path,
+                    name: param.variableName,
+                    required: true,
+                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(param.value)
+                });
+            });
+            // from query
+            workerInfo.queries.forEach(function (query) {
+                params.push({
+                    in: SWAGGER_OUTPUT_PARAM.Query,
+                    name: query.variableName,
+                    required: true,
+                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(query.value)
+                });
+            });
+            // from body
+            var body = workerInfo.body;
+            if (body != null) {
+                params.push({
+                    in: SWAGGER_OUTPUT_PARAM.Body,
+                    name: body.variableName,
+                    required: true,
+                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(body.value)
+                });
+            }
+        }
+        // }
+        return params;
+    };
+    return SwaggerFormatter;
+}());
 
 
 

@@ -50,7 +50,6 @@ export class SwaggerHandler {
         const value = swaggerRoutes.find(qry => qry.className === className);
         const worker = getNewWorker(methodName);
         worker.responses.push(response);
-        console.log("response", response);
         if (value == null) {
             swaggerRoutes.push({
                 className: className,
@@ -136,9 +135,9 @@ export class SwaggerHandler {
         if (value == null) {
             swaggerModels.push(model);
         }
-        // else {
-        //     value.classInstance = model.classInstance;
-        // }
+        else if (value.classInstance == null) {
+            value.classInstance = model.classInstance;
+        }
     }
 
     static addIgnoreProperty(className: string, propertyName: string) {

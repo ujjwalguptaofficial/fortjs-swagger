@@ -27,7 +27,19 @@ new App().create({
     //     console.log("err", err);
     //     console.log("ast", ast);
     // })
-    new Swagger().create();
+    new Swagger().create({
+        appInfo: {
+            title: "Swagger Test",
+            description: "Swagger Test",
+            version: "1.0"
+        },
+        servers: [{
+            description: "local",
+            url: "localhost:4000"
+        }],
+        extension: "",
+        srcFolder: ""
+    });
 })
 
 console.log("Your fort is located at address - localhost:4000");
