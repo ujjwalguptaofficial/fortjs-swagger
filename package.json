@@ -9,7 +9,8 @@
     "webpack:watch": "webpack --config webpack.config.js --watch",
     "lint": "tslint src/**/*.ts",
     "build": "npm run webpack",
-    "buildpack": "npm run build && npm pack",
+    "build:ui": "webpack --config webpack.config.swagger.js",
+    "buildpack": "npm run build:ui && npm run build && npm pack",
     "start": "npm run webpack:watch && opn http://localhost:4000",
     "install:lib": "npm i ../fortjs/fortjs-1.4.4.tgz --no-save"
   },
@@ -25,11 +26,16 @@
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-typescript-starter#readme",
   "dependencies": {
     "eshtml": "^0.2.2",
-    "js-comments": "^0.5.4",
-    "swagger-ui": "^3.20.4"
+    "js-comments": "^0.5.4"
   },
   "devDependencies": {
+    "swagger-ui": "^3.20.4",
+    "@types/fs-extra": "^5.0.4",
     "@types/node": "^10.12.15",
+    "@types/swagger-ui-dist": "^3.0.0",
+    "copy-webpack-plugin": "^4.6.0",
+    "css-loader": "^2.1.0",
+    "style-loader": "^0.23.1",
     "ts-loader": "^5.3.1",
     "tslint": "^5.11.0",
     "tslint-config-security": "^1.13.0",
@@ -37,5 +43,8 @@
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
     "webpack-node-externals": "^1.7.2"
+  },
+  "peerDependencies": {
+    "fortjs": ">=1.5.0"
   }
 }

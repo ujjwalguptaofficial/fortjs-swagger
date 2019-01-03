@@ -1,4 +1,4 @@
-import { FileHelper } from "./file_helper";
+import { FileHelper } from "fortjs";
 import { SwaggerHandler } from "../handlers/swagger_handler";
 import { __class } from "../constant";
 import { WorkerInfo } from "../types/worker_info";

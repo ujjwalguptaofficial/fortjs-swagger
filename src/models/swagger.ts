@@ -1,11 +1,13 @@
 import { Router } from "fortjs";
 import { Global } from "../global";
 import { SwaggerHandler } from "../handlers/swagger_handler";
-import { FileHelper } from "../helpers/file_helper";
+import { FileHelper } from "fortjs";
 import { ApplicationInfo } from "../types/application_info";
 import { ServerInfo } from "../types/server_info";
 import { SwaggerFormatter } from "./swagger_formatter";
 import * as Path from "path";
+// import { getAbsoluteFSPath } from "swagger-ui-dist";
+// import { copy, writeFile } from "fs-extra";
 
 
 export type SwaggerOption = {
@@ -22,16 +24,27 @@ export class Swagger extends Router {
         // Global.routes = this.routes;
     }
     async create(option?: SwaggerOption) {
-        // if (option.contentsPath == null) {
-        //     option.contentsPath = Path.join(__dirname, "../swagger/");
-        // }
+
         const formmatedData = new SwaggerFormatter().format(option, this.routes);
-        console.log("formmated data", JSON.stringify(formmatedData));
+        //console.log("formmated data", JSON.stringify(formmatedData));
         const isPathExist = await FileHelper.isPathExist(option.contentsPath);
         if (isPathExist === false) {
             await FileHelper.createDir(option.contentsPath);
         }
-        await FileHelper.writeFile(`${option.contentsPath}/swagger.json`, JSON.stringify(formmatedData));
+        const swaggerConfigPath = `${option.contentsPath}/swagger.json`;
+        //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
+        await FileHelper.writeFile(swaggerConfigPath, JSON.stringify(formmatedData));
+
+        //copy swagger files
+        await this.copySwaggerAssets_(option.contentsPath);
+        // await FileHelper.copyFile(Path.join(__dirname, 'swagger_ui/index.html'), option.contentsPath);
+        // await FileHelper.copyFile(Path.join(__dirname, 'swagger_ui/swagger.js'), option.contentsPath);
+
+        //  const swaggerUiPath = getAbsoluteFSPath();
+        //console.log(swaggerUiPath);
+        // await copy(swaggerUiPath, option.contentsPath, {
+        //     overwrite: true
+        // })
         // const extension = this.getExtension_(option.extension);
         // if (extension == null) {
         //     throw "Invalid Files extension. Allowed extension are - ts, js."
@@ -53,6 +66,13 @@ export class Swagger extends Router {
         //     })
         // })
         // console.log("responses", responses)
+    }
+
+    private copySwaggerAssets_(contentPath: string) {
+        const assets = ['index.html', 'swagger.js'];
+        return Promise.all(assets.map(asset => {
+            return FileHelper.copyFile(Path.join(__dirname, `swagger_ui/${asset}`), contentPath + asset);
+        }))
     }
 
     private getExtension_(extension: string) {

@@ -173,7 +173,8 @@ export class SwaggerFormatter {
                     in: SWAGGER_OUTPUT_PARAM.Path,
                     name: param.variableName,
                     required: true,
-                    schema: getParamSchema(param.value)
+                    schema: getParamSchema(param.value),
+                    description: param.description
                 })
             });
 
@@ -183,7 +184,8 @@ export class SwaggerFormatter {
                     in: SWAGGER_OUTPUT_PARAM.Query,
                     name: query.variableName,
                     required: true,
-                    schema: getParamSchema(query.value)
+                    schema: getParamSchema(query.value),
+                    description: query.description
                 })
             });
 
@@ -194,11 +196,13 @@ export class SwaggerFormatter {
                     in: SWAGGER_OUTPUT_PARAM.Body,
                     name: body.variableName,
                     required: true,
-                    schema: getParamSchema(body.value)
+                    schema: getParamSchema(body.value),
+                    description: body.description
                 })
             }
         }
         // }
+        console.log("params", params);
         return params;
     }
 

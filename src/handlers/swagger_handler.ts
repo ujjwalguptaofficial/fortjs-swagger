@@ -11,8 +11,8 @@ const swaggerModels: SwaggerModelInfo[] = [];
 
 const getNewWorker = (methodName: string) => {
     return {
-        body: {} as BodyInfo,
-        file: {},
+        body: null,
+        file: null,
         methodName: methodName,
         queries: [],
         responses: [],

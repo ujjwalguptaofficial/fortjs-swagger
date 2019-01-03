@@ -2,7 +2,7 @@ import { Controller, textResult, DefaultWorker, jsonResult, Worker, Route, HTTP_
 import { UserService } from '../services/user_service';
 import { ModelUserGuard } from '../Guards/model_user_guard';
 import { User } from '../models/user';
-import { Response } from '@fortjs/swagger';
+import { Response, Body } from '@fortjs/swagger';
 
 
 export class UserController extends Controller {
@@ -25,6 +25,7 @@ export class UserController extends Controller {
     @Route("/")
     @Guards([ModelUserGuard])
     @Response(HTTP_STATUS_CODE.Created, User)
+    @Body(User, "User model")
     async addUser() {
         const user = this.data.user;
         const service = new UserService();
