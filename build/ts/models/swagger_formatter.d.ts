@@ -10,9 +10,11 @@ export declare type SwaggerOutputPath = {
     operationId: string;
     tags: string[];
     parameters: SwaggerOutputParamInfo[];
-    responses: SwaggerOutputResponse;
+    responses: {
+        [statusCode: string]: SwaggerOutputResponseContent;
+    };
 };
-export declare type SwaggerOutputResponse = {
+export declare type SwaggerOutputResponseContent = {
     description?: string;
     content: {
         [mimeType: string]: SwaggerParamSchema;

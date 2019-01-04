@@ -9,7 +9,7 @@ export const Response = (statusCode: HTTP_STATUS_CODE, value: any, contentType?:
     return (target: any, methodName: string, descriptor: PropertyDescriptor) => {
         const className = (target.constructor.name as string);
         const modelName = extractAndSaveModel(value);
-        const saveResponse = (mimeType) => {
+        const saveResponse = (mimeType: MIME_TYPE[]) => {
             SwaggerHandler.saveResponse(className, methodName, {
                 contentType: mimeType,
                 statusCode: statusCode,
@@ -17,36 +17,15 @@ export const Response = (statusCode: HTTP_STATUS_CODE, value: any, contentType?:
             })
         };
         if (modelName.length > 0) {
-            [MIME_TYPE.Json, MIME_TYPE.Xml].forEach(type => {
-                saveResponse(type);
-            });
+            saveResponse([MIME_TYPE.Json, MIME_TYPE.Xml]);
         }
         else {
             if (contentType == null) {
                 contentType = MIME_TYPE.Text;
             }
-            saveResponse(contentType);
+            saveResponse([contentType]);
         }
-        // const modelName = extractAndSaveModel(value);
-        // const responseValue = getResponseValue(value);
-        // const saveResponse = (mimeType) => {
-        //     SwaggerHandler.saveResponse(className, methodName, mimeType, {
-        //         statusCode: statusCode,
-        //         value: responseValue
-        //     })
-        // };
-        // //responseValue.description = contentType;
-        // if (modelName.length > 0) {
-        //     [MIME_TYPE.Json, MIME_TYPE.Xml].forEach(type => {
-        //         saveResponse(type);
-        //     });
-        // }
-        // else {
-        //     if (contentType == null) {
-        //         contentType = MIME_TYPE.Text;
-        //     }
-        //     saveResponse(contentType);
-        // }
+
     };
 }
 

@@ -24,7 +24,7 @@
   "dependencies": {
     "class-validator": "^0.9.1",
     "eshtml": "^0.2.2",
-    "fortjs": "file:../../fortjs/fortjs-1.4.4.tgz",
+    "fortjs": "^1.5.0",
     "jsdoc": "^3.5.5",
     "jsdoc3-parser": "^2.0.0"
   },

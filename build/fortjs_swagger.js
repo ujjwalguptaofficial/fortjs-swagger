@@ -221,36 +221,14 @@ var Response = function (statusCode, value, contentType) {
             });
         };
         if (modelName.length > 0) {
-            [fortjs__WEBPACK_IMPORTED_MODULE_0__["MIME_TYPE"].Json, fortjs__WEBPACK_IMPORTED_MODULE_0__["MIME_TYPE"].Xml].forEach(function (type) {
-                saveResponse(type);
-            });
+            saveResponse([fortjs__WEBPACK_IMPORTED_MODULE_0__["MIME_TYPE"].Json, fortjs__WEBPACK_IMPORTED_MODULE_0__["MIME_TYPE"].Xml]);
         }
         else {
             if (contentType == null) {
                 contentType = fortjs__WEBPACK_IMPORTED_MODULE_0__["MIME_TYPE"].Text;
             }
-            saveResponse(contentType);
+            saveResponse([contentType]);
         }
-        // const modelName = extractAndSaveModel(value);
-        // const responseValue = getResponseValue(value);
-        // const saveResponse = (mimeType) => {
-        //     SwaggerHandler.saveResponse(className, methodName, mimeType, {
-        //         statusCode: statusCode,
-        //         value: responseValue
-        //     })
-        // };
-        // //responseValue.description = contentType;
-        // if (modelName.length > 0) {
-        //     [MIME_TYPE.Json, MIME_TYPE.Xml].forEach(type => {
-        //         saveResponse(type);
-        //     });
-        // }
-        // else {
-        //     if (contentType == null) {
-        //         contentType = MIME_TYPE.Text;
-        //     }
-        //     saveResponse(contentType);
-        // }
     };
 };
 // const getResponseValue = (value) => {
@@ -386,31 +364,6 @@ var getNewWorker = function (methodName) {
 var SwaggerHandler = /** @class */ (function () {
     function SwaggerHandler() {
     }
-    // static saveResponse(className: string, methodName: string, contentType: MIME_TYPE, response: ResponseInfo) {
-    //     const value = swaggerRoutes.find(qry => qry.className === className);
-    //     const worker = getNewWorker(methodName);
-    //     worker.response[response.statusCode] = {
-    //         [contentType]: response.value
-    //     }
-    //     if (value == null) {
-    //         swaggerRoutes.push({
-    //             className: className,
-    //             workers: [worker]
-    //         })
-    //     }
-    //     else {
-    //         const savedWorker = value.workers.find(qry => qry.methodName === methodName);
-    //         if (savedWorker != null) { // add another response for that worker
-    //             if (savedWorker.response[response.statusCode] == null) {
-    //                 savedWorker.response[response.statusCode] = {};
-    //             }
-    //             savedWorker.response[response.statusCode][contentType] = response.value;
-    //         }
-    //         else { //add the worker
-    //             value.workers.push(worker);
-    //         }
-    //     }
-    // }
     SwaggerHandler.saveResponse = function (className, methodName, response) {
         var value = swaggerRoutes.find(function (qry) { return qry.className === className; });
         var worker = getNewWorker(methodName);
@@ -786,11 +739,11 @@ var Swagger = /** @class */ (function (_super) {
     }
     Swagger.prototype.create = function (option) {
         return __awaiter(this, void 0, void 0, function () {
-            var formmatedData, isPathExist, swaggerConfigPath;
+            var formatedData, isPathExist, swaggerConfigPath;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        formmatedData = new _swagger_formatter__WEBPACK_IMPORTED_MODULE_1__["SwaggerFormatter"]().format(option, this.routes);
+                        formatedData = new _swagger_formatter__WEBPACK_IMPORTED_MODULE_1__["SwaggerFormatter"]().format(option, this.routes);
                         return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].isPathExist(option.contentsPath)];
                     case 1:
                         isPathExist = _a.sent();
@@ -802,7 +755,7 @@ var Swagger = /** @class */ (function (_super) {
                     case 3:
                         swaggerConfigPath = option.contentsPath + "/swagger.json";
                         //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
-                        return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].writeFile(swaggerConfigPath, JSON.stringify(formmatedData))];
+                        return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].writeFile(swaggerConfigPath, JSON.stringify(formatedData))];
                     case 4:
                         //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
                         _a.sent();
@@ -942,13 +895,16 @@ var SwaggerFormatter = /** @class */ (function () {
         return models;
     };
     SwaggerFormatter.prototype.getResponses_ = function (className, methodName) {
-        var result = { content: {} };
+        var result = {};
         var workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].routes.find(function (qry) { return qry.className === className; }).
             workers.find(function (qry) { return qry.methodName === methodName; });
         workerInfo.responses.forEach(function (response) {
-            result.content[response.contentType] = {
-                schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(response.value)
-            };
+            result[response.statusCode] = { content: {} };
+            response.contentType.forEach(function (contentType) {
+                result[response.statusCode].content[contentType] = {
+                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(response.value)
+                };
+            });
         });
         return result;
     };

@@ -20,32 +20,6 @@ const getNewWorker = (methodName: string) => {
     } as WorkerInfo
 }
 export class SwaggerHandler {
-    // static saveResponse(className: string, methodName: string, contentType: MIME_TYPE, response: ResponseInfo) {
-    //     const value = swaggerRoutes.find(qry => qry.className === className);
-    //     const worker = getNewWorker(methodName);
-    //     worker.response[response.statusCode] = {
-    //         [contentType]: response.value
-    //     }
-    //     if (value == null) {
-    //         swaggerRoutes.push({
-    //             className: className,
-    //             workers: [worker]
-    //         })
-    //     }
-    //     else {
-    //         const savedWorker = value.workers.find(qry => qry.methodName === methodName);
-    //         if (savedWorker != null) { // add another response for that worker
-    //             if (savedWorker.response[response.statusCode] == null) {
-    //                 savedWorker.response[response.statusCode] = {};
-    //             }
-    //             savedWorker.response[response.statusCode][contentType] = response.value;
-    //         }
-    //         else { //add the worker
-    //             value.workers.push(worker);
-    //         }
-    //     }
-    // }
-
     static saveResponse(className: string, methodName: string, response: ResponseInfo) {
         const value = swaggerRoutes.find(qry => qry.className === className);
         const worker = getNewWorker(methodName);

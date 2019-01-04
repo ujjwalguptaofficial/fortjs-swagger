@@ -38,7 +38,7 @@ new App().create({
         },
         servers: [{
             description: "local",
-            url: "localhost:4000"
+            url: "http://localhost:4000"
         }],
         extension: "",
         srcFolder: "",

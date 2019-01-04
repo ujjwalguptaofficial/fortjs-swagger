@@ -25,7 +25,7 @@ export class Swagger extends Router {
     }
     async create(option?: SwaggerOption) {
 
-        const formmatedData = new SwaggerFormatter().format(option, this.routes);
+        const formatedData = new SwaggerFormatter().format(option, this.routes);
         //console.log("formmated data", JSON.stringify(formmatedData));
         const isPathExist = await FileHelper.isPathExist(option.contentsPath);
         if (isPathExist === false) {
@@ -33,7 +33,7 @@ export class Swagger extends Router {
         }
         const swaggerConfigPath = `${option.contentsPath}/swagger.json`;
         //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
-        await FileHelper.writeFile(swaggerConfigPath, JSON.stringify(formmatedData));
+        await FileHelper.writeFile(swaggerConfigPath, JSON.stringify(formatedData));
 
         //copy swagger files
         await this.copySwaggerAssets_(option.contentsPath);

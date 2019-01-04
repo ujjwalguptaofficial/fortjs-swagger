@@ -1,5 +1,5 @@
 import { SwaggerHandler } from "../handlers/swagger_handler";
-import { RouteInfo } from "fortjs";
+import { RouteInfo, HTTP_STATUS_CODE } from "fortjs";
 import { DATA_TYPE } from "../enums";
 import { extractAndSaveModel } from "../helpers/extract_model";
 import { SwaggerParamSchema } from "../types/swagger_param_schema";
@@ -17,10 +17,10 @@ export type SwaggerOutputPath = {
     operationId: string;
     tags: string[];
     parameters: SwaggerOutputParamInfo[],
-    responses: SwaggerOutputResponse
+    responses: { [statusCode: string]: SwaggerOutputResponseContent }
 }
 
-export type SwaggerOutputResponse = {
+export type SwaggerOutputResponseContent = {
     description?: string;
     content: { [mimeType: string]: SwaggerParamSchema }
 }
@@ -146,14 +146,17 @@ export class SwaggerFormatter {
     }
 
     private getResponses_(className: string, methodName: string) {
-        const result: SwaggerOutputResponse = { content: {} };
+        const result = {};
         const workerInfo = SwaggerHandler.routes.find(qry => qry.className === className).
             workers.find(qry => qry.methodName === methodName);
 
         workerInfo.responses.forEach(response => {
-            result.content[response.contentType] = {
-                schema: getParamSchema(response.value)
-            } as SwaggerParamSchema;
+            result[response.statusCode] = { content: {} } as SwaggerOutputResponseContent;
+            response.contentType.forEach(contentType => {
+                result[response.statusCode].content[contentType] = {
+                    schema: getParamSchema(response.value)
+                } as SwaggerParamSchema;
+            });
         })
         return result;
     }
