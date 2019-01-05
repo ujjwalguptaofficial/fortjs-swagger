@@ -28,35 +28,3 @@ export const Response = (statusCode: HTTP_STATUS_CODE, value: any, contentType?:
 
     };
 }
-
-// const getResponseValue = (value) => {
-//     const modelName = extractAndSaveModel(value);
-//     const dataType = getDataType(value);
-//     if (modelName.length > 0) { // value is model
-//         const modelRefString = `#/models/${modelName}`;
-//         const swaggerModelSchema: SwaggerModelResponse = {
-//             $ref: modelRefString
-//         };
-//         if (dataType === DATA_TYPE.Function) {
-//             return {
-//                 schema: swaggerModelSchema
-//             } as SwaggerResponse;
-//         }
-//         else {
-//             return {
-//                 schema: {
-//                     type: DATA_TYPE.Array,
-//                     items: swaggerModelSchema
-//                 } as SwaggerCustomTypeResponse
-//             } as SwaggerResponse;
-//         }
-//     }
-//     else {
-//         return {
-//             schema: {
-//                 type: dataType,
-//                 example: value
-//             } as SwaggerCustomTypeResponse
-//         } as SwaggerResponse;
-//     }
-// }

@@ -1,7 +1,7 @@
 import { Length, Contains, IsIn, IsEmail } from "class-validator";
 import { IgnoreProperty } from "@fortjs/swagger";
 
-// @SwaggerModel
+
 export class User {
     id?: number = 0;
 

@@ -137,7 +137,7 @@ var IgnoreProperty = function (target, propertyName, descriptor) {
 /*!*********************************!*\
   !*** ./src/decorators/index.ts ***!
   \*********************************/
-/*! exports provided: Body, IgnoreProperty, Query, Response, SwaggerModel */
+/*! exports provided: Body, IgnoreProperty, Query, Response, Param */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -154,14 +154,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _response__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./response */ "./src/decorators/response.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Response", function() { return _response__WEBPACK_IMPORTED_MODULE_3__["Response"]; });
 
-/* harmony import */ var _swagger_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./swagger_model */ "./src/decorators/swagger_model.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SwaggerModel", function() { return _swagger_model__WEBPACK_IMPORTED_MODULE_4__["SwaggerModel"]; });
+/* harmony import */ var _param__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./param */ "./src/decorators/param.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Param", function() { return _param__WEBPACK_IMPORTED_MODULE_4__["Param"]; });
 
 
 
 
 
 
+
+
+/***/ }),
+
+/***/ "./src/decorators/param.ts":
+/*!*********************************!*\
+  !*** ./src/decorators/param.ts ***!
+  \*********************************/
+/*! exports provided: Param */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Param", function() { return Param; });
+/* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
+
+var Param = function (variableName, value, description) {
+    return function (target, methodName, descriptor) {
+        var className = target.constructor.name;
+        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveParam(className, methodName, {
+            value: value,
+            variableName: variableName,
+            description: description
+        });
+    };
+};
 
 
 /***/ }),
@@ -230,71 +256,6 @@ var Response = function (statusCode, value, contentType) {
             saveResponse([contentType]);
         }
     };
-};
-// const getResponseValue = (value) => {
-//     const modelName = extractAndSaveModel(value);
-//     const dataType = getDataType(value);
-//     if (modelName.length > 0) { // value is model
-//         const modelRefString = `#/models/${modelName}`;
-//         const swaggerModelSchema: SwaggerModelResponse = {
-//             $ref: modelRefString
-//         };
-//         if (dataType === DATA_TYPE.Function) {
-//             return {
-//                 schema: swaggerModelSchema
-//             } as SwaggerResponse;
-//         }
-//         else {
-//             return {
-//                 schema: {
-//                     type: DATA_TYPE.Array,
-//                     items: swaggerModelSchema
-//                 } as SwaggerCustomTypeResponse
-//             } as SwaggerResponse;
-//         }
-//     }
-//     else {
-//         return {
-//             schema: {
-//                 type: dataType,
-//                 example: value
-//             } as SwaggerCustomTypeResponse
-//         } as SwaggerResponse;
-//     }
-// }
-
-
-/***/ }),
-
-/***/ "./src/decorators/swagger_model.ts":
-/*!*****************************************!*\
-  !*** ./src/decorators/swagger_model.ts ***!
-  \*****************************************/
-/*! exports provided: SwaggerModel */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerModel", function() { return SwaggerModel; });
-/* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
-
-// export const responseModel = (): ClassDecorator => {
-//     return (target: any) => {
-//         const className = target.name;
-//         SwaggerHandler.saveModel({
-//             classInstance: new target(),
-//             className: className,
-//             ignoredProperty: []
-//         })
-//     }
-// }
-var SwaggerModel = function (target) {
-    var className = target.name;
-    _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveModel({
-        classInstance: new target(),
-        className: className,
-        ignoredProperty: []
-    });
 };
 
 
@@ -618,7 +579,7 @@ var getParamSchema = function (value) {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: Swagger, Body, IgnoreProperty, Query, Response, SwaggerModel, DATA_TYPE */
+/*! exports provided: Swagger, Body, IgnoreProperty, Query, Response, Param, DATA_TYPE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -635,7 +596,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Response", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["Response"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SwaggerModel", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["SwaggerModel"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Param", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["Param"]; });
 
 /* harmony import */ var _enums_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./enums/index */ "./src/enums/index.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DATA_TYPE", function() { return _enums_index__WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"]; });
@@ -805,15 +766,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SWAGGER_OUTPUT_PARAM", function() { return SWAGGER_OUTPUT_PARAM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerFormatter", function() { return SwaggerFormatter; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
-/* harmony import */ var _helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/get_param_schema */ "./src/helpers/get_param_schema.ts");
-/* harmony import */ var _helpers_get_data_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/get_data_type */ "./src/helpers/get_data_type.ts");
+/* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fortjs */ "fortjs");
+/* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fortjs__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/get_param_schema */ "./src/helpers/get_param_schema.ts");
+/* harmony import */ var _helpers_get_data_type__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/get_data_type */ "./src/helpers/get_data_type.ts");
 
 
 
-// export type SwaggerParamSchemaType = {
-//     type: DATA_TYPE;
-//     format: string;
-// }
+
 var SWAGGER_OUTPUT_PARAM;
 (function (SWAGGER_OUTPUT_PARAM) {
     SWAGGER_OUTPUT_PARAM["Query"] = "query";
@@ -857,6 +817,7 @@ var SwaggerFormatter = /** @class */ (function () {
                     worker.methodsAllowed.forEach(function (httpMethod) {
                         swaggerPaths[pattern][httpMethod.toLowerCase()] = {
                             operationId: worker.workerName,
+                            consumes: [fortjs__WEBPACK_IMPORTED_MODULE_1__["MIME_TYPE"].Json, fortjs__WEBPACK_IMPORTED_MODULE_1__["MIME_TYPE"].Xml, fortjs__WEBPACK_IMPORTED_MODULE_1__["MIME_TYPE"].Html, fortjs__WEBPACK_IMPORTED_MODULE_1__["MIME_TYPE"].Text, "*/*"],
                             parameters: _this.getParams_(route.controllerName, worker.workerName),
                             tags: [pathName_1],
                             responses: _this.getResponses_(route.controllerName, worker.workerName)
@@ -882,7 +843,7 @@ var SwaggerFormatter = /** @class */ (function () {
             var properties = {};
             keys.forEach(function (key) {
                 var propValue = obj[key];
-                var dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_2__["getDataType"])(propValue);
+                var dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_3__["getDataType"])(propValue);
                 properties[key] = {
                     type: dataType
                 };
@@ -902,7 +863,7 @@ var SwaggerFormatter = /** @class */ (function () {
             result[response.statusCode] = { content: {} };
             response.contentType.forEach(function (contentType) {
                 result[response.statusCode].content[contentType] = {
-                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(response.value)
+                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(response.value)
                 };
             });
         });
@@ -921,7 +882,7 @@ var SwaggerFormatter = /** @class */ (function () {
                     in: SWAGGER_OUTPUT_PARAM.Path,
                     name: param.variableName,
                     required: true,
-                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(param.value),
+                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(param.value),
                     description: param.description
                 });
             });
@@ -931,7 +892,7 @@ var SwaggerFormatter = /** @class */ (function () {
                     in: SWAGGER_OUTPUT_PARAM.Query,
                     name: query.variableName,
                     required: true,
-                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(query.value),
+                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(query.value),
                     description: query.description
                 });
             });
@@ -942,7 +903,7 @@ var SwaggerFormatter = /** @class */ (function () {
                     in: SWAGGER_OUTPUT_PARAM.Body,
                     name: body.variableName,
                     required: true,
-                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_1__["getParamSchema"])(body.value),
+                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(body.value),
                     description: body.description
                 });
             }

@@ -2,7 +2,7 @@ import { Controller, textResult, DefaultWorker, jsonResult, Worker, Route, HTTP_
 import { UserService } from '../services/user_service';
 import { ModelUserGuard } from '../Guards/model_user_guard';
 import { User } from '../models/user';
-import { Response, Body } from '@fortjs/swagger';
+import { Response, Body, Param } from '@fortjs/swagger';
 
 
 export class UserController extends Controller {
@@ -53,6 +53,7 @@ export class UserController extends Controller {
 
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
+    @Param('id', 1, 'user id')
     @Worker([HTTP_METHOD.Get])
     @Route("/{id}")
     async getUser() {

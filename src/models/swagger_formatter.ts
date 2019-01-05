@@ -1,5 +1,5 @@
 import { SwaggerHandler } from "../handlers/swagger_handler";
-import { RouteInfo, HTTP_STATUS_CODE } from "fortjs";
+import { RouteInfo, HTTP_STATUS_CODE, MIME_TYPE } from "fortjs";
 import { DATA_TYPE } from "../enums";
 import { extractAndSaveModel } from "../helpers/extract_model";
 import { SwaggerParamSchema } from "../types/swagger_param_schema";
@@ -15,6 +15,7 @@ import { getDataType } from "../helpers/get_data_type";
 export type SwaggerOutputPath = {
     summary?: string;
     operationId: string;
+    consumes: MIME_TYPE[];
     tags: string[];
     parameters: SwaggerOutputParamInfo[],
     responses: { [statusCode: string]: SwaggerOutputResponseContent }
@@ -33,11 +34,6 @@ export type SwaggerOutputParamInfo = {
     required: boolean;
     schema: SwaggerRef | SwaggerCustomParam
 }
-
-// export type SwaggerParamSchemaType = {
-//     type: DATA_TYPE;
-//     format: string;
-// }
 
 export enum SWAGGER_OUTPUT_PARAM {
     Query = "query",
@@ -103,6 +99,7 @@ export class SwaggerFormatter {
                     worker.methodsAllowed.forEach(httpMethod => {
                         swaggerPaths[pattern][httpMethod.toLowerCase()] = {
                             operationId: worker.workerName,
+                            consumes: [MIME_TYPE.Json, MIME_TYPE.Xml, MIME_TYPE.Html, MIME_TYPE.Text, "*/*"],
                             parameters: this.getParams_(route.controllerName, worker.workerName),
                             tags: [pathName],
                             responses: this.getResponses_(route.controllerName, worker.workerName)

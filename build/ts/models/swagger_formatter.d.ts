@@ -1,4 +1,4 @@
-import { RouteInfo } from "fortjs";
+import { RouteInfo, MIME_TYPE } from "fortjs";
 import { SwaggerParamSchema } from "../types/swagger_param_schema";
 import { SwaggerRef } from "../types/swagger_ref";
 import { SwaggerCustomParam } from "../types/swagger_custom_param";
@@ -8,6 +8,7 @@ import { ServerInfo } from "../types/server_info";
 export declare type SwaggerOutputPath = {
     summary?: string;
     operationId: string;
+    consumes: MIME_TYPE[];
     tags: string[];
     parameters: SwaggerOutputParamInfo[];
     responses: {
