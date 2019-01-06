@@ -47,7 +47,6 @@ export type SwaggerStructure = {
     servers: ServerInfo[];
     paths: any;
     components: SwaggerComponent;
-    //models: { [modelName: string]: SwaggerModelInfo }
 }
 
 export type SwaggerComponent = {
