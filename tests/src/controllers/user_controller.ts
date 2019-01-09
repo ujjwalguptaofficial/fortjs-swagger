@@ -4,13 +4,7 @@ import { ModelUserGuard } from '../Guards/model_user_guard';
 import { User } from '../models/user';
 import { Response, Body, Param } from '@fortjs/swagger';
 
-/**
- * 
- *
- * @export
- * @class UserController
- * @extends {Controller}
- */
+
 export class UserController extends Controller {
 
     /**
@@ -26,7 +20,7 @@ export class UserController extends Controller {
         const service = new UserService();
         return jsonResult(service.getUsers());
     }
-    
+
 
     @Worker([HTTP_METHOD.Post])
     @Route("/")

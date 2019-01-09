@@ -2,6 +2,7 @@ import { getDataType } from "./get_data_type";
 import { DATA_TYPE } from "../enums";
 import { SwaggerHandler } from "../handlers/swagger_handler";
 import { SwaggerModelInfo } from "../types/swagger_model_info";
+import { SwaggerModel } from "../abstracts/swagger_model";
 
 export const extractAndSaveModel = (value) => {
     let className = "";
@@ -28,9 +29,13 @@ export const extractAndSaveModel = (value) => {
 
 const getModelinfo = (value) => {
     try {
-        const model = new value();
+        let model: SwaggerModel = new value();
+        let example;
+        if (model.getExample) {
+            example = model.getExample();
+        }
         return {
-            classInstance: model,
+            classInstance: example == null ? model : example,
             className: model.constructor.name,
             ignoredProperty: []
         } as SwaggerModelInfo;

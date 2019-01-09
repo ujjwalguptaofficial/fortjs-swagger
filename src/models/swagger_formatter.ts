@@ -7,10 +7,11 @@ import { SwaggerRef } from "../types/swagger_ref";
 import { SwaggerCustomParam } from "../types/swagger_custom_param";
 import { getParamSchema } from "../helpers/get_param_schema";
 import { BodyInfo } from "../types/body_info";
-import { SwaggerOption } from "./swagger";
 import { ApplicationInfo } from "../types/application_info";
 import { ServerInfo } from "../types/server_info";
 import { getDataType } from "../helpers/get_data_type";
+import { SwaggerOption } from "../types/swagger_option";
+import { CodeReader } from "../helpers/code_reader";
 
 export type SwaggerOutputPath = {
     summary?: string;
@@ -60,6 +61,7 @@ export type SwaggerModelInfo = {
 
 export class SwaggerFormatter {
     format(option: SwaggerOption, routes: RouteInfo[]) {
+        const codeInfos = new CodeReader(option.srcPath).read();
         const swaggerJson: SwaggerStructure = {
             openapi: "3.0.0",
             info: option.appInfo,
@@ -82,18 +84,12 @@ export class SwaggerFormatter {
                     if (pattern[0] !== "/") {
                         pattern = `/${pattern}`;
                     }
-                    // const swaggerPath = {
-                    //     [pattern]: {
 
-                    //     }
-                    // }
                     if (swaggerPaths[pattern] == null) {
                         swaggerPaths[pattern] = {
 
                         }
                     }
-
-
                     // add multiple route for all http method allowed for a single path 
                     worker.methodsAllowed.forEach(httpMethod => {
                         swaggerPaths[pattern][httpMethod.toLowerCase()] = {
@@ -106,7 +102,7 @@ export class SwaggerFormatter {
                     })
 
                 });
-                // swaggerPaths[`/${pathName}`] = swaggerPath;
+
             }
         });
         swaggerJson.paths = swaggerPaths;
@@ -159,13 +155,10 @@ export class SwaggerFormatter {
 
     private getParams_(className: string, methodName: string) {
         const params: SwaggerOutputParamInfo[] = [];
-        // const swaggerRouteInfo = 
-        // if (swaggerRouteInfo != null) {
+
         const workerInfo = SwaggerHandler.routes.find(qry => qry.className === className)
             .workers.find(qry => qry.methodName === methodName);
         if (workerInfo != null) {
-
-
             // from route params
             workerInfo.params.forEach(param => {
                 params.push({
@@ -200,8 +193,7 @@ export class SwaggerFormatter {
                 })
             }
         }
-        // }
-        console.log("params", params);
+
         return params;
     }
 

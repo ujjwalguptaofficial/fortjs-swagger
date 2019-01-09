@@ -1,7 +1,8 @@
 import { User } from "../models/user";
+import { IUser } from "../interfaces/user";
 
 interface IStore {
-  users: User[];
+  users: IUser[];
 }
 
 const store: IStore = {

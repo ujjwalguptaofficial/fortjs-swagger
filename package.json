@@ -4,7 +4,13 @@
   "description": "Starter project for fortjs using typescript",
   "main": "build/fortjs_swagger.js",
   "types": "build/ts/index.d.ts",
-  "keywords": ["fort","swagger","node","automatic-integration","openapi"],
+  "keywords": [
+    "fort",
+    "swagger",
+    "node",
+    "automatic-integration",
+    "openapi"
+  ],
   "scripts": {
     "webpack": "webpack --config webpack.config.js",
     "webpack:watch": "webpack --config webpack.config.js --watch",
@@ -26,9 +32,11 @@
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-typescript-starter#readme",
   "dependencies": {
+    "fs-extra": "^7.0.1",
     "js-comments": "^0.5.4"
   },
   "devDependencies": {
+    "@types/fs-extra": "^5.0.4",
     "@types/node": "^10.12.15",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.0",

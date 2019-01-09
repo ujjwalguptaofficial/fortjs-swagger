@@ -30,6 +30,8 @@ new App().create({
     //     console.log("err", err);
     //     console.log("ast", ast);
     // })
+    const srcFolder = Path.join(__dirname, "../src/");
+    console.log("src", srcFolder);
     new Swagger().create({
         appInfo: {
             title: "Swagger Test",
@@ -40,9 +42,9 @@ new App().create({
             description: "local",
             url: "http://localhost:4000"
         }],
-        extension: "",
-        srcFolder: "",
-        contentsPath: Path.join(__dirname, "../swagger/")
+        // extension: "",
+        srcPath: srcFolder,
+        outputPath: Path.join(__dirname, "../swagger/")
     });
 })
 

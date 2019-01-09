@@ -6,17 +6,7 @@ import { ApplicationInfo } from "../types/application_info";
 import { ServerInfo } from "../types/server_info";
 import { SwaggerFormatter } from "./swagger_formatter";
 import * as Path from "path";
-// import { getAbsoluteFSPath } from "swagger-ui-dist";
-// import { copy, writeFile } from "fs-extra";
-
-
-export type SwaggerOption = {
-    extension: string;
-    srcFolder: string;
-    appInfo: ApplicationInfo;
-    servers: ServerInfo[];
-    contentsPath: string;
-}
+import { SwaggerOption } from "../types/swagger_option";
 
 export class Swagger extends Router {
     constructor() {
@@ -27,16 +17,16 @@ export class Swagger extends Router {
 
         const formatedData = new SwaggerFormatter().format(option, this.routes);
         //console.log("formmated data", JSON.stringify(formmatedData));
-        const isPathExist = await FileHelper.isPathExist(option.contentsPath);
+        const isPathExist = await FileHelper.isPathExist(option.outputPath);
         if (isPathExist === false) {
-            await FileHelper.createDir(option.contentsPath);
+            await FileHelper.createDir(option.outputPath);
         }
-        const swaggerConfigPath = `${option.contentsPath}/swagger.json`;
+        const swaggerConfigPath = `${option.outputPath}/swagger.json`;
         //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
         await FileHelper.writeFile(swaggerConfigPath, JSON.stringify(formatedData));
 
         //copy swagger files
-        await this.copySwaggerAssets_(option.contentsPath);
+        await this.copySwaggerAssets_(option.outputPath);
         // await FileHelper.copyFile(Path.join(__dirname, 'swagger_ui/index.html'), option.contentsPath);
         // await FileHelper.copyFile(Path.join(__dirname, 'swagger_ui/swagger.js'), option.contentsPath);
 

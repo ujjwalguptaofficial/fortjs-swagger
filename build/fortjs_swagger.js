@@ -87,6 +87,43 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/abstracts/index.ts":
+/*!********************************!*\
+  !*** ./src/abstracts/index.ts ***!
+  \********************************/
+/*! exports provided: SwaggerModel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _swagger_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./swagger_model */ "./src/abstracts/swagger_model.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SwaggerModel", function() { return _swagger_model__WEBPACK_IMPORTED_MODULE_0__["SwaggerModel"]; });
+
+
+
+
+/***/ }),
+
+/***/ "./src/abstracts/swagger_model.ts":
+/*!****************************************!*\
+  !*** ./src/abstracts/swagger_model.ts ***!
+  \****************************************/
+/*! exports provided: SwaggerModel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerModel", function() { return SwaggerModel; });
+var SwaggerModel = /** @class */ (function () {
+    function SwaggerModel() {
+    }
+    return SwaggerModel;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/decorators/body.ts":
 /*!********************************!*\
   !*** ./src/decorators/body.ts ***!
@@ -448,6 +485,293 @@ var SwaggerHandler = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/helpers/code_reader.ts":
+/*!************************************!*\
+  !*** ./src/helpers/code_reader.ts ***!
+  \************************************/
+/*! exports provided: FORT_FILE_TYPE, CodeReader */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FORT_FILE_TYPE", function() { return FORT_FILE_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CodeReader", function() { return CodeReader; });
+/* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fortjs */ "fortjs");
+/* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fortjs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util */ "./src/util.ts");
+/* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! path */ "path");
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var fs_extra__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! fs-extra */ "fs-extra");
+/* harmony import */ var fs_extra__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(fs_extra__WEBPACK_IMPORTED_MODULE_4__);
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+var FORT_FILE_TYPE;
+(function (FORT_FILE_TYPE) {
+    FORT_FILE_TYPE["Controller"] = "controller";
+    FORT_FILE_TYPE["Model"] = "model";
+})(FORT_FILE_TYPE || (FORT_FILE_TYPE = {}));
+var CodeReader = /** @class */ (function () {
+    function CodeReader(contentPath) {
+        this.srcFolder = contentPath;
+        this.setClasses_();
+    }
+    CodeReader.prototype.setClasses_ = function () {
+        // from routes
+        var routeClasses = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].routes.map(function (val) {
+            return val.className;
+        });
+        // from models
+        var modelClasses = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].models.map(function (val) {
+            return val.className;
+        });
+        this.classNames = routeClasses.concat(modelClasses);
+    };
+    CodeReader.prototype.read = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var files;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].getAllFilesFrom(this.srcFolder)];
+                    case 1:
+                        files = _a.sent();
+                        console.log("list of files", files);
+                        if (!(files.length > 0)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.getAllFilesFromFolder(files)];
+                    case 2:
+                        files = _a.sent();
+                        return [2 /*return*/, Promise.all(files.map(function (filePath) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    return [2 /*return*/, this.readFile(filePath)];
+                                });
+                            }); }))];
+                    case 3: throw "No files found in directory - " + this.srcFolder;
+                }
+            });
+        });
+    };
+    CodeReader.prototype.getAllFilesFromFolder = function (files) {
+        return __awaiter(this, void 0, void 0, function () {
+            var isFolderFound, newFiles;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        newFiles = [];
+                        return [4 /*yield*/, Promise.all(files.map(function (filePath, index) { return __awaiter(_this, void 0, void 0, function () {
+                                var isFolder, filesFromSubDirectory;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            filePath = path__WEBPACK_IMPORTED_MODULE_3__["join"](this.srcFolder, filePath);
+                                            return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].isDirectory(filePath)];
+                                        case 1:
+                                            isFolder = _a.sent();
+                                            if (!(isFolder === true)) return [3 /*break*/, 3];
+                                            isFolderFound = true;
+                                            return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].getAllFilesFrom(filePath)];
+                                        case 2:
+                                            filesFromSubDirectory = _a.sent();
+                                            newFiles.push.apply(newFiles, filesFromSubDirectory.map(function (val) {
+                                                return path__WEBPACK_IMPORTED_MODULE_3__["join"](filePath, val);
+                                            }));
+                                            return [3 /*break*/, 4];
+                                        case 3:
+                                            newFiles.push(filePath);
+                                            _a.label = 4;
+                                        case 4: return [2 /*return*/];
+                                    }
+                                });
+                            }); }))];
+                    case 1:
+                        _a.sent();
+                        // console.log("files after getting from folders", newFiles);
+                        if (isFolderFound === true) {
+                            return [2 /*return*/, newFiles];
+                        }
+                        else {
+                            return [2 /*return*/, []];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CodeReader.prototype.isNullOrEmpty_ = function (value) {
+        return _util__WEBPACK_IMPORTED_MODULE_1__["Util"].isNullOrEmpty(value);
+    };
+    CodeReader.prototype.reverse_ = function (value) {
+        return _util__WEBPACK_IMPORTED_MODULE_1__["Util"].reverse(value);
+    };
+    CodeReader.prototype.readFile = function (path) {
+        return __awaiter(this, void 0, void 0, function () {
+            var isFolder, content, info;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("processing file path: ", path);
+                        return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].isDirectory(path)];
+                    case 1:
+                        isFolder = _a.sent();
+                        if (!(isFolder === false)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, fs_extra__WEBPACK_IMPORTED_MODULE_4__["readFile"](path, {
+                                encoding: 'utf-8'
+                            })];
+                    case 2:
+                        content = _a.sent();
+                        info = this.getCodeInfo(content);
+                        console.log("info", info);
+                        return [2 /*return*/, info];
+                    case 3: return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    CodeReader.prototype.getCodeInfo = function (contents) {
+        var _this = this;
+        var classIndex = contents.lastIndexOf('class');
+        if (classIndex < 0) {
+            return null;
+        }
+        var contentLength = contents.length;
+        var getClassName = function () {
+            var className = "";
+            var isCharFound = false;
+            // get class index past the import  
+            // let importIndex = contents.lastIndexOf('import');
+            // if (importIndex > classIndex) {
+            //     classIndex = contents.indexOf('class', classIndex);;
+            //     importIndex = contents.indexOf('import', classIndex);
+            // }
+            for (var i = classIndex + 5; i < contentLength; i++) {
+                switch (contents[i]) {
+                    case " ":
+                        if (isCharFound === true) {
+                            return className;
+                        }
+                        break;
+                    case "{": return className;
+                    default:
+                        className += contents[i];
+                        isCharFound = true;
+                }
+            }
+            return className;
+        };
+        var getFnName = function (commentEndIndex) {
+            var indexOfBracket = contents.indexOf("{", commentEndIndex);
+            var indexOfParanthesis = -1;
+            for (var i = indexOfBracket; indexOfParanthesis <= -1; i--) {
+                if (contents[i] === "(") {
+                    indexOfParanthesis = i;
+                }
+            }
+            // const indexOfParanthesis = contents.indexOf("(", commentEndIndex);
+            var methodName = "";
+            var isCharFound = false;
+            for (var i = indexOfParanthesis; i > commentEndIndex; i--) {
+                switch (contents[i]) {
+                    case " ":
+                        if (isCharFound === true) {
+                            return _this.reverse_(methodName);
+                        }
+                        break;
+                    default:
+                        methodName += contents[i];
+                        isCharFound = true;
+                }
+            }
+            return _this.reverse_(methodName);
+        };
+        var className = getClassName();
+        var info = {
+            className: className,
+            workerComment: {}
+        };
+        console.log('class name', className);
+        console.log('allowed class:', this.classNames);
+        if (this.classNames.indexOf(className) >= 0) {
+            console.log('class name exist', className);
+            var maxattempts = 100;
+            if (contents.search(/@worker/i)) {
+                info.type = FORT_FILE_TYPE.Controller;
+            }
+            else {
+                info.type = FORT_FILE_TYPE.Model;
+            }
+            var index = 0;
+            console.log("info inside", info, "conetent length", contentLength);
+            do {
+                index = contents.indexOf("/**", index);
+                var commentEndIndex = contents.indexOf("*/", index);
+                if (index >= 0 && commentEndIndex > index) {
+                    var comment = contents.substring(index, commentEndIndex);
+                    if (index < classIndex) { // comment is for class
+                        info.classComment = comment;
+                    }
+                    else { // comment is for worker
+                        var methodName = getFnName(commentEndIndex);
+                        if (this.isNullOrEmpty_(methodName) === false) {
+                            info.workerComment[methodName] = comment;
+                        }
+                    }
+                }
+                --maxattempts;
+                console.log("index", index, "comment end index", commentEndIndex, "maxattempts", maxattempts);
+                if (index >= 0) {
+                    index = commentEndIndex;
+                }
+            } while (index >= 0 && index <= contentLength - 1 && maxattempts >= 0);
+            return info;
+        }
+        return null;
+    };
+    return CodeReader;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/helpers/extract_model.ts":
 /*!**************************************!*\
   !*** ./src/helpers/extract_model.ts ***!
@@ -488,8 +812,12 @@ var extractAndSaveModel = function (value) {
 var getModelinfo = function (value) {
     try {
         var model = new value();
+        var example = void 0;
+        if (model.getExample) {
+            example = model.getExample();
+        }
         return {
-            classInstance: model,
+            classInstance: example == null ? model : example,
             className: model.constructor.name,
             ignoredProperty: []
         };
@@ -579,7 +907,7 @@ var getParamSchema = function (value) {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: Swagger, Body, IgnoreProperty, Query, Response, Param, DATA_TYPE */
+/*! exports provided: Swagger, Body, IgnoreProperty, Query, Response, Param, DATA_TYPE, SwaggerModel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -600,6 +928,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _enums_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./enums/index */ "./src/enums/index.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DATA_TYPE", function() { return _enums_index__WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"]; });
+
+/* harmony import */ var _abstracts_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./abstracts/index */ "./src/abstracts/index.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SwaggerModel", function() { return _abstracts_index__WEBPACK_IMPORTED_MODULE_3__["SwaggerModel"]; });
+
 
 
 
@@ -705,23 +1037,23 @@ var Swagger = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         formatedData = new _swagger_formatter__WEBPACK_IMPORTED_MODULE_1__["SwaggerFormatter"]().format(option, this.routes);
-                        return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].isPathExist(option.contentsPath)];
+                        return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].isPathExist(option.outputPath)];
                     case 1:
                         isPathExist = _a.sent();
                         if (!(isPathExist === false)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].createDir(option.contentsPath)];
+                        return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].createDir(option.outputPath)];
                     case 2:
                         _a.sent();
                         _a.label = 3;
                     case 3:
-                        swaggerConfigPath = option.contentsPath + "/swagger.json";
+                        swaggerConfigPath = option.outputPath + "/swagger.json";
                         //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
                         return [4 /*yield*/, fortjs__WEBPACK_IMPORTED_MODULE_0__["FileHelper"].writeFile(swaggerConfigPath, JSON.stringify(formatedData))];
                     case 4:
                         //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
                         _a.sent();
                         //copy swagger files
-                        return [4 /*yield*/, this.copySwaggerAssets_(option.contentsPath)];
+                        return [4 /*yield*/, this.copySwaggerAssets_(option.outputPath)];
                     case 5:
                         //copy swagger files
                         _a.sent();
@@ -770,6 +1102,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var fortjs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fortjs__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/get_param_schema */ "./src/helpers/get_param_schema.ts");
 /* harmony import */ var _helpers_get_data_type__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/get_data_type */ "./src/helpers/get_data_type.ts");
+/* harmony import */ var _helpers_code_reader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/code_reader */ "./src/helpers/code_reader.ts");
+
 
 
 
@@ -785,6 +1119,7 @@ var SwaggerFormatter = /** @class */ (function () {
     }
     SwaggerFormatter.prototype.format = function (option, routes) {
         var _this = this;
+        var codeInfos = new _helpers_code_reader__WEBPACK_IMPORTED_MODULE_4__["CodeReader"](option.srcPath).read();
         var swaggerJson = {
             openapi: "3.0.0",
             info: option.appInfo,
@@ -806,10 +1141,6 @@ var SwaggerFormatter = /** @class */ (function () {
                     if (pattern[0] !== "/") {
                         pattern = "/" + pattern;
                     }
-                    // const swaggerPath = {
-                    //     [pattern]: {
-                    //     }
-                    // }
                     if (swaggerPaths[pattern] == null) {
                         swaggerPaths[pattern] = {};
                     }
@@ -824,7 +1155,6 @@ var SwaggerFormatter = /** @class */ (function () {
                         };
                     });
                 });
-                // swaggerPaths[`/${pathName}`] = swaggerPath;
             }
         });
         swaggerJson.paths = swaggerPaths;
@@ -871,8 +1201,6 @@ var SwaggerFormatter = /** @class */ (function () {
     };
     SwaggerFormatter.prototype.getParams_ = function (className, methodName) {
         var params = [];
-        // const swaggerRouteInfo = 
-        // if (swaggerRouteInfo != null) {
         var workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].routes.find(function (qry) { return qry.className === className; })
             .workers.find(function (qry) { return qry.methodName === methodName; });
         if (workerInfo != null) {
@@ -908,11 +1236,35 @@ var SwaggerFormatter = /** @class */ (function () {
                 });
             }
         }
-        // }
-        console.log("params", params);
         return params;
     };
     return SwaggerFormatter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/util.ts":
+/*!*********************!*\
+  !*** ./src/util.ts ***!
+  \*********************/
+/*! exports provided: Util */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Util", function() { return Util; });
+var Util = /** @class */ (function () {
+    function Util() {
+    }
+    Util.isNullOrEmpty = function (value) {
+        return value == null || value.length === 0;
+    };
+    Util.reverse = function (value) {
+        return value.split("").reverse().join("");
+    };
+    return Util;
 }());
 
 
@@ -927,6 +1279,17 @@ var SwaggerFormatter = /** @class */ (function () {
 /***/ (function(module, exports) {
 
 module.exports = require("fortjs");
+
+/***/ }),
+
+/***/ "fs-extra":
+/*!***************************!*\
+  !*** external "fs-extra" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("fs-extra");
 
 /***/ }),
 
