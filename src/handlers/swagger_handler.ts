@@ -1,13 +1,15 @@
-import { SwaggerInfo } from "../types/swagger_route_info";
+import { SwaggerControllerInfo } from "../types/swagger_controller_info";
 import { ResponseInfo } from "../types/response_info";
 import { QueryInfo } from "../types/query_info";
 import { WorkerInfo } from "../types/worker_info";
 import { BodyInfo } from "../types/body_info";
 import { SwaggerModelInfo } from "../types/swagger_model_info";
 import { MIME_TYPE } from "fortjs";
+import { ClassInfo } from "../types/class_info";
 
-const swaggerRoutes: SwaggerInfo[] = [];
+const swaggerControllerInfos: SwaggerControllerInfo[] = [];
 const swaggerModels: SwaggerModelInfo[] = [];
+const classInfos: ClassInfo[] = [];
 
 const getNewWorker = (methodName: string) => {
     return {
@@ -21,11 +23,11 @@ const getNewWorker = (methodName: string) => {
 }
 export class SwaggerHandler {
     static saveResponse(className: string, methodName: string, response: ResponseInfo) {
-        const value = swaggerRoutes.find(qry => qry.className === className);
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
         const worker = getNewWorker(methodName);
         worker.responses.push(response);
         if (value == null) {
-            swaggerRoutes.push({
+            swaggerControllerInfos.push({
                 className: className,
                 workers: [worker]
             })
@@ -42,11 +44,11 @@ export class SwaggerHandler {
     }
 
     static saveQuery(className: string, methodName: string, query: QueryInfo) {
-        const value = swaggerRoutes.find(qry => qry.className === className);
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
         const worker = getNewWorker(methodName);
         worker.queries.push(query);
         if (value == null) {
-            swaggerRoutes.push({
+            swaggerControllerInfos.push({
                 className: className,
                 workers: [worker]
             })
@@ -63,11 +65,11 @@ export class SwaggerHandler {
     }
 
     static saveParam(className: string, methodName: string, query: QueryInfo) {
-        const value = swaggerRoutes.find(qry => qry.className === className);
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
         const worker = getNewWorker(methodName);
         worker.params.push(query);
         if (value == null) {
-            swaggerRoutes.push({
+            swaggerControllerInfos.push({
                 className: className,
                 workers: [worker]
             })
@@ -84,11 +86,11 @@ export class SwaggerHandler {
     }
 
     static saveBody(className: string, methodName: string, body: BodyInfo) {
-        const value = swaggerRoutes.find(qry => qry.className === className);
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
         const worker = getNewWorker(methodName);
         worker.body = body as any;
         if (value == null) {
-            swaggerRoutes.push({
+            swaggerControllerInfos.push({
                 className: className,
                 workers: [worker]
             })
@@ -128,11 +130,69 @@ export class SwaggerHandler {
         }
     }
 
-    static get routes() {
-        return swaggerRoutes;
+    static get controllers() {
+        return swaggerControllerInfos;
     }
 
     static get models() {
         return swaggerModels;
+    }
+
+    static saveSummary(className: string, propName: string, summary: string) {
+        const savedClass = classInfos.find(qry => qry.className === className);
+        if (savedClass == null) {
+            classInfos.push({
+                className: className,
+                props: [{
+                    description: null,
+                    propName: propName,
+                    summary: summary
+                }]
+            })
+        }
+        else {
+            const savedProp = savedClass.props.find(qry => qry.propName === propName);
+            if (savedProp == null) {
+                savedClass.props.push({
+                    description: null,
+                    propName: propName,
+                    summary: summary
+                })
+            }
+            else {
+                savedProp.summary = summary;
+            }
+        }
+    }
+
+    static saveDescription(className: string, propName: string, description: string) {
+        const savedClass = classInfos.find(qry => qry.className === className);
+        if (savedClass == null) {
+            classInfos.push({
+                className: className,
+                props: [{
+                    description: description,
+                    propName: propName,
+                    summary: null
+                }]
+            })
+        }
+        else {
+            const savedProp = savedClass.props.find(qry => qry.propName === propName);
+            if (savedProp == null) {
+                savedClass.props.push({
+                    description: description,
+                    propName: propName,
+                    summary: null
+                })
+            }
+            else {
+                savedProp.description = description;
+            }
+        }
+    }
+
+    static get classInfos() {
+        return classInfos;
     }
 }

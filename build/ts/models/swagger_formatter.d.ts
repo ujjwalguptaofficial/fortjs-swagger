@@ -7,6 +7,7 @@ import { ServerInfo } from "../types/server_info";
 import { SwaggerOption } from "../types/swagger_option";
 export declare type SwaggerOutputPath = {
     summary?: string;
+    description?: string;
     operationId: string;
     consumes: MIME_TYPE[];
     tags: string[];
@@ -53,6 +54,8 @@ export declare type SwaggerModelInfo = {
 };
 export declare class SwaggerFormatter {
     format(option: SwaggerOption, routes: RouteInfo[]): SwaggerStructure;
+    private getSummary_;
+    private getDescription_;
     private getModels_;
     private getResponses_;
     private getParams_;

@@ -1,7 +1,5 @@
 import { WorkerInfo } from "./worker_info";
-
-export type SwaggerInfo = {
+export declare type SwaggerControllerInfo = {
     className: string;
     workers: WorkerInfo[];
-    
-}
+};

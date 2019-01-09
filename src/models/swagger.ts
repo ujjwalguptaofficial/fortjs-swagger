@@ -1,7 +1,7 @@
 import { Router } from "fortjs";
 import { Global } from "../global";
 import { SwaggerHandler } from "../handlers/swagger_handler";
-import { FileHelper } from "fortjs";
+import * as Fs from "fs-extra";
 import { ApplicationInfo } from "../types/application_info";
 import { ServerInfo } from "../types/server_info";
 import { SwaggerFormatter } from "./swagger_formatter";
@@ -17,51 +17,23 @@ export class Swagger extends Router {
 
         const formatedData = new SwaggerFormatter().format(option, this.routes);
         //console.log("formmated data", JSON.stringify(formmatedData));
-        const isPathExist = await FileHelper.isPathExist(option.outputPath);
+        const isPathExist = await Fs.pathExists(option.outputPath);
         if (isPathExist === false) {
-            await FileHelper.createDir(option.outputPath);
+            await Fs.mkdir(option.outputPath);
         }
         const swaggerConfigPath = `${option.outputPath}/swagger.json`;
         //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
-        await FileHelper.writeFile(swaggerConfigPath, JSON.stringify(formatedData));
+        await Fs.writeFile(swaggerConfigPath, JSON.stringify(formatedData));
 
         //copy swagger files
         await this.copySwaggerAssets_(option.outputPath);
-        // await FileHelper.copyFile(Path.join(__dirname, 'swagger_ui/index.html'), option.contentsPath);
-        // await FileHelper.copyFile(Path.join(__dirname, 'swagger_ui/swagger.js'), option.contentsPath);
 
-        //  const swaggerUiPath = getAbsoluteFSPath();
-        //console.log(swaggerUiPath);
-        // await copy(swaggerUiPath, option.contentsPath, {
-        //     overwrite: true
-        // })
-        // const extension = this.getExtension_(option.extension);
-        // if (extension == null) {
-        //     throw "Invalid Files extension. Allowed extension are - ts, js."
-        // }
-        // const files = await FileHelper.getAllFilesFrom(option.srcFolder);
-        // if (files.length > 0) {
-        //     const filterFiles = FileHelper.filterFiles(files, option.extension);
-
-        // }
-        // else {
-        //     throw `No files found in directory - ${option.srcFolder}`;
-        // }
-        // console.log("routes", JSON.stringify(SwaggerHandler.routes));
-        // console.log("models", SwaggerHandler.models);
-        // const responses = [];
-        // SwaggerHandler.routes.forEach(value => {
-        //     value.workers.forEach(worker => {
-        //         responses.push(worker.responses);
-        //     })
-        // })
-        // console.log("responses", responses)
     }
 
     private copySwaggerAssets_(contentPath: string) {
         const assets = ['index.html', 'swagger.js'];
         return Promise.all(assets.map(asset => {
-            return FileHelper.copyFile(Path.join(__dirname, `swagger_ui/${asset}`), contentPath + asset);
+            return Fs.copy(Path.join(__dirname, `swagger_ui/${asset}`), contentPath + asset);
         }))
     }
 

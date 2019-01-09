@@ -1,7 +1,5 @@
 import { SwaggerHandler } from "../handlers/swagger_handler";
 import { RouteInfo, HTTP_STATUS_CODE, MIME_TYPE } from "fortjs";
-import { DATA_TYPE } from "../enums";
-import { extractAndSaveModel } from "../helpers/extract_model";
 import { SwaggerParamSchema } from "../types/swagger_param_schema";
 import { SwaggerRef } from "../types/swagger_ref";
 import { SwaggerCustomParam } from "../types/swagger_custom_param";
@@ -11,10 +9,10 @@ import { ApplicationInfo } from "../types/application_info";
 import { ServerInfo } from "../types/server_info";
 import { getDataType } from "../helpers/get_data_type";
 import { SwaggerOption } from "../types/swagger_option";
-import { CodeReader } from "../helpers/code_reader";
 
 export type SwaggerOutputPath = {
     summary?: string;
+    description?: string;
     operationId: string;
     consumes: MIME_TYPE[];
     tags: string[];
@@ -61,7 +59,6 @@ export type SwaggerModelInfo = {
 
 export class SwaggerFormatter {
     format(option: SwaggerOption, routes: RouteInfo[]) {
-        const codeInfos = new CodeReader(option.srcPath).read();
         const swaggerJson: SwaggerStructure = {
             openapi: "3.0.0",
             info: option.appInfo,
@@ -72,7 +69,7 @@ export class SwaggerFormatter {
         } as SwaggerStructure;
         const swaggerPaths = {};
         routes.forEach(route => {
-            const swaggerRouteData = SwaggerHandler.routes.find(qry => qry.className === route.controllerName);
+            const swaggerRouteData = SwaggerHandler.controllers.find(qry => qry.className === route.controllerName);
             if (swaggerRouteData != null) {
                 let pathName = route.path;
                 if (pathName[0] === "/") {
@@ -97,7 +94,9 @@ export class SwaggerFormatter {
                             consumes: [MIME_TYPE.Json, MIME_TYPE.Xml, MIME_TYPE.Html, MIME_TYPE.Text, "*/*"],
                             parameters: this.getParams_(route.controllerName, worker.workerName),
                             tags: [pathName],
-                            responses: this.getResponses_(route.controllerName, worker.workerName)
+                            responses: this.getResponses_(route.controllerName, worker.workerName),
+                            summary: this.getSummary_(route.controllerName, worker.workerName),
+                            description: this.getDescription_(route.controllerName, worker.workerName),
                         } as SwaggerOutputPath
                     })
 
@@ -107,6 +106,28 @@ export class SwaggerFormatter {
         });
         swaggerJson.paths = swaggerPaths;
         return swaggerJson;
+    }
+
+    private getSummary_(className: string, propName: string) {
+        const classInfo = SwaggerHandler.classInfos.find(qry => qry.className === className);
+        if (classInfo != null) {
+            const savedProp = classInfo.props.find(qry => qry.propName === propName);
+            if (savedProp != null) {
+                return savedProp.summary;
+            }
+        }
+        return null;
+    }
+
+    private getDescription_(className: string, propName: string) {
+        const classInfo = SwaggerHandler.classInfos.find(qry => qry.className === className);
+        if (classInfo != null) {
+            const savedProp = classInfo.props.find(qry => qry.propName === propName);
+            if (savedProp != null) {
+                return savedProp.description;
+            }
+        }
+        return null;
     }
 
     private getModels_() {
@@ -139,7 +160,7 @@ export class SwaggerFormatter {
 
     private getResponses_(className: string, methodName: string) {
         const result = {};
-        const workerInfo = SwaggerHandler.routes.find(qry => qry.className === className).
+        const workerInfo = SwaggerHandler.controllers.find(qry => qry.className === className).
             workers.find(qry => qry.methodName === methodName);
 
         workerInfo.responses.forEach(response => {
@@ -156,7 +177,7 @@ export class SwaggerFormatter {
     private getParams_(className: string, methodName: string) {
         const params: SwaggerOutputParamInfo[] = [];
 
-        const workerInfo = SwaggerHandler.routes.find(qry => qry.className === className)
+        const workerInfo = SwaggerHandler.controllers.find(qry => qry.className === className)
             .workers.find(qry => qry.methodName === methodName);
         if (workerInfo != null) {
             // from route params

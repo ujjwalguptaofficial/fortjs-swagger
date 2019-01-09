@@ -2,18 +2,13 @@ import { Controller, textResult, DefaultWorker, jsonResult, Worker, Route, HTTP_
 import { UserService } from '../services/user_service';
 import { ModelUserGuard } from '../Guards/model_user_guard';
 import { User } from '../models/user';
-import { Response, Body, Param } from '@fortjs/swagger';
+import { Response, Body, Param, Summary, Description } from '@fortjs/swagger';
 
 
 export class UserController extends Controller {
 
-    /**
-     * get all users
-     * @summary get all users
-     *
-     * @returns
-     * @memberof UserController
-     */
+    @Summary('get all users')
+    @Description('return all saved users')
     @DefaultWorker()
     @Response(HTTP_STATUS_CODE.Ok, [User])
     async getUsers() {
@@ -22,6 +17,7 @@ export class UserController extends Controller {
     }
 
 
+    @Summary('Add user')
     @Worker([HTTP_METHOD.Post])
     @Route("/")
     @Guards([ModelUserGuard])
@@ -34,6 +30,7 @@ export class UserController extends Controller {
         return jsonResult(newUser, HTTP_STATUS_CODE.Created);
     }
 
+    @Summary('Update user')
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @Worker([HTTP_METHOD.Put])
@@ -52,6 +49,7 @@ export class UserController extends Controller {
 
     }
 
+    @Summary('get a single user by id')
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @Param('id', 1, 'user id')
@@ -68,6 +66,7 @@ export class UserController extends Controller {
 
     }
 
+    @Summary('remove a single user by id')
     @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @Worker([HTTP_METHOD.Delete])

@@ -4,13 +4,8 @@ import { IUser } from "../interfaces/user";
 
 
 export class User implements IUser, SwaggerModel {
-    
-    /**
-     * user id
-     *
-     * @type {number}
-     * @memberof User
-     */
+
+
     id?: number;
 
     @Length(5)
