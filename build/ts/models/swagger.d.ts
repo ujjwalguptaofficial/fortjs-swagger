@@ -4,5 +4,4 @@ export declare class Swagger extends Router {
     constructor();
     create(option?: SwaggerOption): Promise<void>;
     private copySwaggerAssets_;
-    private getExtension_;
 }

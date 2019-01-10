@@ -1,64 +1,23 @@
 import { SwaggerHandler } from "../handlers/swagger_handler";
-import { RouteInfo, HTTP_STATUS_CODE, MIME_TYPE } from "fortjs";
+import { MIME_TYPE } from "fortjs";
 import { SwaggerParamSchema } from "../types/swagger_param_schema";
-import { SwaggerRef } from "../types/swagger_ref";
 import { SwaggerCustomParam } from "../types/swagger_custom_param";
 import { getParamSchema } from "../helpers/get_param_schema";
 import { BodyInfo } from "../types/body_info";
-import { ApplicationInfo } from "../types/application_info";
-import { ServerInfo } from "../types/server_info";
 import { getDataType } from "../helpers/get_data_type";
 import { SwaggerOption } from "../types/swagger_option";
+import { Global } from "../global";
+import { SwaggerStructure } from "../types/swagger_structure";
+import { SwaggerOutputPath } from "../types/swagger_output_path";
+import { SwaggerOutputModelInfo } from "../types/swagger_output_model_info";
+import { SwaggerOutputResponseContent } from "../types/swagger_output_response_content";
+import { SwaggerOutputParamInfo } from "../types/swagger_output_param_info";
+import { SWAGGER_OUTPUT_PARAM } from "../enums/swagger_output_param";
 
-export type SwaggerOutputPath = {
-    summary?: string;
-    description?: string;
-    operationId: string;
-    consumes: MIME_TYPE[];
-    tags: string[];
-    parameters: SwaggerOutputParamInfo[],
-    responses: { [statusCode: string]: SwaggerOutputResponseContent }
-}
-
-export type SwaggerOutputResponseContent = {
-    description?: string;
-    content: { [mimeType: string]: SwaggerParamSchema }
-}
-
-
-export type SwaggerOutputParamInfo = {
-    name: string;
-    in: SWAGGER_OUTPUT_PARAM,
-    description?: string;
-    required: boolean;
-    schema: SwaggerRef | SwaggerCustomParam
-}
-
-export enum SWAGGER_OUTPUT_PARAM {
-    Query = "query",
-    Path = "path",
-    Body = "body"
-}
-
-export type SwaggerStructure = {
-    openapi: string;
-    info: ApplicationInfo;
-    servers: ServerInfo[];
-    paths: any;
-    components: SwaggerComponent;
-}
-
-export type SwaggerComponent = {
-    schemas: { [modelName: string]: SwaggerModelInfo }
-}
-
-export type SwaggerModelInfo = {
-    required: string[];
-    properties: { [propName: string]: SwaggerCustomParam }
-}
 
 export class SwaggerFormatter {
-    format(option: SwaggerOption, routes: RouteInfo[]) {
+    format(option: SwaggerOption) {
+        const routes = Global.routes;
         const swaggerJson: SwaggerStructure = {
             openapi: "3.0.0",
             info: option.appInfo,
@@ -153,7 +112,7 @@ export class SwaggerFormatter {
             models[model.className] = {
                 required: keys,
                 properties: properties
-            } as SwaggerModelInfo;
+            } as SwaggerOutputModelInfo;
         });
         return models;
     }
