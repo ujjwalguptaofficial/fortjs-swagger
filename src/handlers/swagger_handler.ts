@@ -122,11 +122,27 @@ export class SwaggerHandler {
             swaggerModels.push({
                 classInstance: null,
                 className: className,
-                ignoredProperty: [propertyName]
+                ignoredProperty: [propertyName],
+                optionals: []
             });
         }
         else {
             value.ignoredProperty.push(propertyName);
+        }
+    }
+
+    static addOptional(className: string, propertyName: string) {
+        const value = swaggerModels.find(qry => qry.className === className);
+        if (value == null) {
+            swaggerModels.push({
+                classInstance: null,
+                className: className,
+                ignoredProperty: [],
+                optionals: [propertyName]
+            });
+        }
+        else {
+            value.optionals.push(propertyName);
         }
     }
 

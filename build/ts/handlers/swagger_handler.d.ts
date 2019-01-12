@@ -11,6 +11,7 @@ export declare class SwaggerHandler {
     static saveBody(className: string, methodName: string, body: BodyInfo): void;
     static saveModel(model: SwaggerModelInfo): void;
     static addIgnoreProperty(className: string, propertyName: string): void;
+    static addOptional(className: string, propertyName: string): void;
     static readonly controllers: SwaggerControllerInfo[];
     static readonly models: SwaggerModelInfo[];
     static saveSummary(className: string, propName: string, summary: string): void;

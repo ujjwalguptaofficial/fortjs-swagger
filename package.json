@@ -32,10 +32,10 @@
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-typescript-starter#readme",
   "dependencies": {
-    "fs-extra": "^7.0.1",
-    "js-comments": "^0.5.4"
+    "fs-extra": "^7.0.1"
   },
   "devDependencies": {
+    "js-comments": "^0.5.4",
     "@types/fs-extra": "^5.0.4",
     "@types/node": "^10.12.15",
     "copy-webpack-plugin": "^4.6.0",

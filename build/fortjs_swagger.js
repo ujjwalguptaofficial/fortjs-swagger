@@ -184,9 +184,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IgnoreProperty", function() { return IgnoreProperty; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var IgnoreProperty = function (target, propertyName, descriptor) {
-    var className = target.constructor.name;
-    _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addIgnoreProperty(className, propertyName);
+var IgnoreProperty = function () {
+    return function (target, propertyName, descriptor) {
+        var className = target.constructor.name;
+        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addIgnoreProperty(className, propertyName);
+    };
 };
 
 
@@ -196,7 +198,7 @@ var IgnoreProperty = function (target, propertyName, descriptor) {
 /*!*********************************!*\
   !*** ./src/decorators/index.ts ***!
   \*********************************/
-/*! exports provided: Body, IgnoreProperty, Query, Response, Param, Summary, Description */
+/*! exports provided: Body, IgnoreProperty, Query, Response, Param, Summary, Description, OptionalProperty */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -222,6 +224,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _description__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./description */ "./src/decorators/description.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Description", function() { return _description__WEBPACK_IMPORTED_MODULE_6__["Description"]; });
 
+/* harmony import */ var _optional_property__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./optional_property */ "./src/decorators/optional_property.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OptionalProperty", function() { return _optional_property__WEBPACK_IMPORTED_MODULE_7__["OptionalProperty"]; });
 
 
 
@@ -229,6 +233,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+/***/ }),
+
+/***/ "./src/decorators/optional_property.ts":
+/*!*********************************************!*\
+  !*** ./src/decorators/optional_property.ts ***!
+  \*********************************************/
+/*! exports provided: OptionalProperty */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OptionalProperty", function() { return OptionalProperty; });
+/* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
+
+var OptionalProperty = function () {
+    return function (target, propertyName, descriptor) {
+        var className = target.constructor.name;
+        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addOptional(className, propertyName);
+    };
+};
 
 
 /***/ }),
@@ -551,11 +579,26 @@ var SwaggerHandler = /** @class */ (function () {
             swaggerModels.push({
                 classInstance: null,
                 className: className,
-                ignoredProperty: [propertyName]
+                ignoredProperty: [propertyName],
+                optionals: []
             });
         }
         else {
             value.ignoredProperty.push(propertyName);
+        }
+    };
+    SwaggerHandler.addOptional = function (className, propertyName) {
+        var value = swaggerModels.find(function (qry) { return qry.className === className; });
+        if (value == null) {
+            swaggerModels.push({
+                classInstance: null,
+                className: className,
+                ignoredProperty: [],
+                optionals: [propertyName]
+            });
+        }
+        else {
+            value.optionals.push(propertyName);
         }
     };
     Object.defineProperty(SwaggerHandler, "controllers", {
@@ -664,12 +707,12 @@ var extractAndSaveModel = function (value) {
             className = model.className;
         }
     };
-    if (type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function) {
+    if (type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function) { // means its class
         saveModelInfo(value);
     }
-    else if (type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Array && value.length > 0) {
+    else if (type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Array && value.length > 0) { // means its array of class
         var firstValue = value[0];
-        if (Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(firstValue) === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function) {
+        if (Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(firstValue) === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function) { // it is class
             saveModelInfo(firstValue);
         }
     }
@@ -748,10 +791,10 @@ var getParamSchema = function (value) {
         var refValue = {
             $ref: modelRefString
         };
-        if (dataType === ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Function) {
+        if (dataType === ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Function) { // it is class
             return refValue;
         }
-        else {
+        else { // it is array of class
             return {
                 type: ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Array,
                 items: refValue
@@ -878,6 +921,12 @@ var SwaggerFormatter = /** @class */ (function () {
                     type: dataType
                 };
             });
+            model.optionals.forEach(function (optional) {
+                var index = keys.indexOf(optional);
+                if (index >= 0) {
+                    keys.splice(index, 1);
+                }
+            });
             models[model.className] = {
                 required: keys,
                 properties: properties
@@ -949,7 +998,7 @@ var SwaggerFormatter = /** @class */ (function () {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: Swagger, Body, IgnoreProperty, Query, Response, Param, Summary, Description, DATA_TYPE, SwaggerModel */
+/*! exports provided: Swagger, Body, IgnoreProperty, Query, Response, Param, Summary, Description, OptionalProperty, DATA_TYPE, SwaggerModel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -971,6 +1020,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Summary", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["Summary"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Description", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["Description"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OptionalProperty", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["OptionalProperty"]; });
 
 /* harmony import */ var _enums_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./enums/index */ "./src/enums/index.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DATA_TYPE", function() { return _enums_index__WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"]; });

@@ -109,6 +109,12 @@ export class SwaggerFormatter {
                     type: dataType
                 } as SwaggerCustomParam;
             });
+            model.optionals.forEach(optional => {
+                const index = keys.indexOf(optional);
+                if (index >= 0) {
+                    keys.splice(index, 1);
+                }
+            });
             models[model.className] = {
                 required: keys,
                 properties: properties

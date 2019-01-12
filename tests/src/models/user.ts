@@ -1,11 +1,12 @@
 import { Length, Contains, IsIn, IsEmail } from "class-validator";
-import { IgnoreProperty, SwaggerModel } from "@fortjs/swagger";
+import { IgnoreProperty, SwaggerModel, OptionalProperty } from "@fortjs/swagger";
 import { IUser } from "../interfaces/user";
 
 
 export class User implements IUser, SwaggerModel {
 
 
+    @OptionalProperty()
     id?: number;
 
     @Length(5)
@@ -24,7 +25,7 @@ export class User implements IUser, SwaggerModel {
     emailId: string;
 
 
-    @IgnoreProperty
+    @IgnoreProperty()
     init?(user: any) {
         this.id = Number(user.id);
         this.name = user.name;

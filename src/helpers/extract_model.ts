@@ -15,12 +15,12 @@ export const extractAndSaveModel = (value) => {
         }
     }
 
-    if (type === DATA_TYPE.Function) {
+    if (type === DATA_TYPE.Function) { // means its class
         saveModelInfo(value);
     }
-    else if (type === DATA_TYPE.Array && value.length > 0) {
+    else if (type === DATA_TYPE.Array && value.length > 0) { // means its array of class
         const firstValue = value[0];
-        if (getDataType(firstValue) === DATA_TYPE.Function) {
+        if (getDataType(firstValue) === DATA_TYPE.Function) { // it is class
             saveModelInfo(firstValue);
         }
     }
