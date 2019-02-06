@@ -17,4 +17,5 @@ export declare class SwaggerHandler {
     static saveSummary(className: string, propName: string, summary: string): void;
     static saveDescription(className: string, propName: string, description: string): void;
     static readonly classInfos: ClassInfo[];
+    static saveSecurity(className: string, type: string, scopes: string[]): void;
 }

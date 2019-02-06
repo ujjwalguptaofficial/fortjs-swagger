@@ -6,7 +6,7 @@ import { IUser } from "../interfaces/user";
 export class User implements IUser, SwaggerModel {
 
 
-    @OptionalProperty()
+    @OptionalProperty
     id?: number;
 
     @Length(5)
@@ -25,7 +25,7 @@ export class User implements IUser, SwaggerModel {
     emailId: string;
 
 
-    @IgnoreProperty()
+    @IgnoreProperty
     init?(user: any) {
         this.id = Number(user.id);
         this.name = user.name;

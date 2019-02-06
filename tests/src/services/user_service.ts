@@ -18,7 +18,7 @@ const store: IStore = {
 
 export class UserService {
   getUsers() {
-      return store.users;
+    return store.users;
   }
 
   addUser(user: User) {
@@ -47,5 +47,9 @@ export class UserService {
   removeUser(id: number) {
     const index = store.users.findIndex(user => user.id === id);
     store.users.splice(index, 1);
+  }
+
+  getUserByEmail(emailId: string) {
+    return store.users.find(user => user.emailId === emailId);
   }
 }

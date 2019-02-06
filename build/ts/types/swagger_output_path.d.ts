@@ -11,4 +11,7 @@ export declare type SwaggerOutputPath = {
     responses: {
         [statusCode: string]: SwaggerOutputResponseContent;
     };
+    security?: {
+        [securityType: string]: string[];
+    };
 };

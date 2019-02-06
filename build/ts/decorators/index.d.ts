@@ -6,3 +6,4 @@ export * from './param';
 export * from './summary';
 export * from './description';
 export * from './optional_property';
+export * from './security';

@@ -1,8 +1,6 @@
 import { SwaggerHandler } from "../handlers/swagger_handler";
 
-export const IgnoreProperty = (): MethodDecorator => {
-    return (target: any, propertyName: string, descriptor: PropertyDescriptor) => {
-        const className = (target.constructor.name as string);
-        SwaggerHandler.addIgnoreProperty(className, propertyName);
-    };
-}
+export const IgnoreProperty = (target: any, propertyName: string) => {
+    const className = (target.constructor.name as string);
+    SwaggerHandler.addIgnoreProperty(className, propertyName);
+};

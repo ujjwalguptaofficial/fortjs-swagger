@@ -3,4 +3,5 @@ export declare type SwaggerComponent = {
     schemas: {
         [modelName: string]: SwaggerOutputModelInfo;
     };
+    securitySchemes: any;
 };

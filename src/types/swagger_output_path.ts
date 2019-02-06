@@ -9,5 +9,8 @@ export type SwaggerOutputPath = {
     consumes: MIME_TYPE[];
     tags: string[];
     parameters: SwaggerOutputParamInfo[],
-    responses: { [statusCode: string]: SwaggerOutputResponseContent }
+    responses: { [statusCode: string]: SwaggerOutputResponseContent },
+    security?: {
+        [securityType: string]: string[]
+    }
 }

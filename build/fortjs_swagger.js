@@ -184,11 +184,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IgnoreProperty", function() { return IgnoreProperty; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var IgnoreProperty = function () {
-    return function (target, propertyName, descriptor) {
-        var className = target.constructor.name;
-        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addIgnoreProperty(className, propertyName);
-    };
+var IgnoreProperty = function (target, propertyName) {
+    var className = target.constructor.name;
+    _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addIgnoreProperty(className, propertyName);
 };
 
 
@@ -198,7 +196,7 @@ var IgnoreProperty = function () {
 /*!*********************************!*\
   !*** ./src/decorators/index.ts ***!
   \*********************************/
-/*! exports provided: Body, IgnoreProperty, Query, Response, Param, Summary, Description, OptionalProperty */
+/*! exports provided: Body, IgnoreProperty, Query, Response, Param, Summary, Description, OptionalProperty, Security */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -227,6 +225,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _optional_property__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./optional_property */ "./src/decorators/optional_property.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OptionalProperty", function() { return _optional_property__WEBPACK_IMPORTED_MODULE_7__["OptionalProperty"]; });
 
+/* harmony import */ var _security__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./security */ "./src/decorators/security.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Security", function() { return _security__WEBPACK_IMPORTED_MODULE_8__["Security"]; });
+
+
 
 
 
@@ -251,11 +253,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OptionalProperty", function() { return OptionalProperty; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var OptionalProperty = function () {
-    return function (target, propertyName, descriptor) {
-        var className = target.constructor.name;
-        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addOptional(className, propertyName);
-    };
+var OptionalProperty = function (target, propertyName) {
+    var className = target.constructor.name;
+    _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addOptional(className, propertyName);
 };
 
 
@@ -350,6 +350,28 @@ var Response = function (statusCode, value, contentType) {
             }
             saveResponse([contentType]);
         }
+    };
+};
+
+
+/***/ }),
+
+/***/ "./src/decorators/security.ts":
+/*!************************************!*\
+  !*** ./src/decorators/security.ts ***!
+  \************************************/
+/*! exports provided: Security */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Security", function() { return Security; });
+/* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
+
+var Security = function (type, scopes) {
+    return function (target) {
+        var className = target.name;
+        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveSecurity(className, type, scopes);
     };
 };
 
@@ -470,6 +492,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerHandler", function() { return SwaggerHandler; });
 var swaggerControllerInfos = [];
 var swaggerModels = [];
+// used to save description and summary of props and class   
 var classInfos = [];
 var getNewWorker = function (methodName) {
     return {
@@ -674,6 +697,31 @@ var SwaggerHandler = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    SwaggerHandler.saveSecurity = function (className, type, scopes) {
+        if (scopes == null) {
+            scopes = [];
+        }
+        var security = {
+            type: type,
+            scopes: scopes
+        };
+        var value = swaggerControllerInfos.find(function (qry) { return qry.className === className; });
+        if (value == null) {
+            swaggerControllerInfos.push({
+                className: className,
+                workers: [],
+                security: [security]
+            });
+        }
+        else {
+            if (value.security != null) {
+                value.security.push(security);
+            }
+            else {
+                value.security = [security];
+            }
+        }
+    };
     return SwaggerHandler;
 }());
 
@@ -846,7 +894,8 @@ var SwaggerFormatter = /** @class */ (function () {
             info: option.appInfo,
             servers: option.servers,
             components: {
-                schemas: this.getModels_()
+                schemas: this.getModels_(),
+                securitySchemes: option.securitySchemes
             }
         };
         var swaggerPaths = {};
@@ -857,6 +906,7 @@ var SwaggerFormatter = /** @class */ (function () {
                 if (pathName_1[0] === "/") {
                     pathName_1 = route.path.substr(1);
                 }
+                var controllerSecurity_1 = _this.getControllerSecurity_(route.controllerName);
                 route.workers.forEach(function (worker) {
                     var pattern = worker.pattern;
                     if (pattern[0] !== "/") {
@@ -875,6 +925,7 @@ var SwaggerFormatter = /** @class */ (function () {
                             responses: _this.getResponses_(route.controllerName, worker.workerName),
                             summary: _this.getSummary_(route.controllerName, worker.workerName),
                             description: _this.getDescription_(route.controllerName, worker.workerName),
+                            security: controllerSecurity_1
                         };
                     });
                 });
@@ -882,6 +933,23 @@ var SwaggerFormatter = /** @class */ (function () {
         });
         swaggerJson.paths = swaggerPaths;
         return swaggerJson;
+    };
+    SwaggerFormatter.prototype.getControllerSecurity_ = function (className) {
+        var controller = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(function (qry) { return qry.className === className; });
+        if (controller != null) {
+            var securities = controller.security;
+            if (securities != null) {
+                var outputSecurity_1 = [];
+                securities.forEach(function (security) {
+                    var _a;
+                    outputSecurity_1.push((_a = {},
+                        _a[security.type] = security.scopes,
+                        _a));
+                });
+                return outputSecurity_1;
+            }
+        }
+        return null;
     };
     SwaggerFormatter.prototype.getSummary_ = function (className, propName) {
         var classInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].classInfos.find(function (qry) { return qry.className === className; });
@@ -998,7 +1066,7 @@ var SwaggerFormatter = /** @class */ (function () {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: Swagger, Body, IgnoreProperty, Query, Response, Param, Summary, Description, OptionalProperty, DATA_TYPE, SwaggerModel */
+/*! exports provided: Swagger, Body, IgnoreProperty, Query, Response, Param, Summary, Description, OptionalProperty, Security, DATA_TYPE, SwaggerModel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1022,6 +1090,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Description", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["Description"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OptionalProperty", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["OptionalProperty"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Security", function() { return _decorators_index__WEBPACK_IMPORTED_MODULE_1__["Security"]; });
 
 /* harmony import */ var _enums_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./enums/index */ "./src/enums/index.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DATA_TYPE", function() { return _enums_index__WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"]; });
@@ -1149,10 +1219,8 @@ var Swagger = /** @class */ (function (_super) {
                         _a.label = 3;
                     case 3:
                         swaggerConfigPath = option.outputPath + "/swagger.json";
-                        //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
                         return [4 /*yield*/, fs_extra__WEBPACK_IMPORTED_MODULE_2__["writeFile"](swaggerConfigPath, JSON.stringify(formatedData))];
                     case 4:
-                        //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
                         _a.sent();
                         //copy swagger files
                         return [4 /*yield*/, this.copySwaggerAssets_(option.outputPath)];

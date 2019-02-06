@@ -20,7 +20,6 @@ export class Swagger extends Router {
             await Fs.mkdir(option.outputPath);
         }
         const swaggerConfigPath = `${option.outputPath}/swagger.json`;
-        //  await writeFile(swaggerConfigPath, JSON.stringify(formmatedData), { flag: 'w' });
         await Fs.writeFile(swaggerConfigPath, JSON.stringify(formatedData));
 
         //copy swagger files

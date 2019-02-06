@@ -42,9 +42,13 @@ new App().create({
             description: "local",
             url: "http://localhost:4000"
         }],
-        // extension: "",
-        srcPath: srcFolder,
-        outputPath: Path.join(__dirname, "../swagger/")
+        outputPath: Path.join(__dirname, "../swagger/"),
+        securitySchemes: {
+            basicAuth: {
+                type: "http",
+                scheme: "basic"
+            }
+        }
     });
 })
 

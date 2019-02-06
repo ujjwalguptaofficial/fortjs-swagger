@@ -23,7 +23,8 @@ export class SwaggerFormatter {
             info: option.appInfo,
             servers: option.servers,
             components: {
-                schemas: this.getModels_()
+                schemas: this.getModels_(),
+                securitySchemes: option.securitySchemes
             }
         } as SwaggerStructure;
         const swaggerPaths = {};
@@ -34,7 +35,7 @@ export class SwaggerFormatter {
                 if (pathName[0] === "/") {
                     pathName = route.path.substr(1)
                 }
-
+                const controllerSecurity = this.getControllerSecurity_(route.controllerName);
                 route.workers.forEach(worker => {
                     let pattern = worker.pattern;
                     if (pattern[0] !== "/") {
@@ -56,6 +57,7 @@ export class SwaggerFormatter {
                             responses: this.getResponses_(route.controllerName, worker.workerName),
                             summary: this.getSummary_(route.controllerName, worker.workerName),
                             description: this.getDescription_(route.controllerName, worker.workerName),
+                            security: controllerSecurity as any
                         } as SwaggerOutputPath
                     })
 
@@ -65,6 +67,23 @@ export class SwaggerFormatter {
         });
         swaggerJson.paths = swaggerPaths;
         return swaggerJson;
+    }
+
+    private getControllerSecurity_(className: string) {
+        const controller = SwaggerHandler.controllers.find(qry => qry.className === className);
+        if (controller != null) {
+            const securities = controller.security;
+            if (securities != null) {
+                const outputSecurity: { [type: string]: string[] }[] = [];
+                securities.forEach(security => {
+                    outputSecurity.push({
+                        [security.type]: security.scopes
+                    })
+                })
+                return outputSecurity;
+            }
+        }
+        return null;
     }
 
     private getSummary_(className: string, propName: string) {

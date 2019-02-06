@@ -4,11 +4,11 @@ import { QueryInfo } from "../types/query_info";
 import { WorkerInfo } from "../types/worker_info";
 import { BodyInfo } from "../types/body_info";
 import { SwaggerModelInfo } from "../types/swagger_model_info";
-import { MIME_TYPE } from "fortjs";
 import { ClassInfo } from "../types/class_info";
 
 const swaggerControllerInfos: SwaggerControllerInfo[] = [];
 const swaggerModels: SwaggerModelInfo[] = [];
+// used to save description and summary of props and class   
 const classInfos: ClassInfo[] = [];
 
 const getNewWorker = (methodName: string) => {
@@ -210,5 +210,32 @@ export class SwaggerHandler {
 
     static get classInfos() {
         return classInfos;
+    }
+
+    static saveSecurity(className: string, type: string, scopes: string[]) {
+        if (scopes == null) {
+            scopes = [];
+        }
+        const security = {
+            type: type,
+            scopes: scopes
+        };
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
+        if (value == null) {
+            swaggerControllerInfos.push({
+                className: className,
+                workers: [],
+                security: [security]
+            })
+        }
+        else {
+            if (value.security != null) {
+                value.security.push(security);
+            }
+            else {
+                value.security = [security];
+            }
+
+        }
     }
 }
