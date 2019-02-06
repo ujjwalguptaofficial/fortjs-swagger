@@ -11,6 +11,13 @@
     <div id="app">
 
     </div>
+    <script>
+        var splittedPath = location.pathname.split("/");
+        var scriptSrc;
+        if (splittedPath[splittedPath.length - 1] !== "") {
+            location.href = location.href + "/";
+        }
+    </script>
     <script src="./swagger.js"></script>
 </body>
 

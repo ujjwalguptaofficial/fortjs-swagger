@@ -31,7 +31,7 @@ new App().create({
     //     console.log("ast", ast);
     // })
     const srcFolder = Path.join(__dirname, "../src/");
-    console.log("src", srcFolder);
+    // console.log("src", srcFolder);
     new Swagger().create({
         appInfo: {
             title: "Swagger Test",
