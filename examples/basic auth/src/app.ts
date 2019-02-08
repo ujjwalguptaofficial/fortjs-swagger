@@ -2,7 +2,7 @@ import { Fort } from 'fortjs';
 import { routes } from './routes';
 import { FortViewEngine } from 'eshtml';
 import * as path from "path";
-import { Swagger } from '@fortjs/swagger';
+import { Swagger } from 'fortjs-swagger';
 import * as Path from "path";
 
 
