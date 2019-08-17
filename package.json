@@ -1,6 +1,6 @@
 {
   "name": "fortjs-swagger",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Swagger integration for fortjs.Create automatic swagger config.",
   "main": "build/fortjs-swagger.js",
   "types": "build/ts/index.d.ts",

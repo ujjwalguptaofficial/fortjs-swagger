@@ -770,7 +770,7 @@ var getModelinfo = function (value) {
     try {
         var model = new value();
         var example = void 0;
-        if (model.getExample) {
+        if (model.getExample != null) {
             example = model.getExample();
         }
         return {

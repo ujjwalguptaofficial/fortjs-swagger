@@ -13,8 +13,7 @@ export const extractAndSaveModel = (value) => {
             SwaggerHandler.saveModel(model);
             className = model.className;
         }
-    }
-
+    };
     if (type === DATA_TYPE.Function) { // means its class
         saveModelInfo(value);
     }
@@ -25,13 +24,13 @@ export const extractAndSaveModel = (value) => {
         }
     }
     return className;
-}
+};
 
 const getModelinfo = (value) => {
     try {
-        let model: SwaggerModel = new value();
+        const model: SwaggerModel = new value();
         let example;
-        if (model.getExample) {
+        if (model.getExample != null) {
             example = model.getExample();
         }
         return {
@@ -44,4 +43,4 @@ const getModelinfo = (value) => {
         console.log("getModelinfo", ex);
     }
     return null;
-}
+};

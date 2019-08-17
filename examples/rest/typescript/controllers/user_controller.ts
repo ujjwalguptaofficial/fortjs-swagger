@@ -1,6 +1,6 @@
 import { Controller, textResult, DefaultWorker, jsonResult, Worker, Route, HTTP_STATUS_CODE, HTTP_METHOD, Guards, Shields } from 'fortjs';
 import { UserService } from '../services/user_service';
-import { ModelUserGuard } from '../Guards/model_user_guard';
+import { ModelUserGuard } from '../guards/model_user_guard';
 import { User } from '../models/user';
 import { Response, Body, Param, Summary, Description, Security } from 'fortjs-swagger';
 import { AuthenticationShield } from '../shields/authentication_shield';
