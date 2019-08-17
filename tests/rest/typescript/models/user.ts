@@ -1,41 +1,33 @@
-import { Length, Contains, IsIn, IsEmail } from "class-validator";
 import { IgnoreProperty, SwaggerModel, OptionalProperty } from "fortjs-swagger";
-import { IUser } from "../interfaces/user";
 
-
-export class User implements IUser, SwaggerModel {
+export class User implements SwaggerModel {
 
 
     @OptionalProperty
     id?: number;
 
-    @Length(5)
     password?: string;
 
-    @Length(5)
     name: string;
 
-    @IsIn(["male", "female"])
     gender: string;
 
-    @Length(10, 100)
     address: string;
 
-    @IsEmail()
     emailId: string;
 
-
     @IgnoreProperty
-    init?(user: any) {
+    init?(user) {
         this.id = Number(user.id);
         this.name = user.name;
         this.gender = user.gender;
         this.address = user.address;
         this.emailId = user.emailId;
         this.password = user.password;
+        return this;
     }
 
-    getExample() {
+    getExample?() {
         this.id = 0;
         this.address = "sector 134 noida, u.p. India";
         this.emailId = "abc@gmail.com";

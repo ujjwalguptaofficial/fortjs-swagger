@@ -45,7 +45,7 @@ export class SwaggerFormatter {
                     if (swaggerPaths[pattern] == null) {
                         swaggerPaths[pattern] = {
 
-                        }
+                        };
                     }
                     // add multiple route for all http method allowed for a single path 
                     worker.methodsAllowed.forEach(httpMethod => {
@@ -58,8 +58,8 @@ export class SwaggerFormatter {
                             summary: this.getSummary_(route.controllerName, worker.workerName),
                             description: this.getDescription_(route.controllerName, worker.workerName),
                             security: controllerSecurity as any
-                        } as SwaggerOutputPath
-                    })
+                        } as SwaggerOutputPath;
+                    });
 
                 });
 
@@ -78,8 +78,8 @@ export class SwaggerFormatter {
                 securities.forEach(security => {
                     outputSecurity.push({
                         [security.type]: security.scopes
-                    })
-                })
+                    });
+                });
                 return outputSecurity;
             }
         }
@@ -111,7 +111,7 @@ export class SwaggerFormatter {
     private getModels_() {
         const models = {
 
-        }
+        };
         SwaggerHandler.models.forEach(model => {
             const obj = model.classInstance;
             const keys = Object.keys(obj);
@@ -119,7 +119,7 @@ export class SwaggerFormatter {
             model.ignoredProperty.forEach(prop => {
                 const index = keys.indexOf(prop);
                 keys.splice(index, 1);
-            })
+            });
             const properties = {};
             keys.forEach(key => {
                 const propValue = obj[key];
@@ -154,7 +154,7 @@ export class SwaggerFormatter {
                     schema: getParamSchema(response.value)
                 } as SwaggerParamSchema;
             });
-        })
+        });
         return result;
     }
 
@@ -172,7 +172,7 @@ export class SwaggerFormatter {
                     required: true,
                     schema: getParamSchema(param.value),
                     description: param.description
-                })
+                });
             });
 
             // from query
@@ -183,7 +183,7 @@ export class SwaggerFormatter {
                     required: true,
                     schema: getParamSchema(query.value),
                     description: query.description
-                })
+                });
             });
 
             // from body
@@ -195,7 +195,7 @@ export class SwaggerFormatter {
                     required: true,
                     schema: getParamSchema(body.value),
                     description: body.description
-                })
+                });
             }
         }
 

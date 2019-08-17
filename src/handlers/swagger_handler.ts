@@ -19,7 +19,7 @@ const getNewWorker = (methodName: string) => {
         queries: [],
         responses: [],
         params: []
-    } as WorkerInfo
+    } as WorkerInfo;
 }
 export class SwaggerHandler {
     static saveResponse(className: string, methodName: string, response: ResponseInfo) {
@@ -30,7 +30,7 @@ export class SwaggerHandler {
             swaggerControllerInfos.push({
                 className: className,
                 workers: [worker]
-            })
+            });
         }
         else {
             const savedWorker = value.workers.find(qry => qry.methodName === methodName);
@@ -51,7 +51,7 @@ export class SwaggerHandler {
             swaggerControllerInfos.push({
                 className: className,
                 workers: [worker]
-            })
+            });
         }
         else {
             const savedWorker = value.workers.find(qry => qry.methodName === methodName);
@@ -72,7 +72,7 @@ export class SwaggerHandler {
             swaggerControllerInfos.push({
                 className: className,
                 workers: [worker]
-            })
+            });
         }
         else {
             const savedWorker = value.workers.find(qry => qry.methodName === methodName);
@@ -93,7 +93,7 @@ export class SwaggerHandler {
             swaggerControllerInfos.push({
                 className: className,
                 workers: [worker]
-            })
+            });
         }
         else {
             const savedWorker = value.workers.find(qry => qry.methodName === methodName);
@@ -164,7 +164,7 @@ export class SwaggerHandler {
                     propName: propName,
                     summary: summary
                 }]
-            })
+            });
         }
         else {
             const savedProp = savedClass.props.find(qry => qry.propName === propName);
@@ -191,7 +191,7 @@ export class SwaggerHandler {
                     propName: propName,
                     summary: null
                 }]
-            })
+            });
         }
         else {
             const savedProp = savedClass.props.find(qry => qry.propName === propName);
@@ -200,7 +200,7 @@ export class SwaggerHandler {
                     description: description,
                     propName: propName,
                     summary: null
-                })
+                });
             }
             else {
                 savedProp.description = description;
@@ -226,7 +226,7 @@ export class SwaggerHandler {
                 className: className,
                 workers: [],
                 security: [security]
-            })
+            });
         }
         else {
             if (value.security != null) {

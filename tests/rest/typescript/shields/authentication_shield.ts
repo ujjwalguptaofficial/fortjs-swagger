@@ -10,10 +10,10 @@ export class AuthenticationShield extends Shield {
                 resolve(textResult(msg, HTTP_STATUS_CODE.Unauthorized))
             };
             if (authHeader != null) {
-                var credCombination = Buffer.from(authHeader.split(" ")[1], 'base64').toString();
-                var creds = credCombination.split(":");
-                var username = creds[0];
-                var password = creds[1];
+                const credCombination = Buffer.from(authHeader.split(" ")[1], 'base64').toString();
+                const creds = credCombination.split(":");
+                const username = creds[0];
+                const password = creds[1];
                 const userService = new UserService();
                 const user = userService.getUserByEmail(username);
                 if (user != null && user.password === password) {
@@ -26,8 +26,6 @@ export class AuthenticationShield extends Shield {
             else {
                 onNotAuthenticated('>Need some creds son');
             }
-
-
-        })
+        });
     }
 }
