@@ -11,7 +11,7 @@ module.exports = [{
     devtool: 'source-map',
     output: {
         path: path.join(__dirname, "./build"),
-        filename: "fortjs_swagger.js",
+        filename: "fortjs-swagger.js",
         library: 'fortjs-swagger',
         libraryTarget: "commonjs2"
     },

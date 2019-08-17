@@ -1,8 +1,8 @@
 {
   "name": "fortjs-swagger",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Swagger integration for fortjs.Create automatic swagger config.",
-  "main": "build/fortjs_swagger.js",
+  "main": "build/fortjs-swagger.js",
   "types": "build/ts/index.d.ts",
   "keywords": [
     "fort",
@@ -31,16 +31,18 @@
     "url": "https://github.com/ujjwalguptaofficial/fortjs-swagger/issues"
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-swagger#readme",
-  "dependencies": {},
+  "dependencies": {
+    "fortjs": "^1.7.2"
+  },
   "devDependencies": {
-    "js-comments": "^0.5.4",
     "@types/fs-extra": "^5.0.4",
     "@types/node": "^10.12.15",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.0",
     "eshtml": "^0.2.2",
+    "js-comments": "^0.5.4",
     "style-loader": "^0.23.1",
-    "swagger-ui": "^3.20.4",
+    "swagger-ui": "^3.23.5",
     "ts-loader": "^5.3.1",
     "tslint": "^5.11.0",
     "tslint-config-security": "^1.13.0",
@@ -50,6 +52,6 @@
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
-    "fortjs": ">=1.5.1"
+    "fortjs": ">=1.7.2"
   }
 }

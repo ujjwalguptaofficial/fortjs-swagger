@@ -1,5 +1,5 @@
 import { Length, Contains, IsIn, IsEmail } from "class-validator";
-import { IgnoreProperty, SwaggerModel, OptionalProperty } from "@fortjs/swagger";
+import { IgnoreProperty, SwaggerModel, OptionalProperty } from "fortjs-swagger";
 import { IUser } from "../interfaces/user";
 
 
