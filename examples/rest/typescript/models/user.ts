@@ -6,6 +6,9 @@ export class User implements SwaggerModel {
     @OptionalProperty
     id?: number;
 
+    @IgnoreProperty
+    somePropertyIDontWantInSwagger?: any;
+
     password?: string;
 
     name: string;
