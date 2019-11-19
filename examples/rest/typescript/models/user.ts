@@ -16,17 +16,6 @@ export class User implements SwaggerModel {
 
     emailId: string;
 
-    @IgnoreProperty
-    init?(user) {
-        this.id = Number(user.id);
-        this.name = user.name;
-        this.gender = user.gender;
-        this.address = user.address;
-        this.emailId = user.emailId;
-        this.password = user.password;
-        return this;
-    }
-
     getExample?() {
         this.id = 0;
         this.address = "sector 134 noida, u.p. India";

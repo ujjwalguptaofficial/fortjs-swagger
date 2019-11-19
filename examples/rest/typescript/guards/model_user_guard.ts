@@ -21,7 +21,13 @@ export class ModelUserGuard extends Guard {
     }
 
     async check() {
-        const user = new User().init(this.body);
+        const user = {
+            name: this.body.name,
+            gender: this.body.gender,
+            address: this.body.address,
+            emailId: this.body.emailId,
+            password: this.body.password
+        } as User;
         const errMsg = this.validate(user);
         if (errMsg == null) {
             // pass user to worker method, so that they dont need to parse again
