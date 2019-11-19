@@ -1,7 +1,7 @@
 {
   "name": "fortjs-swagger",
   "version": "1.0.3",
-  "description": "Swagger integration for fortjs.Create automatic swagger config.",
+  "description": "Swagger integration for fortjs.Creates automatic swagger config.",
   "main": "build/fortjs-swagger.js",
   "types": "build/ts/index.d.ts",
   "keywords": [
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-swagger#readme",
   "dependencies": {
-    "fortjs": "^1.7.2"
+   
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",

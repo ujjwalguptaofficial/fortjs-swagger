@@ -8,7 +8,7 @@ export const createApp = async () => {
             alias: "/",
             path: path.join(__dirname, "../static")
         }, {
-            alias: "swagger",
+            alias: "/swagger",
             path: path.join(__dirname, "../swagger")
         }]
     });

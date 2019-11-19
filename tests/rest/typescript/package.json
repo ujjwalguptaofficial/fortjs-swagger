@@ -13,7 +13,8 @@
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "install:lib": "node installer.js",
     "install:build": "npm run install:lib && npm run build",
-    "install:build:test": "npm run install:lib && npm run build && npm run test"
+    "build:test": "npm run build && npm run test",
+    "install:build:test": "npm run install:lib && npm run build:test"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,7 @@
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-typescript-starter#readme",
   "dependencies": {
-    "fortjs": "^1.7.2",
+    "fortjs": "^1.9.3",
     "validator": "^11.1.0"
   },
   "devDependencies": {

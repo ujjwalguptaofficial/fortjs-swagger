@@ -6,7 +6,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 const instance = axios.create({
     baseURL: 'http://localhost:4000',
-    timeout: 1000
+    timeout: 10000
 });
 
 describe('/swagger', () => {

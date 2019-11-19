@@ -633,7 +633,11 @@ var SwaggerHandler = /** @class */ (function () {
     });
     Object.defineProperty(SwaggerHandler, "models", {
         get: function () {
-            return swaggerModels;
+            return swaggerModels.map(function (model) {
+                if (model.classInstance != null) {
+                    return model;
+                }
+            });
         },
         enumerable: true,
         configurable: true

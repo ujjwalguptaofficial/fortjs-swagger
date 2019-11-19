@@ -10,10 +10,7 @@ describe('/default', () => {
 
     let app: Fort;
     beforeAll(async () => {
-        console.log('hey i am okk');
-        // jest.setTimeout(30000);
         app = await createApp() as any;
-        console.log('hey i am ok');
     });
 
     it('index', async () => {

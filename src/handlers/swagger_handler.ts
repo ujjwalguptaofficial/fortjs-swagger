@@ -151,7 +151,11 @@ export class SwaggerHandler {
     }
 
     static get models() {
-        return swaggerModels;
+        return swaggerModels.map(model => {
+            if (model.classInstance != null) {
+                return model;
+            }
+        });
     }
 
     static saveSummary(className: string, propName: string, summary: string) {
