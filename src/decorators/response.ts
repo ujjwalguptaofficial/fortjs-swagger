@@ -1,9 +1,6 @@
 import { HTTP_STATUS_CODE, MIME_TYPE } from "fortjs";
 import { SwaggerHandler } from "../handlers/swagger_handler";
-import { getDataType } from "../helpers/get_data_type";
 import { extractAndSaveModel } from "../helpers/extract_model";
-// import { SwaggerResponse, SwaggerModelResponse, SwaggerCustomTypeResponse } from "../types/swagger_response";
-import { DATA_TYPE } from "../enums";
 
 export const Response = (statusCode: HTTP_STATUS_CODE, value: any, contentType?: MIME_TYPE): MethodDecorator => {
     return (target: any, methodName: string, descriptor: PropertyDescriptor) => {
