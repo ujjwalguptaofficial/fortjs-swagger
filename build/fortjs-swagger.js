@@ -633,7 +633,7 @@ var SwaggerHandler = /** @class */ (function () {
     });
     Object.defineProperty(SwaggerHandler, "models", {
         get: function () {
-            return swaggerModels.map(function (model) {
+            return swaggerModels.filter(function (model) {
                 if (model.classInstance != null) {
                     return model;
                 }
