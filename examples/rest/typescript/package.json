@@ -24,7 +24,7 @@
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-typescript-starter#readme",
   "dependencies": {
     "fortjs": "^1.9.3",
-    "fortjs-swagger": "^1.0.3",
+    "fortjs-swagger": "^1.0.4",
     "validator": "^11.1.0"
   },
   "devDependencies": {
