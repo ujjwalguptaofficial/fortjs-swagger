@@ -32,9 +32,7 @@
     "url": "https://github.com/ujjwalguptaofficial/fortjs-swagger/issues"
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-swagger#readme",
-  "dependencies": {
-   
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
     "@types/node": "^10.12.15",
@@ -43,7 +41,7 @@
     "eshtml": "^0.2.2",
     "js-comments": "^0.5.4",
     "style-loader": "^0.23.1",
-    "swagger-ui": "^3.23.5",
+    "swagger-ui": "^3.24.3",
     "ts-loader": "^5.3.1",
     "tslint": "^5.11.0",
     "tslint-config-security": "^1.13.0",
