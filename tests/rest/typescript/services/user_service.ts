@@ -12,7 +12,8 @@ const store: IStore = {
         address: "bhubaneswar india",
         emailId: "ujjwal@mg.com",
         gender: "male",
-        password: "admin"
+        password: "admin",
+        wishList: []
     }]
 };
 

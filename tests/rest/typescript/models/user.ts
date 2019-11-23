@@ -1,5 +1,22 @@
 import { IgnoreProperty, SwaggerModel, OptionalProperty } from "fortjs-swagger";
 
+export class Friend implements SwaggerModel {
+    @OptionalProperty
+    id?: number;
+
+    @IgnoreProperty
+    somePropertyIDontWantInSwagger?: any;
+
+
+    name: string;
+
+
+    getExample?() {
+        this.id = 0;
+        this.name = "ujjwal";
+    }
+}
+
 export class User implements SwaggerModel {
 
 
@@ -15,6 +32,10 @@ export class User implements SwaggerModel {
     address: string;
 
     emailId: string;
+
+    friends?: Friend[] = [];
+
+    wishList? = ["india", "america", "london"];
 
     @IgnoreProperty
     init?(user) {
@@ -34,5 +55,9 @@ export class User implements SwaggerModel {
         this.gender = "male";
         this.name = "ujjwal";
         this.password = "asdfghj";
+        const friend = new Friend();
+        friend.id = 1;
+        friend.name = "john";
+        this.friends = [friend];
     }
 }

@@ -3,12 +3,13 @@ import { DATA_TYPE } from "../enums";
 import { SwaggerHandler } from "../handlers/swagger_handler";
 import { SwaggerModelInfo } from "../types/swagger_model_info";
 import { SwaggerModel } from "../abstracts/swagger_model";
+import { isCustomClass } from "./is_custom_class";
 
 export const extractAndSaveModel = (value) => {
     let className = "";
     const type = getDataType(value);
     const saveModelInfo = (modelValue) => {
-        const model = getModelinfo(modelValue);
+        const model = getModelinfo(modelValue, type);
         if (model != null) {
             SwaggerHandler.saveModel(model);
             className = model.className;
@@ -23,12 +24,18 @@ export const extractAndSaveModel = (value) => {
             saveModelInfo(firstValue);
         }
     }
+    else {
+        if (isCustomClass(value)) {
+            saveModelInfo(value);
+        }
+    }
     return className;
 };
 
-const getModelinfo = (value) => {
+const getModelinfo = (value, type) => {
     try {
-        const model: SwaggerModel = new value();
+        const model: SwaggerModel = type === DATA_TYPE.Function ?
+            new value() : value;
         let example;
         if (model.getExample != null) {
             example = model.getExample();

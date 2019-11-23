@@ -13,6 +13,12 @@ import { SwaggerOutputModelInfo } from "../types/swagger_output_model_info";
 import { SwaggerOutputResponseContent } from "../types/swagger_output_response_content";
 import { SwaggerOutputParamInfo } from "../types/swagger_output_param_info";
 import { SWAGGER_OUTPUT_PARAM } from "../enums/swagger_output_param";
+import { DATA_TYPE } from "../enums";
+import { SwaggerRef } from "../types/swagger_ref";
+import { extractAndSaveModel } from "./extract_model";
+import { getClassName } from "./get_class_name";
+import { SwaggerModelInfo } from "../types/swagger_model_info";
+import { isCustomClass } from "./is_custom_class";
 
 
 export class SwaggerFormatter {
@@ -109,37 +115,56 @@ export class SwaggerFormatter {
     }
 
     private getModels_() {
-        const models = {
+        const modelsInfo = {
 
         };
-        SwaggerHandler.models.forEach(model => {
-            const obj = model.classInstance;
-            const keys = Object.keys(obj);
-            // remove ignored prop
-            model.ignoredProperty.forEach(prop => {
-                const index = keys.indexOf(prop);
-                keys.splice(index, 1);
-            });
-            const properties = {};
-            keys.forEach(key => {
-                const propValue = obj[key];
-                const dataType = getDataType(propValue);
-                properties[key] = {
-                    type: dataType
-                } as SwaggerCustomParam;
-            });
-            model.optionals.forEach(optional => {
-                const index = keys.indexOf(optional);
-                if (index >= 0) {
+        const createSwaggerModelSchemas = (model: SwaggerModelInfo) => {
+            if (isCustomClass(model.classInstance)) {
+                const obj = model.classInstance;
+                const keys = Object.keys(obj);
+                // remove ignored prop
+                model.ignoredProperty.forEach(prop => {
+                    const index = keys.indexOf(prop);
                     keys.splice(index, 1);
-                }
-            });
-            models[model.className] = {
-                required: keys,
-                properties: properties
-            } as SwaggerOutputModelInfo;
-        });
-        return models;
+                });
+                const properties = {};
+                keys.forEach(key => {
+                    const propValue = obj[key];
+                    const dataType = getDataType(propValue);
+                    const paramInfo = {
+                        type: dataType
+                    } as SwaggerCustomParam;
+                    if (dataType === DATA_TYPE.Array && propValue.length > 0) {
+                        const firstItem = propValue[0];
+                        const clasName = getClassName(firstItem);
+                        if (clasName && !SwaggerHandler.isModelExist(clasName)) {
+                            const modelInfo = {
+                                classInstance: firstItem,
+                                className: clasName,
+                                ignoredProperty: [],
+                                optionals: []
+                            } as SwaggerModelInfo;
+                            SwaggerHandler.saveModel(modelInfo);
+                            createSwaggerModelSchemas(modelInfo);
+                        }
+                        paramInfo.items = getParamSchema(firstItem) as any
+                    }
+                    properties[key] = paramInfo;
+                });
+                model.optionals.forEach(optional => {
+                    const index = keys.indexOf(optional);
+                    if (index >= 0) {
+                        keys.splice(index, 1);
+                    }
+                });
+                modelsInfo[model.className] = {
+                    required: keys,
+                    properties: properties
+                } as SwaggerOutputModelInfo;
+            }
+        }
+        SwaggerHandler.models.forEach(createSwaggerModelSchemas);
+        return modelsInfo;
     }
 
     private getResponses_(className: string, methodName: string) {

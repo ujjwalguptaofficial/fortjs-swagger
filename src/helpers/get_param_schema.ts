@@ -13,7 +13,7 @@ export const getParamSchema = (value) => {
         const refValue: SwaggerRef = {
             $ref: modelRefString
         };
-        if (dataType === DATA_TYPE.Function) { // it is class
+        if (dataType === DATA_TYPE.Function || dataType === DATA_TYPE.Object) { // it is class
             return refValue;
         }
         else { // it is array of class

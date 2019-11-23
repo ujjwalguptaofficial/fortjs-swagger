@@ -7,6 +7,6 @@ export type WorkerInfo = {
     responses: ResponseInfo[];
     queries: QueryInfo[];
     params: QueryInfo[];
-    body: null;
+    body: any;
     file: { [variableName: string]: any };
 }

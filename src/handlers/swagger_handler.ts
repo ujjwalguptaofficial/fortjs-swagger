@@ -88,7 +88,7 @@ export class SwaggerHandler {
     static saveBody(className: string, methodName: string, body: BodyInfo) {
         const value = swaggerControllerInfos.find(qry => qry.className === className);
         const worker = getNewWorker(methodName);
-        worker.body = body as any;
+        worker.body = body;
         if (value == null) {
             swaggerControllerInfos.push({
                 className: className,
@@ -98,7 +98,7 @@ export class SwaggerHandler {
         else {
             const savedWorker = value.workers.find(qry => qry.methodName === methodName);
             if (savedWorker != null) { // add query for that worker
-                savedWorker.body = body as any;
+                savedWorker.body = body;
             }
             else { // add worker for the route
                 value.workers.push(worker);
@@ -109,6 +109,12 @@ export class SwaggerHandler {
     static saveModel(model: SwaggerModelInfo) {
         const value = swaggerModels.find(qry => qry.className === model.className);
         if (value == null) {
+            if (model.ignoredProperty == null) {
+                model.ignoredProperty = [];
+            }
+            if (model.optionals == null) {
+                model.optionals = [];
+            }
             swaggerModels.push(model);
         }
         else if (value.classInstance == null) {
@@ -151,6 +157,7 @@ export class SwaggerHandler {
     }
 
     static get models() {
+        // console.log('models are', swaggerModels);
         return swaggerModels.filter(model => {
             if (model.classInstance != null) {
                 return model;
@@ -241,5 +248,9 @@ export class SwaggerHandler {
             }
 
         }
+    }
+
+    static isModelExist(className: string) {
+        return SwaggerHandler.models.findIndex(q => q.className === className) >= 0;
     }
 }

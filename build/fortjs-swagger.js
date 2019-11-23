@@ -590,6 +590,12 @@ var SwaggerHandler = /** @class */ (function () {
     SwaggerHandler.saveModel = function (model) {
         var value = swaggerModels.find(function (qry) { return qry.className === model.className; });
         if (value == null) {
+            if (model.ignoredProperty == null) {
+                model.ignoredProperty = [];
+            }
+            if (model.optionals == null) {
+                model.optionals = [];
+            }
             swaggerModels.push(model);
         }
         else if (value.classInstance == null) {
@@ -633,6 +639,7 @@ var SwaggerHandler = /** @class */ (function () {
     });
     Object.defineProperty(SwaggerHandler, "models", {
         get: function () {
+            // console.log('models are', swaggerModels);
             return swaggerModels.filter(function (model) {
                 if (model.classInstance != null) {
                     return model;
@@ -726,6 +733,9 @@ var SwaggerHandler = /** @class */ (function () {
             }
         }
     };
+    SwaggerHandler.isModelExist = function (className) {
+        return SwaggerHandler.models.findIndex(function (q) { return q.className === className; }) >= 0;
+    };
     return SwaggerHandler;
 }());
 
@@ -746,6 +756,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _get_data_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get_data_type */ "./src/helpers/get_data_type.ts");
 /* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enums */ "./src/enums/index.ts");
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
+/* harmony import */ var _is_custom_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./is_custom_class */ "./src/helpers/is_custom_class.ts");
+
 
 
 
@@ -753,7 +765,7 @@ var extractAndSaveModel = function (value) {
     var className = "";
     var type = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(value);
     var saveModelInfo = function (modelValue) {
-        var model = getModelinfo(modelValue);
+        var model = getModelinfo(modelValue, type);
         if (model != null) {
             _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].saveModel(model);
             className = model.className;
@@ -768,11 +780,17 @@ var extractAndSaveModel = function (value) {
             saveModelInfo(firstValue);
         }
     }
+    else {
+        if (Object(_is_custom_class__WEBPACK_IMPORTED_MODULE_3__["isCustomClass"])(value)) {
+            saveModelInfo(value);
+        }
+    }
     return className;
 };
-var getModelinfo = function (value) {
+var getModelinfo = function (value, type) {
     try {
-        var model = new value();
+        var model = type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function ?
+            new value() : value;
         var example = void 0;
         if (model.getExample != null) {
             example = model.getExample();
@@ -785,6 +803,38 @@ var getModelinfo = function (value) {
     }
     catch (ex) {
         console.log("getModelinfo", ex);
+    }
+    return null;
+};
+
+
+/***/ }),
+
+/***/ "./src/helpers/get_class_name.ts":
+/*!***************************************!*\
+  !*** ./src/helpers/get_class_name.ts ***!
+  \***************************************/
+/*! exports provided: getClassName */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getClassName", function() { return getClassName; });
+/* harmony import */ var _get_data_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get_data_type */ "./src/helpers/get_data_type.ts");
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enums */ "./src/enums/index.ts");
+/* harmony import */ var _is_custom_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./is_custom_class */ "./src/helpers/is_custom_class.ts");
+
+
+
+var getClassName = function (value) {
+    var type = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(value);
+    if (type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function) { // means its class
+        return (new value()).constructor.name;
+    }
+    else {
+        if (Object(_is_custom_class__WEBPACK_IMPORTED_MODULE_2__["isCustomClass"])(value)) {
+            return value.constructor.name;
+        }
     }
     return null;
 };
@@ -843,7 +893,7 @@ var getParamSchema = function (value) {
         var refValue = {
             $ref: modelRefString
         };
-        if (dataType === ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Function) { // it is class
+        if (dataType === ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Function || dataType === ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Object) { // it is class
             return refValue;
         }
         else { // it is array of class
@@ -858,6 +908,31 @@ var getParamSchema = function (value) {
             type: dataType,
             example: value
         };
+    }
+};
+
+
+/***/ }),
+
+/***/ "./src/helpers/is_custom_class.ts":
+/*!****************************************!*\
+  !*** ./src/helpers/is_custom_class.ts ***!
+  \****************************************/
+/*! exports provided: isCustomClass */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isCustomClass", function() { return isCustomClass; });
+var isCustomClass = function (value) {
+    var constructorName = value.constructor.name;
+    switch (constructorName) {
+        case "Array":
+        case "String":
+        case "Function":
+            return false;
+        default:
+            return true;
     }
 };
 
@@ -881,6 +956,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_get_data_type__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/get_data_type */ "./src/helpers/get_data_type.ts");
 /* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../global */ "./src/global.ts");
 /* harmony import */ var _enums_swagger_output_param__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../enums/swagger_output_param */ "./src/enums/swagger_output_param.ts");
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../enums */ "./src/enums/index.ts");
+/* harmony import */ var _get_class_name__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./get_class_name */ "./src/helpers/get_class_name.ts");
+/* harmony import */ var _is_custom_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./is_custom_class */ "./src/helpers/is_custom_class.ts");
+
+
+
 
 
 
@@ -976,35 +1057,54 @@ var SwaggerFormatter = /** @class */ (function () {
         return null;
     };
     SwaggerFormatter.prototype.getModels_ = function () {
-        var models = {};
-        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].models.forEach(function (model) {
-            var obj = model.classInstance;
-            var keys = Object.keys(obj);
-            // remove ignored prop
-            model.ignoredProperty.forEach(function (prop) {
-                var index = keys.indexOf(prop);
-                keys.splice(index, 1);
-            });
-            var properties = {};
-            keys.forEach(function (key) {
-                var propValue = obj[key];
-                var dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_3__["getDataType"])(propValue);
-                properties[key] = {
-                    type: dataType
+        var modelsInfo = {};
+        var createSwaggerModelSchemas = function (model) {
+            if (Object(_is_custom_class__WEBPACK_IMPORTED_MODULE_8__["isCustomClass"])(model.classInstance)) {
+                var obj_1 = model.classInstance;
+                var keys_1 = Object.keys(obj_1);
+                // remove ignored prop
+                model.ignoredProperty.forEach(function (prop) {
+                    var index = keys_1.indexOf(prop);
+                    keys_1.splice(index, 1);
+                });
+                var properties_1 = {};
+                keys_1.forEach(function (key) {
+                    var propValue = obj_1[key];
+                    var dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_3__["getDataType"])(propValue);
+                    var paramInfo = {
+                        type: dataType
+                    };
+                    if (dataType === _enums__WEBPACK_IMPORTED_MODULE_6__["DATA_TYPE"].Array && propValue.length > 0) {
+                        var firstItem = propValue[0];
+                        var clasName = Object(_get_class_name__WEBPACK_IMPORTED_MODULE_7__["getClassName"])(firstItem);
+                        if (clasName && !_handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].isModelExist(clasName)) {
+                            var modelInfo = {
+                                classInstance: firstItem,
+                                className: clasName,
+                                ignoredProperty: [],
+                                optionals: []
+                            };
+                            _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveModel(modelInfo);
+                            createSwaggerModelSchemas(modelInfo);
+                        }
+                        paramInfo.items = Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(firstItem);
+                    }
+                    properties_1[key] = paramInfo;
+                });
+                model.optionals.forEach(function (optional) {
+                    var index = keys_1.indexOf(optional);
+                    if (index >= 0) {
+                        keys_1.splice(index, 1);
+                    }
+                });
+                modelsInfo[model.className] = {
+                    required: keys_1,
+                    properties: properties_1
                 };
-            });
-            model.optionals.forEach(function (optional) {
-                var index = keys.indexOf(optional);
-                if (index >= 0) {
-                    keys.splice(index, 1);
-                }
-            });
-            models[model.className] = {
-                required: keys,
-                properties: properties
-            };
-        });
-        return models;
+            }
+        };
+        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].models.forEach(createSwaggerModelSchemas);
+        return modelsInfo;
     };
     SwaggerFormatter.prototype.getResponses_ = function (className, methodName) {
         var result = {};
