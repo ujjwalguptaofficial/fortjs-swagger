@@ -1,8 +1,8 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const copyPlugin = require('copy-webpack-plugin');
-//const SmartBannerPlugin = require('smart-banner-webpack-plugin');
-//const banner = require('./license');
+const SmartBannerPlugin = require('smart-banner-webpack-plugin');
+const banner = require('./src/license');
 
 module.exports = [{
     name: "fort-swagger",
@@ -40,8 +40,8 @@ module.exports = [{
         new copyPlugin([{
             from: 'src/swagger_ui',
             to: 'swagger_ui'
-        }])
-        //new SmartBannerPlugin(banner)
+        }]),
+        new SmartBannerPlugin(banner)
     ],
     externals: [nodeExternals()]
 }];

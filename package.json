@@ -1,6 +1,6 @@
 {
   "name": "fortjs-swagger",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Swagger integration for fortjs.Creates automatic swagger config.",
   "main": "build/fortjs-swagger.js",
   "types": "build/ts/index.d.ts",
@@ -40,6 +40,7 @@
     "css-loader": "^2.1.0",
     "eshtml": "^0.2.2",
     "js-comments": "^0.5.4",
+    "smart-banner-webpack-plugin": "^3.0.1",
     "style-loader": "^0.23.1",
     "swagger-ui": "^3.24.3",
     "ts-loader": "^5.3.1",
