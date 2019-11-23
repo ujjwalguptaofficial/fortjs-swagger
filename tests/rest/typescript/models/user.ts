@@ -33,9 +33,9 @@ export class User implements SwaggerModel {
 
     emailId: string;
 
-    friends?: Friend[] = [];
+    friends?: Friend[];
 
-    wishList? = ["india", "america", "london"];
+    wishList?= ["india", "america", "london"];
 
     @IgnoreProperty
     init?(user) {

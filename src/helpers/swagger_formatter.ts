@@ -125,7 +125,9 @@ export class SwaggerFormatter {
                 // remove ignored prop
                 model.ignoredProperty.forEach(prop => {
                     const index = keys.indexOf(prop);
-                    keys.splice(index, 1);
+                    if (index >= 0) {
+                        keys.splice(index, 1);
+                    }
                 });
                 const properties = {};
                 keys.forEach(key => {

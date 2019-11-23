@@ -1080,7 +1080,9 @@ var SwaggerFormatter = /** @class */ (function () {
                 // remove ignored prop
                 model.ignoredProperty.forEach(function (prop) {
                     var index = keys_1.indexOf(prop);
-                    keys_1.splice(index, 1);
+                    if (index >= 0) {
+                        keys_1.splice(index, 1);
+                    }
                 });
                 var properties_1 = {};
                 keys_1.forEach(function (key) {
