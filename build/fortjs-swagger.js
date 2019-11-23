@@ -639,7 +639,6 @@ var SwaggerHandler = /** @class */ (function () {
     });
     Object.defineProperty(SwaggerHandler, "models", {
         get: function () {
-            // console.log('models are', swaggerModels);
             return swaggerModels.filter(function (model) {
                 if (model.classInstance != null) {
                     return model;
@@ -777,6 +776,7 @@ var extractAndSaveModel = function (value) {
     else if (type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Array && value.length > 0) { // means its array of class
         var firstValue = value[0];
         if (Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(firstValue) === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function) { // it is class
+            type = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(firstValue);
             saveModelInfo(firstValue);
         }
     }
@@ -787,10 +787,20 @@ var extractAndSaveModel = function (value) {
     }
     return className;
 };
+var getObject = function (value, type) {
+    switch (type) {
+        case _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function:
+            return new value();
+        case _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Object:
+            return value;
+    }
+};
 var getModelinfo = function (value, type) {
     try {
-        var model = type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function ?
-            new value() : value;
+        var model = getObject(value, type);
+        if (model == null) {
+            return;
+        }
         var example = void 0;
         if (model.getExample != null) {
             example = model.getExample();
@@ -929,7 +939,7 @@ var isCustomClass = function (value) {
     switch (constructorName) {
         case "Array":
         case "String":
-        case "Function":
+            // case "Function":
             return false;
         default:
             return true;

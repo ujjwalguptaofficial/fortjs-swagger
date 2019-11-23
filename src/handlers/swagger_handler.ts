@@ -157,7 +157,6 @@ export class SwaggerHandler {
     }
 
     static get models() {
-        // console.log('models are', swaggerModels);
         return swaggerModels.filter(model => {
             if (model.classInstance != null) {
                 return model;

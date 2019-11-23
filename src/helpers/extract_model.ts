@@ -7,7 +7,7 @@ import { isCustomClass } from "./is_custom_class";
 
 export const extractAndSaveModel = (value) => {
     let className = "";
-    const type = getDataType(value);
+    let type = getDataType(value);
     const saveModelInfo = (modelValue) => {
         const model = getModelinfo(modelValue, type);
         if (model != null) {
@@ -21,6 +21,7 @@ export const extractAndSaveModel = (value) => {
     else if (type === DATA_TYPE.Array && value.length > 0) { // means its array of class
         const firstValue = value[0];
         if (getDataType(firstValue) === DATA_TYPE.Function) { // it is class
+            type = getDataType(firstValue);
             saveModelInfo(firstValue);
         }
     }
@@ -32,10 +33,21 @@ export const extractAndSaveModel = (value) => {
     return className;
 };
 
+const getObject = (value, type) => {
+    switch (type) {
+        case DATA_TYPE.Function:
+            return new value();
+        case DATA_TYPE.Object:
+            return value;
+    }
+};
+
 const getModelinfo = (value, type) => {
     try {
-        const model: SwaggerModel = type === DATA_TYPE.Function ?
-            new value() : value;
+        const model: SwaggerModel = getObject(value, type);
+        if (model == null) {
+            return;
+        }
         let example;
         if (model.getExample != null) {
             example = model.getExample();
