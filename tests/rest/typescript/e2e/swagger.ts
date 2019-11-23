@@ -13,14 +13,36 @@ export const swaggerJson = {
     ],
     "components": {
         "schemas": {
+            "Friend": {
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
             "User": {
                 "required": [
+                    "friends",
+                    "wishList",
                     "address",
                     "emailId",
                     "gender",
                     "name"
                 ],
                 "properties": {
+                    "friends": {
+                        "items": {
+                            "$ref": "#/components/schemas/Friend",
+                        },
+                        "type": "array",
+                    },
                     "id": {
                         "type": "number"
                     },
@@ -35,7 +57,14 @@ export const swaggerJson = {
                     },
                     "name": {
                         "type": "string"
-                    }
+                    },
+                    "wishList": {
+                        "items": {
+                            "example": "india",
+                            "type": "string",
+                        },
+                        "type": "array",
+                    },
                 }
             }
         },
