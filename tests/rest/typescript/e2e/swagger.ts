@@ -29,19 +29,21 @@ export const swaggerJson = {
             },
             "User": {
                 "required": [
-                    "friends",
                     "wishList",
                     "address",
                     "emailId",
                     "gender",
-                    "name"
+                    "name",
+                    "password",
+                    "friends"
                 ],
                 "properties": {
-                    "friends": {
-                        "items": {
-                            "$ref": "#/components/schemas/Friend",
-                        },
+                    "wishList": {
                         "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "india"
+                        }
                     },
                     "id": {
                         "type": "number"
@@ -58,13 +60,15 @@ export const swaggerJson = {
                     "name": {
                         "type": "string"
                     },
-                    "wishList": {
-                        "items": {
-                            "example": "india",
-                            "type": "string",
-                        },
-                        "type": "array",
+                    "password": {
+                        "type": "string"
                     },
+                    "friends": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Friend"
+                        }
+                    }
                 }
             }
         },
@@ -330,6 +334,30 @@ export const swaggerJson = {
                         "basicAuth": [
 
                         ]
+                    }
+                ]
+            },
+        },
+        "/user/apiwithoutresponse": {
+            "get": {
+                "operationId": "apiWithoutResponse",
+                "consumes": [
+                    "application/json",
+                    "application/xml",
+                    "text/html",
+                    "text/plain",
+                    "*/*"
+                ],
+                "parameters": [],
+                "tags": [
+                    "user"
+                ],
+                "responses": {},
+                "summary": "an api without response",
+                "description": null,
+                "security": [
+                    {
+                        "basicAuth": []
                     }
                 ]
             }
