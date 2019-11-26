@@ -1140,7 +1140,7 @@ var SwaggerFormatter = /** @class */ (function () {
             });
         }
         else {
-            _utils__WEBPACK_IMPORTED_MODULE_9__["SwaggerLogger"].warning("No resonse found for worker - \"" + methodName + "\" inside controller \"" + className + "\".");
+            _utils__WEBPACK_IMPORTED_MODULE_9__["SwaggerLogger"].warning("No response is defined for worker - \"" + methodName + "\" inside controller \"" + className + "\".");
         }
         return result;
     };
@@ -1404,7 +1404,7 @@ var SwaggerLogger = /** @class */ (function () {
     function SwaggerLogger() {
     }
     SwaggerLogger.warning = function (msg) {
-        console.log('Warning !', msg);
+        console.log('Swagger Warning !', msg);
     };
     return SwaggerLogger;
 }());

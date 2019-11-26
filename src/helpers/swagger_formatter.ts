@@ -185,7 +185,7 @@ export class SwaggerFormatter {
             });
         }
         else {
-            SwaggerLogger.warning(`No resonse found for worker - "${methodName}" inside controller "${className}".`);
+            SwaggerLogger.warning(`No response is defined for worker - "${methodName}" inside controller "${className}".`);
         }
         return result;
     }
