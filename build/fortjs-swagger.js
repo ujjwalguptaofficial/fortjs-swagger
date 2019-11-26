@@ -1,5 +1,5 @@
 /*!
- * @license :fortjs-swagger - V1.1.1 - 26/11/2019
+ * @license :fortjs-swagger - V1.1.2 - 26/11/2019
  * https://github.com/ujjwalguptaofficial/fortjs-swagger
  * Copyright (c) 2019 @Ujjwal Gupta; Licensed MIT
  */
