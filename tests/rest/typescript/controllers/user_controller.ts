@@ -70,8 +70,8 @@ export class UserController extends Controller {
     }
 
     @Summary('remove a single user by id')
-    @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
-    @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
+    // @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
+    // @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @Worker([HTTP_METHOD.Delete])
     @Route("/{id}")
     async removeUser() {

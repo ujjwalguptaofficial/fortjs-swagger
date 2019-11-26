@@ -1,5 +1,5 @@
 /*!
- * @license :fortjs-swagger - V1.1.1 - 23/11/2019
+ * @license :fortjs-swagger - V1.1.1 - 26/11/2019
  * https://github.com/ujjwalguptaofficial/fortjs-swagger
  * Copyright (c) 2019 @Ujjwal Gupta; Licensed MIT
  */
@@ -974,6 +974,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../enums */ "./src/enums/index.ts");
 /* harmony import */ var _get_class_name__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./get_class_name */ "./src/helpers/get_class_name.ts");
 /* harmony import */ var _is_custom_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./is_custom_class */ "./src/helpers/is_custom_class.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils */ "./src/utils/index.ts");
+
 
 
 
@@ -1127,14 +1129,19 @@ var SwaggerFormatter = /** @class */ (function () {
         var result = {};
         var workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(function (qry) { return qry.className === className; }).
             workers.find(function (qry) { return qry.methodName === methodName; });
-        workerInfo.responses.forEach(function (response) {
-            result[response.statusCode] = { content: {} };
-            response.contentType.forEach(function (contentType) {
-                result[response.statusCode].content[contentType] = {
-                    schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(response.value)
-                };
+        if (workerInfo != null) {
+            workerInfo.responses.forEach(function (response) {
+                result[response.statusCode] = { content: {} };
+                response.contentType.forEach(function (contentType) {
+                    result[response.statusCode].content[contentType] = {
+                        schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(response.value)
+                    };
+                });
             });
-        });
+        }
+        else {
+            _utils__WEBPACK_IMPORTED_MODULE_9__["SwaggerLogger"].warning("No resonse found for worker - \"" + methodName + "\" inside controller \"" + className + "\".");
+        }
         return result;
     };
     SwaggerFormatter.prototype.getParams_ = function (className, methodName) {
@@ -1361,6 +1368,46 @@ var Swagger = /** @class */ (function (_super) {
     };
     return Swagger;
 }(fortjs__WEBPACK_IMPORTED_MODULE_0__["Router"]));
+
+
+
+/***/ }),
+
+/***/ "./src/utils/index.ts":
+/*!****************************!*\
+  !*** ./src/utils/index.ts ***!
+  \****************************/
+/*! exports provided: SwaggerLogger */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./logger */ "./src/utils/logger.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SwaggerLogger", function() { return _logger__WEBPACK_IMPORTED_MODULE_0__["SwaggerLogger"]; });
+
+
+
+
+/***/ }),
+
+/***/ "./src/utils/logger.ts":
+/*!*****************************!*\
+  !*** ./src/utils/logger.ts ***!
+  \*****************************/
+/*! exports provided: SwaggerLogger */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerLogger", function() { return SwaggerLogger; });
+var SwaggerLogger = /** @class */ (function () {
+    function SwaggerLogger() {
+    }
+    SwaggerLogger.warning = function (msg) {
+        console.log('Warning !', msg);
+    };
+    return SwaggerLogger;
+}());
 
 
 

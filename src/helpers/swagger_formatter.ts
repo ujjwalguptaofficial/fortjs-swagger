@@ -19,6 +19,7 @@ import { extractAndSaveModel } from "./extract_model";
 import { getClassName } from "./get_class_name";
 import { SwaggerModelInfo } from "../types/swagger_model_info";
 import { isCustomClass } from "./is_custom_class";
+import { SwaggerLogger } from "../utils";
 
 
 export class SwaggerFormatter {
@@ -173,15 +174,19 @@ export class SwaggerFormatter {
         const result = {};
         const workerInfo = SwaggerHandler.controllers.find(qry => qry.className === className).
             workers.find(qry => qry.methodName === methodName);
-
-        workerInfo.responses.forEach(response => {
-            result[response.statusCode] = { content: {} } as SwaggerOutputResponseContent;
-            response.contentType.forEach(contentType => {
-                result[response.statusCode].content[contentType] = {
-                    schema: getParamSchema(response.value)
-                } as SwaggerParamSchema;
+        if (workerInfo != null) {
+            workerInfo.responses.forEach(response => {
+                result[response.statusCode] = { content: {} } as SwaggerOutputResponseContent;
+                response.contentType.forEach(contentType => {
+                    result[response.statusCode].content[contentType] = {
+                        schema: getParamSchema(response.value)
+                    } as SwaggerParamSchema;
+                });
             });
-        });
+        }
+        else {
+            SwaggerLogger.warning(`No resonse found for worker - "${methodName}" inside controller "${className}".`);
+        }
         return result;
     }
 
