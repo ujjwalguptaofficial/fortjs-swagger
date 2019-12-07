@@ -8,7 +8,7 @@ import { SwaggerOption } from "../types/swagger_option";
 export class Swagger extends Router {
     constructor() {
         super();
-        Global.routes = this.routes;
+        Global.routes = this.routesAsArray;
     }
 
     async create(option?: SwaggerOption) {

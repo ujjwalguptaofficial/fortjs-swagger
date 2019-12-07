@@ -43,7 +43,7 @@ export class SwaggerFormatter {
                     pathName = route.path.substr(1)
                 }
                 const controllerSecurity = this.getControllerSecurity_(route.controllerName);
-                route.workers.forEach(worker => {
+                route.workersAsArray.forEach(worker => {
                     let pattern = worker.pattern;
                     if (pattern[0] !== "/") {
                         pattern = `/${pattern}`;

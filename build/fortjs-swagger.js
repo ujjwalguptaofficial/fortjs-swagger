@@ -1,5 +1,5 @@
 /*!
- * @license :fortjs-swagger - V1.1.3 - 26/11/2019
+ * @license :fortjs-swagger - V1.1.3 - 07/12/2019
  * https://github.com/ujjwalguptaofficial/fortjs-swagger
  * Copyright (c) 2019 @Ujjwal Gupta; Licensed MIT
  */
@@ -1009,7 +1009,7 @@ var SwaggerFormatter = /** @class */ (function () {
                     pathName_1 = route.path.substr(1);
                 }
                 var controllerSecurity_1 = _this.getControllerSecurity_(route.controllerName);
-                route.workers.forEach(function (worker) {
+                route.workersAsArray.forEach(function (worker) {
                     var pattern = worker.pattern;
                     if (pattern[0] !== "/") {
                         pattern = "/" + pattern;
@@ -1327,7 +1327,7 @@ var Swagger = /** @class */ (function (_super) {
     __extends(Swagger, _super);
     function Swagger() {
         var _this = _super.call(this) || this;
-        _global__WEBPACK_IMPORTED_MODULE_1__["Global"].routes = _this.routes;
+        _global__WEBPACK_IMPORTED_MODULE_1__["Global"].routes = _this.routesAsArray;
         return _this;
     }
     Swagger.prototype.create = function (option) {
