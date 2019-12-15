@@ -1,4 +1,5 @@
-import { IgnoreProperty, SwaggerModel, OptionalProperty } from "fortjs-swagger";
+import { IgnoreProperty, SwaggerModel, OptionalProperty, Tag } from "fortjs-swagger";
+
 
 export class Friend implements SwaggerModel {
     @OptionalProperty

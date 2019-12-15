@@ -2,12 +2,13 @@ import { Controller, textResult, DefaultWorker, jsonResult, Worker, Route, HTTP_
 import { UserService } from '../services/user_service';
 import { ModelUserGuard } from '../guards/model_user_guard';
 import { User } from '../models/user';
-import { Response, Body, Param, Summary, Description, Security } from 'fortjs-swagger';
+import { Response, Body, Param, Summary, Description, Security, Tag } from 'fortjs-swagger';
 import { AuthenticationShield } from '../shields/authentication_shield';
 
 
 @Shields([AuthenticationShield])
 @Security('basicAuth')
+@Tag('User', 'All operations related to user' as any)
 export class UserController extends Controller {
 
     @Summary('get all users')

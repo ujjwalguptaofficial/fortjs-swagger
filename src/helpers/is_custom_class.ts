@@ -3,7 +3,8 @@ export const isCustomClass = (value: any) => {
     switch (constructorName) {
         case "Array":
         case "String":
-        // case "Function":
+        case "Object":
+            // case "Function":
             return false;
         default:
             return true;

@@ -20,15 +20,31 @@ import { getClassName } from "./get_class_name";
 import { SwaggerModelInfo } from "../types/swagger_model_info";
 import { isCustomClass } from "./is_custom_class";
 import { SwaggerLogger } from "../utils";
+import { SwaggerControllerInfo } from "../types/swagger_controller_info";
 
 
 export class SwaggerFormatter {
+    tags_: SwaggerControllerInfo[] = [];
+    getTags_() {
+        const tags = [];
+        SwaggerHandler.controllers.forEach(val => {
+            if (val && val.tag) {
+                tags.push(val.tag);
+                this.tags_.push(val);
+            }
+        });
+        return tags;
+    }
+
+
     format(option: SwaggerOption) {
+
         const routes = Global.routes;
         const swaggerJson: SwaggerStructure = {
             openapi: "3.0.0",
             info: option.appInfo,
             servers: option.servers,
+            tags: this.getTags_(),
             components: {
                 schemas: this.getModels_(),
                 securitySchemes: option.securitySchemes
@@ -60,7 +76,7 @@ export class SwaggerFormatter {
                             operationId: worker.workerName,
                             consumes: [MIME_TYPE.Json, MIME_TYPE.Xml, MIME_TYPE.Html, MIME_TYPE.Text, "*/*"],
                             parameters: this.getParams_(route.controllerName, worker.workerName),
-                            tags: [pathName],
+                            tags: this.getTag_(route.controllerName, pathName),
                             responses: this.getResponses_(route.controllerName, worker.workerName),
                             summary: this.getSummary_(route.controllerName, worker.workerName),
                             description: this.getDescription_(route.controllerName, worker.workerName),
@@ -74,6 +90,14 @@ export class SwaggerFormatter {
         });
         swaggerJson.paths = swaggerPaths;
         return swaggerJson;
+    }
+
+    private getTag_(className, defaultTag) {
+        const tag = this.tags_.find(q => q.className === className);
+        if (tag) {
+            return [tag.tag.name]
+        }
+        return [defaultTag];
     }
 
     private getControllerSecurity_(className: string) {

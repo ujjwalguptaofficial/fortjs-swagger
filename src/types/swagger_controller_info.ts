@@ -7,5 +7,8 @@ export type SwaggerControllerInfo = {
         type: string;
         scopes: string[]
     }]
-
+    tag?: {
+        name: string;
+        description: string;
+    }
 }

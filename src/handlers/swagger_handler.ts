@@ -249,6 +249,24 @@ export class SwaggerHandler {
         }
     }
 
+    static saveTag(className: string, name: string, description: string) {
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
+        const tag = {
+            name,
+            description
+        };
+        if (value == null) {
+            swaggerControllerInfos.push({
+                className: className,
+                workers: [],
+                tag
+            });
+        }
+        else {
+            value.tag = tag;
+        }
+    }
+
     static isModelExist(className: string) {
         return SwaggerHandler.models.findIndex(q => q.className === className) >= 0;
     }

@@ -8,4 +8,5 @@ export type SwaggerStructure = {
     servers: ServerInfo[];
     paths: any;
     components: SwaggerComponent;
+    tags: [];
 }

@@ -11,8 +11,15 @@ export const swaggerJson = {
             "url": "http://localhost:4000"
         }
     ],
+    "tags": [
+        {
+            "description": "All operations related to user",
+            "name": "User",
+        },
+    ],
     "components": {
         "schemas": {
+            "Student": { "required": ["id"], "properties": { "id": { "type": "number" } } },
             "Friend": {
                 "required": [
                     "id",
@@ -80,6 +87,126 @@ export const swaggerJson = {
         }
     },
     "paths": {
+        "/": {
+            "get": {
+                "consumes": [
+                    "application/json",
+                    "application/xml",
+                    "text/html",
+                    "text/plain",
+                    "*/*",
+                ],
+                "description": null,
+                "operationId": "index",
+                "parameters": [],
+                "responses": {},
+                "security": [
+                    {
+                        "": [],
+                    },
+                ],
+                "summary": null,
+                "tags": [
+                    "*",
+                ],
+            },
+        },
+        "/anonymousbody": {
+            "post": {
+                "consumes": [
+                    "application/json",
+                    "application/xml",
+                    "text/html",
+                    "text/plain",
+                    "*/*",
+                ],
+                "description": null,
+                "operationId": "AnonymousBody",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "example": {
+                                "id": "",
+                                "name": "",
+                            },
+                            "type": "object",
+                        },
+                    },
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "example": {
+                                        "data": {},
+                                        "message": "",
+                                        "status": "",
+                                    },
+                                    "type": "object",
+                                },
+                            },
+                        },
+                    },
+                },
+                "security": [
+                    {
+                        "": [],
+                    },
+                ],
+                "summary": null,
+                "tags": [
+                    "*",
+                ],
+            },
+        },
+        "/modelbody": {
+            "post": {
+                "consumes": [
+                    "application/json",
+                    "application/xml",
+                    "text/html",
+                    "text/plain",
+                    "*/*",
+                ],
+                "description": null,
+                "operationId": "ModelBody",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Student",
+                        },
+                    },
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "example": "works ok",
+                                    "type": "string",
+                                },
+                            },
+                        },
+                    },
+                },
+                "security": [
+                    {
+                        "": [],
+                    },
+                ],
+                "summary": null,
+                "tags": [
+                    "*",
+                ],
+            },
+        },
         "/user/": {
             "get": {
                 "operationId": "getUsers",
@@ -94,7 +221,7 @@ export const swaggerJson = {
 
                 ],
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -149,7 +276,7 @@ export const swaggerJson = {
                     }
                 ],
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -190,7 +317,7 @@ export const swaggerJson = {
 
                 ],
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -252,7 +379,7 @@ export const swaggerJson = {
                     }
                 ],
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -303,7 +430,7 @@ export const swaggerJson = {
 
                 ],
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -350,7 +477,7 @@ export const swaggerJson = {
                 ],
                 "parameters": [],
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "responses": {},
                 "summary": "an api without response",

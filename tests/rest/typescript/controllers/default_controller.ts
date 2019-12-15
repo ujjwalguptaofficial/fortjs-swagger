@@ -1,7 +1,8 @@
 import { Controller, DefaultWorker, textResult, viewResult, Worker, Assign, HTTP_STATUS_CODE, Route, HTTP_METHOD } from "fortjs";
-import { Summary, Security } from "fortjs-swagger";
+import { Summary, Response, Security, Body } from "fortjs-swagger";
+import { Student } from "../models/student";
 
-
+@Security('')
 export class DefaultController extends Controller {
 
     @DefaultWorker()
@@ -18,6 +19,20 @@ export class DefaultController extends Controller {
             const result = await textResult("Our server is busy right now. Please try later.");
             return result;
         }
+    }
+
+    @Worker([HTTP_METHOD.Post])
+    @Body({ id: "", name: "" })
+    @Response(200, { message: "", status: "", data: {} })
+    async AnonymousBody() {
+
+    }
+
+    @Worker([HTTP_METHOD.Post])
+    @Body(Student)
+    @Response(200, 'works ok')
+    async ModelBody() {
+
     }
 
 }

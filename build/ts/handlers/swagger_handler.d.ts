@@ -18,5 +18,6 @@ export declare class SwaggerHandler {
     static saveDescription(className: string, propName: string, description: string): void;
     static readonly classInfos: ClassInfo[];
     static saveSecurity(className: string, type: string, scopes: string[]): void;
+    static saveTag(className: string, name: string, description: string): void;
     static isModelExist(className: string): boolean;
 }
