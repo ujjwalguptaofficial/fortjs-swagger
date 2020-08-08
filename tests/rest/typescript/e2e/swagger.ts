@@ -207,7 +207,7 @@ export const swaggerJson = {
                 ],
             },
         },
-        "/user/": {
+        "/user": {
             "get": {
                 "operationId": "getUsers",
                 "consumes": [
