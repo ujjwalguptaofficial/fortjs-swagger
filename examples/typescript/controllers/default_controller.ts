@@ -1,8 +1,11 @@
-import { Controller, DefaultWorker, textResult, viewResult, Worker, Assign } from "fortjs";
+import { Controller, DefaultWorker, textResult, viewResult, Worker, Assign, HTTP_STATUS_CODE, MIME_TYPE } from "fortjs";
+import { Summary, Response } from "fortjs-swagger";
 
 export class DefaultController extends Controller {
 
     @DefaultWorker()
+    @Summary('Home Page')
+    @Response(HTTP_STATUS_CODE.Ok, "", MIME_TYPE.Html)
     async index(@Assign('FortJs') title: string) {
         try {
             const data = {
