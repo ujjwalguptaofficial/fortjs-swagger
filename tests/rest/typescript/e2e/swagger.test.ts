@@ -22,7 +22,7 @@ describe('/swagger', () => {
     });
 
     afterAll(() => {
-        return app.destroy();
+        return Fort.destroy();
     });
 
 });

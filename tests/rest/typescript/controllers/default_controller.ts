@@ -21,14 +21,14 @@ export class DefaultController extends Controller {
         }
     }
 
-    @Worker([HTTP_METHOD.Post])
+    @Worker(HTTP_METHOD.Post)
     @Body({ id: "", name: "" })
     @Response(200, { message: "", status: "", data: {} })
     async AnonymousBody() {
 
     }
 
-    @Worker([HTTP_METHOD.Post])
+    @Worker(HTTP_METHOD.Post)
     @Body(Student)
     @Response(200, 'works ok')
     async ModelBody() {

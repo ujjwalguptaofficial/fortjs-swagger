@@ -1,7 +1,7 @@
 /*!
- * @license :fortjs-swagger - V1.2.0 - 15/12/2019
+ * @license :fortjs-swagger - V1.2.0 - 08/08/2020
  * https://github.com/ujjwalguptaofficial/fortjs-swagger
- * Copyright (c) 2019 @Ujjwal Gupta; Licensed MIT
+ * Copyright (c) 2020 @Ujjwal Gupta; Licensed MIT
  */
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
@@ -1395,16 +1395,15 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var Swagger = /** @class */ (function (_super) {
     __extends(Swagger, _super);
     function Swagger() {
-        var _this = _super.call(this) || this;
-        _global__WEBPACK_IMPORTED_MODULE_1__["Global"].routes = _this.routesAsArray;
-        return _this;
+        return _super.call(this) || this;
     }
-    Swagger.prototype.create = function (option) {
+    Swagger.create = function (option) {
         return __awaiter(this, void 0, void 0, function () {
             var formatedData, isPathExist, swaggerConfigPath;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        _global__WEBPACK_IMPORTED_MODULE_1__["Global"].routes = this.instance.routesAsArray;
                         formatedData = new _helpers_swagger_formatter__WEBPACK_IMPORTED_MODULE_3__["SwaggerFormatter"]().format(option);
                         return [4 /*yield*/, fs_extra__WEBPACK_IMPORTED_MODULE_2__["pathExists"](option.outputPath)];
                     case 1:
@@ -1420,7 +1419,7 @@ var Swagger = /** @class */ (function (_super) {
                     case 4:
                         _a.sent();
                         //copy swagger files
-                        return [4 /*yield*/, this.copySwaggerAssets_(option.outputPath)];
+                        return [4 /*yield*/, this.instance.copySwaggerAssets_(option.outputPath)];
                     case 5:
                         //copy swagger files
                         _a.sent();
@@ -1435,6 +1434,7 @@ var Swagger = /** @class */ (function (_super) {
             return fs_extra__WEBPACK_IMPORTED_MODULE_2__["copy"](path__WEBPACK_IMPORTED_MODULE_4__["join"](__dirname, "swagger_ui/" + asset), contentPath + asset);
         }));
     };
+    Swagger.instance = new Swagger();
     return Swagger;
 }(fortjs__WEBPACK_IMPORTED_MODULE_0__["Router"]));
 

@@ -6,7 +6,7 @@ import { Response, Body, Param, Summary, Description, Security, Tag } from 'fort
 import { AuthenticationShield } from '../shields/authentication_shield';
 
 
-@Shields([AuthenticationShield])
+@Shields(AuthenticationShield)
 @Security('basicAuth')
 @Tag('User', 'All operations related to user' as any)
 export class UserController extends Controller {
@@ -22,9 +22,9 @@ export class UserController extends Controller {
 
 
     @Summary('Add user')
-    @Worker([HTTP_METHOD.Post])
+    @Worker(HTTP_METHOD.Post)
     @Route("/")
-    @Guards([ModelUserGuard])
+    @Guards(ModelUserGuard)
     @Response(HTTP_STATUS_CODE.Created, User)
     @Body(User, "User model")
     async addUser() {
@@ -37,8 +37,8 @@ export class UserController extends Controller {
     @Summary('Update user')
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @Worker([HTTP_METHOD.Put])
-    @Guards([ModelUserGuard])
+    @Worker(HTTP_METHOD.Put)
+    @Guards(ModelUserGuard)
     @Route("/")
     async updateUser() {
 
@@ -57,7 +57,7 @@ export class UserController extends Controller {
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @Param('id', 1, 'user id')
-    @Worker([HTTP_METHOD.Get])
+    @Worker(HTTP_METHOD.Get)
     @Route("/{id}")
     async getUser() {
 
@@ -73,7 +73,7 @@ export class UserController extends Controller {
     @Summary('remove a single user by id')
     @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @Worker([HTTP_METHOD.Delete])
+    @Worker(HTTP_METHOD.Delete)
     @Route("/{id}")
     async removeUser() {
 
@@ -93,7 +93,7 @@ export class UserController extends Controller {
     @Summary('an api without response')
     // @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
     // @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @Worker([HTTP_METHOD.Get])
+    @Worker(HTTP_METHOD.Get)
     async apiWithoutResponse() {
         return textResult("api without response");
     }

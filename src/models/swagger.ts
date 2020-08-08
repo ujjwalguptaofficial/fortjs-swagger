@@ -6,12 +6,15 @@ import * as Path from "path";
 import { SwaggerOption } from "../types/swagger_option";
 
 export class Swagger extends Router {
-    constructor() {
+
+    static instance = new Swagger();
+
+    private constructor() {
         super();
-        Global.routes = this.routesAsArray;
     }
 
-    async create(option?: SwaggerOption) {
+    static async create(option?: SwaggerOption) {
+        Global.routes = this.instance.routesAsArray;
 
         const formatedData = new SwaggerFormatter().format(option);
         //console.log("formmated data", JSON.stringify(formmatedData));
@@ -23,7 +26,7 @@ export class Swagger extends Router {
         await Fs.writeFile(swaggerConfigPath, JSON.stringify(formatedData));
 
         //copy swagger files
-        await this.copySwaggerAssets_(option.outputPath);
+        await this.instance.copySwaggerAssets_(option.outputPath);
 
     }
 
@@ -31,7 +34,7 @@ export class Swagger extends Router {
         const assets = ['index.html', 'swagger.js'];
         return Promise.all(assets.map(asset => {
             return Fs.copy(Path.join(__dirname, `swagger_ui/${asset}`), contentPath + asset);
-        }))
+        }));
     }
 
 }
