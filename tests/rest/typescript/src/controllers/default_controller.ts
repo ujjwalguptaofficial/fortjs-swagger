@@ -11,7 +11,7 @@ export class DefaultController extends Controller {
             const data = {
                 title: title
             };
-            const result = await viewResult('default/index.html', data);
+            const result = await viewResult('src/views/default/index.html', data);
             return result;
         } catch (ex) {
             // handle exception and show user a good message.

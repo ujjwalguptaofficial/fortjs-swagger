@@ -12,7 +12,7 @@ module.exports = [{
     output: {
         path: path.join(__dirname, "./dist"),
         filename: "fortjs-swagger.js",
-        library: 'fortjs-swagger',
+        // library: 'fortjs-swagger',
         libraryTarget: "commonjs2"
     },
     node: {
