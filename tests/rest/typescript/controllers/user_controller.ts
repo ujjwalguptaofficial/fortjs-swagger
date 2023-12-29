@@ -1,4 +1,4 @@
-import { Controller, textResult, DefaultWorker, jsonResult, Worker, Route, HTTP_STATUS_CODE, HTTP_METHOD, Guards, Shields } from 'fortjs';
+import { Controller, textResult, defaultWorker, jsonResult, worker, route, HTTP_STATUS_CODE, HTTP_METHOD, guards, shields } from 'fortjs';
 import { UserService } from '../services/user_service';
 import { ModelUserGuard } from '../guards/model_user_guard';
 import { User } from '../models/user';
@@ -6,14 +6,14 @@ import { Response, Body, Param, Summary, Description, Security, Tag } from 'fort
 import { AuthenticationShield } from '../shields/authentication_shield';
 
 
-@Shields(AuthenticationShield)
+@shields(AuthenticationShield)
 @Security('basicAuth')
 @Tag('User', 'All operations related to user' as any)
 export class UserController extends Controller {
 
     @Summary('get all users')
     @Description('return all saved users')
-    @DefaultWorker()
+    @defaultWorker()
     @Response(HTTP_STATUS_CODE.Ok, [User])
     async getUsers() {
         const service = new UserService();
@@ -22,9 +22,9 @@ export class UserController extends Controller {
 
 
     @Summary('Add user')
-    @Worker(HTTP_METHOD.Post)
-    @Route("/")
-    @Guards(ModelUserGuard)
+    @worker(HTTP_METHOD.Post)
+    @route("/")
+    @guards(ModelUserGuard)
     @Response(HTTP_STATUS_CODE.Created, User)
     @Body(User, "User model")
     async addUser() {
@@ -37,9 +37,9 @@ export class UserController extends Controller {
     @Summary('Update user')
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @Worker(HTTP_METHOD.Put)
-    @Guards(ModelUserGuard)
-    @Route("/")
+    @worker(HTTP_METHOD.Put)
+    @guards(ModelUserGuard)
+    @route("/")
     async updateUser() {
 
         const user: User = this.data.user;
@@ -57,8 +57,8 @@ export class UserController extends Controller {
     @Response(HTTP_STATUS_CODE.Ok, User)
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @Param('id', 1, 'user id')
-    @Worker(HTTP_METHOD.Get)
-    @Route("/{id}")
+    @worker(HTTP_METHOD.Get)
+    @route("/{id}")
     async getUser() {
 
         const userId = Number(this.param.id);
@@ -73,8 +73,8 @@ export class UserController extends Controller {
     @Summary('remove a single user by id')
     @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
     @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @Worker(HTTP_METHOD.Delete)
-    @Route("/{id}")
+    @worker(HTTP_METHOD.Delete)
+    @route("/{id}")
     async removeUser() {
 
         const userId = Number(this.param.id);
@@ -93,7 +93,7 @@ export class UserController extends Controller {
     @Summary('an api without response')
     // @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
     // @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @Worker(HTTP_METHOD.Get)
+    @worker(HTTP_METHOD.Get)
     async apiWithoutResponse() {
         return textResult("api without response");
     }

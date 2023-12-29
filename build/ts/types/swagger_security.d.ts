@@ -1,1 +1,1 @@
-export declare type SwaggerSecurity = {};
+export type SwaggerSecurity = {};

@@ -1,6 +1,6 @@
 import { QueryInfo } from "./query_info";
 import { ResponseInfo } from "./response_info";
-export declare type WorkerInfo = {
+export type WorkerInfo = {
     methodName: string;
     responses: ResponseInfo[];
     queries: QueryInfo[];

@@ -1,4 +1,4 @@
-export declare type ApplicationInfo = {
+export type ApplicationInfo = {
     title: string;
     description: string;
     version: string;

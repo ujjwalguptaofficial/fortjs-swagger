@@ -12,15 +12,16 @@
     "openapi"
   ],
   "scripts": {
-    "webpack": "webpack --config webpack.config.js",
+    "webpack": "export NODE_OPTIONS=--openssl-legacy-provider; webpack --config webpack.config.js",
     "webpack:watch": "webpack --config webpack.config.js --watch",
     "lint": "tslint src/**/*.ts",
     "build": "npm run webpack",
-    "build:ui": "webpack --config webpack.config.swagger.js",
+    "build:ui": "export NODE_OPTIONS=--openssl-legacy-provider; webpack --config webpack.config.swagger.js",
     "buildpack": "npm run build:ui && npm run build && npm pack",
     "start": "npm run webpack:watch && opn http://localhost:4000",
     "install:lib": "npm i ../fortjs/fortjs-1.5.0.tgz --no-save",
-    "test": "npm run buildpack && node test_runner.js",
+    "test": "node test_runner.js",
+    "build:test": "npm run buildpack && npm run test",
     "deploy": "npm run build:ui && npm run build"
   },
   "repository": {
@@ -33,8 +34,8 @@
     "url": "https://github.com/ujjwalguptaofficial/fortjs-swagger/issues"
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-swagger#readme",
-  "dependencies": {
-    "fortjs": "^2.0.0"
+  "peerDependencies": {
+    "fortjs": "^2.6.1"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
@@ -42,19 +43,17 @@
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.0",
     "eshtml": "^0.2.2",
+    "fortjs": "^2.6.1",
     "js-comments": "^0.5.4",
     "smart-banner-webpack-plugin": "^3.0.1",
     "style-loader": "^0.23.1",
     "swagger-ui": "^3.31.1",
-    "ts-loader": "^5.3.1",
+    "ts-loader": "^8.0.0",
     "tslint": "^5.11.0",
     "tslint-config-security": "^1.13.0",
-    "typescript": "^3.2.2",
+    "typescript": "^5.3.3",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
     "webpack-node-externals": "^1.7.2"
-  },
-  "peerDependencies": {
-    "fortjs": ">=2.0.0"
   }
 }

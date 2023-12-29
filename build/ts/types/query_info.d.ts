@@ -1,4 +1,4 @@
-export declare type QueryInfo = {
+export type QueryInfo = {
     variableName: string;
     value: any;
     description: string;

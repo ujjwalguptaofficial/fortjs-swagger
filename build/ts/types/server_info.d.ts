@@ -1,4 +1,4 @@
-export declare type ServerInfo = {
+export type ServerInfo = {
     url: string;
     description: string;
 };

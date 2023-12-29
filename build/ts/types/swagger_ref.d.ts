@@ -1,3 +1,3 @@
-export declare type SwaggerRef = {
+export type SwaggerRef = {
     $ref: string;
 };

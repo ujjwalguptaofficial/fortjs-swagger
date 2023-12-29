@@ -1,7 +1,7 @@
 /*!
- * @license :fortjs-swagger - V1.3.0 - 08/08/2020
+ * @license :fortjs-swagger - V1.3.0 - 29/12/2023
  * https://github.com/ujjwalguptaofficial/fortjs-swagger
- * Copyright (c) 2020 @Ujjwal Gupta; Licensed MIT
+ * Copyright (c) 2023 @Ujjwal Gupta; Licensed MIT
  */
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
@@ -668,7 +668,7 @@ var SwaggerHandler = /** @class */ (function () {
         get: function () {
             return swaggerControllerInfos;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SwaggerHandler, "models", {
@@ -679,7 +679,7 @@ var SwaggerHandler = /** @class */ (function () {
                 }
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SwaggerHandler.saveSummary = function (className, propName, summary) {
@@ -738,7 +738,7 @@ var SwaggerHandler = /** @class */ (function () {
         get: function () {
             return classInfos;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SwaggerHandler.saveSecurity = function (className, type, scopes) {
@@ -950,7 +950,7 @@ var getParamSchema = function (value) {
     var modelName = Object(_extract_model__WEBPACK_IMPORTED_MODULE_0__["extractAndSaveModel"])(value);
     var dataType = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_1__["getDataType"])(value);
     if (modelName.length > 0) { // value is model
-        var modelRefString = "#/components/schemas/" + modelName;
+        var modelRefString = "#/components/schemas/".concat(modelName);
         var refValue = {
             $ref: modelRefString
         };
@@ -1072,7 +1072,7 @@ var SwaggerFormatter = /** @class */ (function () {
                 route.workersAsArray.forEach(function (worker) {
                     var pattern = worker.pattern;
                     if (pattern[0] !== "/") {
-                        pattern = "/" + pattern;
+                        pattern = "/".concat(pattern);
                     }
                     if (swaggerPaths[pattern] == null) {
                         swaggerPaths[pattern] = {};
@@ -1207,7 +1207,7 @@ var SwaggerFormatter = /** @class */ (function () {
             });
         }
         else {
-            _utils__WEBPACK_IMPORTED_MODULE_9__["SwaggerLogger"].warning("No response is defined for worker - \"" + methodName + "\" inside controller \"" + className + "\".");
+            _utils__WEBPACK_IMPORTED_MODULE_9__["SwaggerLogger"].warning("No response is defined for worker - \"".concat(methodName, "\" inside controller \"").concat(className, "\"."));
         }
         return result;
     };
@@ -1343,20 +1343,23 @@ var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -1366,7 +1369,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -1414,7 +1417,7 @@ var Swagger = /** @class */ (function (_super) {
                         _a.sent();
                         _a.label = 3;
                     case 3:
-                        swaggerConfigPath = option.outputPath + "/swagger.json";
+                        swaggerConfigPath = "".concat(option.outputPath, "/swagger.json");
                         return [4 /*yield*/, fs_extra__WEBPACK_IMPORTED_MODULE_2__["writeFile"](swaggerConfigPath, JSON.stringify(formatedData))];
                     case 4:
                         _a.sent();
@@ -1431,7 +1434,7 @@ var Swagger = /** @class */ (function (_super) {
     Swagger.prototype.copySwaggerAssets_ = function (contentPath) {
         var assets = ['index.html', 'swagger.js'];
         return Promise.all(assets.map(function (asset) {
-            return fs_extra__WEBPACK_IMPORTED_MODULE_2__["copy"](path__WEBPACK_IMPORTED_MODULE_4__["join"](__dirname, "swagger_ui/" + asset), contentPath + asset);
+            return fs_extra__WEBPACK_IMPORTED_MODULE_2__["copy"](path__WEBPACK_IMPORTED_MODULE_4__["join"](__dirname, "swagger_ui/".concat(asset)), contentPath + asset);
         }));
     };
     Swagger.instance = new Swagger();
