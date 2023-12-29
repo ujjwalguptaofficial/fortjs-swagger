@@ -119,12 +119,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerModel", function() { return SwaggerModel; });
-var SwaggerModel = /** @class */ (function () {
-    function SwaggerModel() {
-    }
-    return SwaggerModel;
-}());
-
+class SwaggerModel {
+}
 
 
 /***/ }),
@@ -143,9 +139,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_extract_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/extract_model */ "./src/helpers/extract_model.ts");
 
 
-var Body = function (value, description) {
-    return function (target, methodName, descriptor) {
-        var className = target.constructor.name;
+const Body = (value, description) => {
+    return (target, methodName, descriptor) => {
+        const className = target.constructor.name;
         Object(_helpers_extract_model__WEBPACK_IMPORTED_MODULE_1__["extractAndSaveModel"])(value);
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveBody(className, methodName, {
             value: value,
@@ -170,9 +166,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Description", function() { return Description; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var Description = function (value) {
-    return function (target, methodName, descriptor) {
-        var className = target.constructor.name;
+const Description = (value) => {
+    return (target, methodName, descriptor) => {
+        const className = target.constructor.name;
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveDescription(className, methodName, value);
     };
 };
@@ -192,8 +188,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IgnoreProperty", function() { return IgnoreProperty; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var IgnoreProperty = function (target, propertyName) {
-    var className = target.constructor.name;
+const IgnoreProperty = (target, propertyName) => {
+    const className = target.constructor.name;
     _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addIgnoreProperty(className, propertyName);
 };
 
@@ -265,8 +261,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OptionalProperty", function() { return OptionalProperty; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var OptionalProperty = function (target, propertyName) {
-    var className = target.constructor.name;
+const OptionalProperty = (target, propertyName) => {
+    const className = target.constructor.name;
     _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].addOptional(className, propertyName);
 };
 
@@ -285,9 +281,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Param", function() { return Param; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var Param = function (variableName, value, description) {
-    return function (target, methodName, descriptor) {
-        var className = target.constructor.name;
+const Param = (variableName, value, description) => {
+    return (target, methodName, descriptor) => {
+        const className = target.constructor.name;
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveParam(className, methodName, {
             value: value,
             variableName: variableName,
@@ -311,9 +307,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Query", function() { return Query; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var Query = function (variableName, value, description) {
-    return function (target, methodName, descriptor) {
-        var className = target.constructor.name;
+const Query = (variableName, value, description) => {
+    return (target, methodName, descriptor) => {
+        const className = target.constructor.name;
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveQuery(className, methodName, {
             value: value,
             variableName: variableName,
@@ -342,11 +338,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var Response = function (statusCode, value, contentType) {
-    return function (target, methodName, descriptor) {
-        var className = target.constructor.name;
-        var modelName = Object(_helpers_extract_model__WEBPACK_IMPORTED_MODULE_2__["extractAndSaveModel"])(value);
-        var saveResponse = function (mimeType) {
+const Response = (statusCode, value, contentType) => {
+    return (target, methodName, descriptor) => {
+        const className = target.constructor.name;
+        const modelName = Object(_helpers_extract_model__WEBPACK_IMPORTED_MODULE_2__["extractAndSaveModel"])(value);
+        const saveResponse = (mimeType) => {
             _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_1__["SwaggerHandler"].saveResponse(className, methodName, {
                 contentType: mimeType,
                 statusCode: statusCode,
@@ -380,9 +376,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Security", function() { return Security; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var Security = function (type, scopes) {
-    return function (target) {
-        var className = target.name;
+const Security = (type, scopes) => {
+    return (target) => {
+        const className = target.name;
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveSecurity(className, type, scopes);
     };
 };
@@ -402,9 +398,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Summary", function() { return Summary; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var Summary = function (value) {
-    return function (target, methodName, descriptor) {
-        var className = target.constructor.name;
+const Summary = (value) => {
+    return (target, methodName, descriptor) => {
+        const className = target.constructor.name;
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveSummary(className, methodName, value);
     };
 };
@@ -424,9 +420,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Tag", function() { return Tag; });
 /* harmony import */ var _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../handlers/swagger_handler */ "./src/handlers/swagger_handler.ts");
 
-var Tag = function (name, description) {
-    return function (target) {
-        var className = target.name;
+const Tag = (name, description) => {
+    return (target) => {
+        const className = target.name;
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].saveTag(className, name, description);
     };
 };
@@ -503,13 +499,9 @@ var SWAGGER_OUTPUT_PARAM;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Global", function() { return Global; });
-var Global = /** @class */ (function () {
-    function Global() {
-    }
-    Global.routes = [];
-    return Global;
-}());
-
+class Global {
+}
+Global.routes = [];
 
 
 /***/ }),
@@ -524,11 +516,11 @@ var Global = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerHandler", function() { return SwaggerHandler; });
-var swaggerControllerInfos = [];
-var swaggerModels = [];
+const swaggerControllerInfos = [];
+const swaggerModels = [];
 // used to save description and summary of props and class   
-var classInfos = [];
-var getNewWorker = function (methodName) {
+const classInfos = [];
+const getNewWorker = (methodName) => {
     return {
         body: null,
         file: null,
@@ -538,12 +530,10 @@ var getNewWorker = function (methodName) {
         params: []
     };
 };
-var SwaggerHandler = /** @class */ (function () {
-    function SwaggerHandler() {
-    }
-    SwaggerHandler.saveResponse = function (className, methodName, response) {
-        var value = swaggerControllerInfos.find(function (qry) { return qry.className === className; });
-        var worker = getNewWorker(methodName);
+class SwaggerHandler {
+    static saveResponse(className, methodName, response) {
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
+        const worker = getNewWorker(methodName);
         worker.responses.push(response);
         if (value == null) {
             swaggerControllerInfos.push({
@@ -552,7 +542,7 @@ var SwaggerHandler = /** @class */ (function () {
             });
         }
         else {
-            var savedWorker = value.workers.find(function (qry) { return qry.methodName === methodName; });
+            const savedWorker = value.workers.find(qry => qry.methodName === methodName);
             if (savedWorker != null) { // add query for that worker
                 savedWorker.responses.push(response);
             }
@@ -560,10 +550,10 @@ var SwaggerHandler = /** @class */ (function () {
                 value.workers.push(worker);
             }
         }
-    };
-    SwaggerHandler.saveQuery = function (className, methodName, query) {
-        var value = swaggerControllerInfos.find(function (qry) { return qry.className === className; });
-        var worker = getNewWorker(methodName);
+    }
+    static saveQuery(className, methodName, query) {
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
+        const worker = getNewWorker(methodName);
         worker.queries.push(query);
         if (value == null) {
             swaggerControllerInfos.push({
@@ -572,7 +562,7 @@ var SwaggerHandler = /** @class */ (function () {
             });
         }
         else {
-            var savedWorker = value.workers.find(function (qry) { return qry.methodName === methodName; });
+            const savedWorker = value.workers.find(qry => qry.methodName === methodName);
             if (savedWorker != null) { // add query for that worker
                 savedWorker.queries.push(query);
             }
@@ -580,10 +570,10 @@ var SwaggerHandler = /** @class */ (function () {
                 value.workers.push(worker);
             }
         }
-    };
-    SwaggerHandler.saveParam = function (className, methodName, query) {
-        var value = swaggerControllerInfos.find(function (qry) { return qry.className === className; });
-        var worker = getNewWorker(methodName);
+    }
+    static saveParam(className, methodName, query) {
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
+        const worker = getNewWorker(methodName);
         worker.params.push(query);
         if (value == null) {
             swaggerControllerInfos.push({
@@ -592,7 +582,7 @@ var SwaggerHandler = /** @class */ (function () {
             });
         }
         else {
-            var savedWorker = value.workers.find(function (qry) { return qry.methodName === methodName; });
+            const savedWorker = value.workers.find(qry => qry.methodName === methodName);
             if (savedWorker != null) { // add query for that worker
                 savedWorker.params.push(query);
             }
@@ -600,10 +590,10 @@ var SwaggerHandler = /** @class */ (function () {
                 value.workers.push(worker);
             }
         }
-    };
-    SwaggerHandler.saveBody = function (className, methodName, body) {
-        var value = swaggerControllerInfos.find(function (qry) { return qry.className === className; });
-        var worker = getNewWorker(methodName);
+    }
+    static saveBody(className, methodName, body) {
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
+        const worker = getNewWorker(methodName);
         worker.body = body;
         if (value == null) {
             swaggerControllerInfos.push({
@@ -612,7 +602,7 @@ var SwaggerHandler = /** @class */ (function () {
             });
         }
         else {
-            var savedWorker = value.workers.find(function (qry) { return qry.methodName === methodName; });
+            const savedWorker = value.workers.find(qry => qry.methodName === methodName);
             if (savedWorker != null) { // add query for that worker
                 savedWorker.body = body;
             }
@@ -620,9 +610,9 @@ var SwaggerHandler = /** @class */ (function () {
                 value.workers.push(worker);
             }
         }
-    };
-    SwaggerHandler.saveModel = function (model) {
-        var value = swaggerModels.find(function (qry) { return qry.className === model.className; });
+    }
+    static saveModel(model) {
+        const value = swaggerModels.find(qry => qry.className === model.className);
         if (value == null) {
             if (model.ignoredProperty == null) {
                 model.ignoredProperty = [];
@@ -635,9 +625,9 @@ var SwaggerHandler = /** @class */ (function () {
         else if (value.classInstance == null) {
             value.classInstance = model.classInstance;
         }
-    };
-    SwaggerHandler.addIgnoreProperty = function (className, propertyName) {
-        var value = swaggerModels.find(function (qry) { return qry.className === className; });
+    }
+    static addIgnoreProperty(className, propertyName) {
+        const value = swaggerModels.find(qry => qry.className === className);
         if (value == null) {
             swaggerModels.push({
                 classInstance: null,
@@ -649,9 +639,9 @@ var SwaggerHandler = /** @class */ (function () {
         else {
             value.ignoredProperty.push(propertyName);
         }
-    };
-    SwaggerHandler.addOptional = function (className, propertyName) {
-        var value = swaggerModels.find(function (qry) { return qry.className === className; });
+    }
+    static addOptional(className, propertyName) {
+        const value = swaggerModels.find(qry => qry.className === className);
         if (value == null) {
             swaggerModels.push({
                 classInstance: null,
@@ -663,27 +653,19 @@ var SwaggerHandler = /** @class */ (function () {
         else {
             value.optionals.push(propertyName);
         }
-    };
-    Object.defineProperty(SwaggerHandler, "controllers", {
-        get: function () {
-            return swaggerControllerInfos;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SwaggerHandler, "models", {
-        get: function () {
-            return swaggerModels.filter(function (model) {
-                if (model.classInstance != null) {
-                    return model;
-                }
-            });
-        },
-        enumerable: false,
-        configurable: true
-    });
-    SwaggerHandler.saveSummary = function (className, propName, summary) {
-        var savedClass = classInfos.find(function (qry) { return qry.className === className; });
+    }
+    static get controllers() {
+        return swaggerControllerInfos;
+    }
+    static get models() {
+        return swaggerModels.filter(model => {
+            if (model.classInstance != null) {
+                return model;
+            }
+        });
+    }
+    static saveSummary(className, propName, summary) {
+        const savedClass = classInfos.find(qry => qry.className === className);
         if (savedClass == null) {
             classInfos.push({
                 className: className,
@@ -695,7 +677,7 @@ var SwaggerHandler = /** @class */ (function () {
             });
         }
         else {
-            var savedProp = savedClass.props.find(function (qry) { return qry.propName === propName; });
+            const savedProp = savedClass.props.find(qry => qry.propName === propName);
             if (savedProp == null) {
                 savedClass.props.push({
                     description: null,
@@ -707,9 +689,9 @@ var SwaggerHandler = /** @class */ (function () {
                 savedProp.summary = summary;
             }
         }
-    };
-    SwaggerHandler.saveDescription = function (className, propName, description) {
-        var savedClass = classInfos.find(function (qry) { return qry.className === className; });
+    }
+    static saveDescription(className, propName, description) {
+        const savedClass = classInfos.find(qry => qry.className === className);
         if (savedClass == null) {
             classInfos.push({
                 className: className,
@@ -721,7 +703,7 @@ var SwaggerHandler = /** @class */ (function () {
             });
         }
         else {
-            var savedProp = savedClass.props.find(function (qry) { return qry.propName === propName; });
+            const savedProp = savedClass.props.find(qry => qry.propName === propName);
             if (savedProp == null) {
                 savedClass.props.push({
                     description: description,
@@ -733,23 +715,19 @@ var SwaggerHandler = /** @class */ (function () {
                 savedProp.description = description;
             }
         }
-    };
-    Object.defineProperty(SwaggerHandler, "classInfos", {
-        get: function () {
-            return classInfos;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    SwaggerHandler.saveSecurity = function (className, type, scopes) {
+    }
+    static get classInfos() {
+        return classInfos;
+    }
+    static saveSecurity(className, type, scopes) {
         if (scopes == null) {
             scopes = [];
         }
-        var security = {
+        const security = {
             type: type,
             scopes: scopes
         };
-        var value = swaggerControllerInfos.find(function (qry) { return qry.className === className; });
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
         if (value == null) {
             swaggerControllerInfos.push({
                 className: className,
@@ -765,30 +743,28 @@ var SwaggerHandler = /** @class */ (function () {
                 value.security = [security];
             }
         }
-    };
-    SwaggerHandler.saveTag = function (className, name, description) {
-        var value = swaggerControllerInfos.find(function (qry) { return qry.className === className; });
-        var tag = {
-            name: name,
-            description: description
+    }
+    static saveTag(className, name, description) {
+        const value = swaggerControllerInfos.find(qry => qry.className === className);
+        const tag = {
+            name,
+            description
         };
         if (value == null) {
             swaggerControllerInfos.push({
                 className: className,
                 workers: [],
-                tag: tag
+                tag
             });
         }
         else {
             value.tag = tag;
         }
-    };
-    SwaggerHandler.isModelExist = function (className) {
-        return SwaggerHandler.models.findIndex(function (q) { return q.className === className; }) >= 0;
-    };
-    return SwaggerHandler;
-}());
-
+    }
+    static isModelExist(className) {
+        return SwaggerHandler.models.findIndex(q => q.className === className) >= 0;
+    }
+}
 
 
 /***/ }),
@@ -811,11 +787,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var extractAndSaveModel = function (value) {
-    var className = "";
-    var type = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(value);
-    var saveModelInfo = function (modelValue) {
-        var model = getModelinfo(modelValue, type);
+const extractAndSaveModel = (value) => {
+    let className = "";
+    let type = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(value);
+    const saveModelInfo = (modelValue) => {
+        const model = getModelinfo(modelValue, type);
         if (model != null) {
             _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_2__["SwaggerHandler"].saveModel(model);
             className = model.className;
@@ -825,7 +801,7 @@ var extractAndSaveModel = function (value) {
         saveModelInfo(value);
     }
     else if (type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Array && value.length > 0) { // means its array of class
-        var firstValue = value[0];
+        const firstValue = value[0];
         if (Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(firstValue) === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function) { // it is class
             type = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(firstValue);
             saveModelInfo(firstValue);
@@ -838,7 +814,7 @@ var extractAndSaveModel = function (value) {
     }
     return className;
 };
-var getObject = function (value, type) {
+const getObject = (value, type) => {
     switch (type) {
         case _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function:
             return new value();
@@ -846,13 +822,13 @@ var getObject = function (value, type) {
             return value;
     }
 };
-var getModelinfo = function (value, type) {
+const getModelinfo = (value, type) => {
     try {
-        var model = getObject(value, type);
+        const model = getObject(value, type);
         if (model == null) {
             return;
         }
-        var example = void 0;
+        let example;
         if (model.getExample != null) {
             example = model.getExample();
         }
@@ -887,8 +863,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var getClassName = function (value) {
-    var type = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(value);
+const getClassName = (value) => {
+    const type = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_0__["getDataType"])(value);
     if (type === _enums__WEBPACK_IMPORTED_MODULE_1__["DATA_TYPE"].Function) { // means its class
         return (new value()).constructor.name;
     }
@@ -915,8 +891,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDataType", function() { return getDataType; });
 /* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../enums */ "./src/enums/index.ts");
 
-var getDataType = function (value) {
-    var type = typeof value;
+const getDataType = (value) => {
+    const type = typeof value;
     switch (type) {
         case 'object':
             if (Array.isArray(value)) {
@@ -946,12 +922,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var getParamSchema = function (value) {
-    var modelName = Object(_extract_model__WEBPACK_IMPORTED_MODULE_0__["extractAndSaveModel"])(value);
-    var dataType = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_1__["getDataType"])(value);
+const getParamSchema = (value) => {
+    const modelName = Object(_extract_model__WEBPACK_IMPORTED_MODULE_0__["extractAndSaveModel"])(value);
+    const dataType = Object(_get_data_type__WEBPACK_IMPORTED_MODULE_1__["getDataType"])(value);
     if (modelName.length > 0) { // value is model
-        var modelRefString = "#/components/schemas/".concat(modelName);
-        var refValue = {
+        const modelRefString = `#/components/schemas/${modelName}`;
+        const refValue = {
             $ref: modelRefString
         };
         if (dataType === ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Function || dataType === ___WEBPACK_IMPORTED_MODULE_2__["DATA_TYPE"].Object) { // it is class
@@ -985,8 +961,8 @@ var getParamSchema = function (value) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isCustomClass", function() { return isCustomClass; });
-var isCustomClass = function (value) {
-    var constructorName = value.constructor.name;
+const isCustomClass = (value) => {
+    const constructorName = value.constructor.name;
     switch (constructorName) {
         case "Array":
         case "String":
@@ -1032,25 +1008,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var SwaggerFormatter = /** @class */ (function () {
-    function SwaggerFormatter() {
+class SwaggerFormatter {
+    constructor() {
         this.tags_ = [];
     }
-    SwaggerFormatter.prototype.getTags_ = function () {
-        var _this = this;
-        var tags = [];
-        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.forEach(function (val) {
+    getTags_() {
+        const tags = [];
+        _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.forEach(val => {
             if (val && val.tag) {
                 tags.push(val.tag);
-                _this.tags_.push(val);
+                this.tags_.push(val);
             }
         });
         return tags;
-    };
-    SwaggerFormatter.prototype.format = function (option) {
-        var _this = this;
-        var routes = _global__WEBPACK_IMPORTED_MODULE_4__["Global"].routes;
-        var swaggerJson = {
+    }
+    format(option) {
+        const routes = _global__WEBPACK_IMPORTED_MODULE_4__["Global"].routes;
+        const swaggerJson = {
             openapi: "3.0.0",
             info: option.appInfo,
             servers: option.servers,
@@ -1060,34 +1034,34 @@ var SwaggerFormatter = /** @class */ (function () {
                 securitySchemes: option.securitySchemes
             }
         };
-        var swaggerPaths = {};
-        routes.forEach(function (route) {
-            var swaggerRouteData = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(function (qry) { return qry.className === route.controllerName; });
+        const swaggerPaths = {};
+        routes.forEach(route => {
+            const swaggerRouteData = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(qry => qry.className === route.controllerName);
             if (swaggerRouteData != null) {
-                var pathName_1 = route.path;
-                if (pathName_1[0] === "/") {
-                    pathName_1 = route.path.substr(1);
+                let pathName = route.path;
+                if (pathName[0] === "/") {
+                    pathName = route.path.substr(1);
                 }
-                var controllerSecurity_1 = _this.getControllerSecurity_(route.controllerName);
-                route.workersAsArray.forEach(function (worker) {
-                    var pattern = worker.pattern;
+                const controllerSecurity = this.getControllerSecurity_(route.controllerName);
+                route.workersAsArray.forEach(worker => {
+                    let pattern = worker.pattern;
                     if (pattern[0] !== "/") {
-                        pattern = "/".concat(pattern);
+                        pattern = `/${pattern}`;
                     }
                     if (swaggerPaths[pattern] == null) {
                         swaggerPaths[pattern] = {};
                     }
                     // add multiple route for all http method allowed for a single path 
-                    worker.methodsAllowed.forEach(function (httpMethod) {
+                    worker.methodsAllowed.forEach(httpMethod => {
                         swaggerPaths[pattern][httpMethod.toLowerCase()] = {
                             operationId: worker.workerName,
                             consumes: [fortjs__WEBPACK_IMPORTED_MODULE_1__["MIME_TYPE"].Json, fortjs__WEBPACK_IMPORTED_MODULE_1__["MIME_TYPE"].Xml, fortjs__WEBPACK_IMPORTED_MODULE_1__["MIME_TYPE"].Html, fortjs__WEBPACK_IMPORTED_MODULE_1__["MIME_TYPE"].Text, "*/*"],
-                            parameters: _this.getParams_(route.controllerName, worker.workerName),
-                            tags: _this.getTag_(route.controllerName, pathName_1),
-                            responses: _this.getResponses_(route.controllerName, worker.workerName),
-                            summary: _this.getSummary_(route.controllerName, worker.workerName),
-                            description: _this.getDescription_(route.controllerName, worker.workerName),
-                            security: controllerSecurity_1
+                            parameters: this.getParams_(route.controllerName, worker.workerName),
+                            tags: this.getTag_(route.controllerName, pathName),
+                            responses: this.getResponses_(route.controllerName, worker.workerName),
+                            summary: this.getSummary_(route.controllerName, worker.workerName),
+                            description: this.getDescription_(route.controllerName, worker.workerName),
+                            security: controllerSecurity
                         };
                     });
                 });
@@ -1095,76 +1069,75 @@ var SwaggerFormatter = /** @class */ (function () {
         });
         swaggerJson.paths = swaggerPaths;
         return swaggerJson;
-    };
-    SwaggerFormatter.prototype.getTag_ = function (className, defaultTag) {
-        var tag = this.tags_.find(function (q) { return q.className === className; });
+    }
+    getTag_(className, defaultTag) {
+        const tag = this.tags_.find(q => q.className === className);
         if (tag) {
             return [tag.tag.name];
         }
         return [defaultTag];
-    };
-    SwaggerFormatter.prototype.getControllerSecurity_ = function (className) {
-        var controller = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(function (qry) { return qry.className === className; });
+    }
+    getControllerSecurity_(className) {
+        const controller = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(qry => qry.className === className);
         if (controller != null) {
-            var securities = controller.security;
+            const securities = controller.security;
             if (securities != null) {
-                var outputSecurity_1 = [];
-                securities.forEach(function (security) {
-                    var _a;
-                    outputSecurity_1.push((_a = {},
-                        _a[security.type] = security.scopes,
-                        _a));
+                const outputSecurity = [];
+                securities.forEach(security => {
+                    outputSecurity.push({
+                        [security.type]: security.scopes
+                    });
                 });
-                return outputSecurity_1;
+                return outputSecurity;
             }
         }
         return null;
-    };
-    SwaggerFormatter.prototype.getSummary_ = function (className, propName) {
-        var classInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].classInfos.find(function (qry) { return qry.className === className; });
+    }
+    getSummary_(className, propName) {
+        const classInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].classInfos.find(qry => qry.className === className);
         if (classInfo != null) {
-            var savedProp = classInfo.props.find(function (qry) { return qry.propName === propName; });
+            const savedProp = classInfo.props.find(qry => qry.propName === propName);
             if (savedProp != null) {
                 return savedProp.summary;
             }
         }
         return null;
-    };
-    SwaggerFormatter.prototype.getDescription_ = function (className, propName) {
-        var classInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].classInfos.find(function (qry) { return qry.className === className; });
+    }
+    getDescription_(className, propName) {
+        const classInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].classInfos.find(qry => qry.className === className);
         if (classInfo != null) {
-            var savedProp = classInfo.props.find(function (qry) { return qry.propName === propName; });
+            const savedProp = classInfo.props.find(qry => qry.propName === propName);
             if (savedProp != null) {
                 return savedProp.description;
             }
         }
         return null;
-    };
-    SwaggerFormatter.prototype.getModels_ = function () {
-        var modelsInfo = {};
-        var createSwaggerModelSchemas = function (model) {
+    }
+    getModels_() {
+        const modelsInfo = {};
+        const createSwaggerModelSchemas = (model) => {
             if (Object(_is_custom_class__WEBPACK_IMPORTED_MODULE_8__["isCustomClass"])(model.classInstance)) {
-                var obj_1 = model.classInstance;
-                var keys_1 = Object.keys(obj_1);
+                const obj = model.classInstance;
+                const keys = Object.keys(obj);
                 // remove ignored prop
-                model.ignoredProperty.forEach(function (prop) {
-                    var index = keys_1.indexOf(prop);
+                model.ignoredProperty.forEach(prop => {
+                    const index = keys.indexOf(prop);
                     if (index >= 0) {
-                        keys_1.splice(index, 1);
+                        keys.splice(index, 1);
                     }
                 });
-                var properties_1 = {};
-                keys_1.forEach(function (key) {
-                    var propValue = obj_1[key];
-                    var dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_3__["getDataType"])(propValue);
-                    var paramInfo = {
+                const properties = {};
+                keys.forEach(key => {
+                    const propValue = obj[key];
+                    const dataType = Object(_helpers_get_data_type__WEBPACK_IMPORTED_MODULE_3__["getDataType"])(propValue);
+                    const paramInfo = {
                         type: dataType
                     };
                     if (dataType === _enums__WEBPACK_IMPORTED_MODULE_6__["DATA_TYPE"].Array && propValue.length > 0) {
-                        var firstItem = propValue[0];
-                        var clasName = Object(_get_class_name__WEBPACK_IMPORTED_MODULE_7__["getClassName"])(firstItem);
+                        const firstItem = propValue[0];
+                        const clasName = Object(_get_class_name__WEBPACK_IMPORTED_MODULE_7__["getClassName"])(firstItem);
                         if (clasName && !_handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].isModelExist(clasName)) {
-                            var modelInfo = {
+                            const modelInfo = {
                                 classInstance: firstItem,
                                 className: clasName,
                                 ignoredProperty: [],
@@ -1175,31 +1148,31 @@ var SwaggerFormatter = /** @class */ (function () {
                         }
                         paramInfo.items = Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(firstItem);
                     }
-                    properties_1[key] = paramInfo;
+                    properties[key] = paramInfo;
                 });
-                model.optionals.forEach(function (optional) {
-                    var index = keys_1.indexOf(optional);
+                model.optionals.forEach(optional => {
+                    const index = keys.indexOf(optional);
                     if (index >= 0) {
-                        keys_1.splice(index, 1);
+                        keys.splice(index, 1);
                     }
                 });
                 modelsInfo[model.className] = {
-                    required: keys_1,
-                    properties: properties_1
+                    required: keys,
+                    properties: properties
                 };
             }
         };
         _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].models.forEach(createSwaggerModelSchemas);
         return modelsInfo;
-    };
-    SwaggerFormatter.prototype.getResponses_ = function (className, methodName) {
-        var result = {};
-        var workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(function (qry) { return qry.className === className; }).
-            workers.find(function (qry) { return qry.methodName === methodName; });
+    }
+    getResponses_(className, methodName) {
+        const result = {};
+        const workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(qry => qry.className === className).
+            workers.find(qry => qry.methodName === methodName);
         if (workerInfo != null) {
-            workerInfo.responses.forEach(function (response) {
+            workerInfo.responses.forEach(response => {
                 result[response.statusCode] = { content: {} };
-                response.contentType.forEach(function (contentType) {
+                response.contentType.forEach(contentType => {
                     result[response.statusCode].content[contentType] = {
                         schema: Object(_helpers_get_param_schema__WEBPACK_IMPORTED_MODULE_2__["getParamSchema"])(response.value)
                     };
@@ -1207,17 +1180,17 @@ var SwaggerFormatter = /** @class */ (function () {
             });
         }
         else {
-            _utils__WEBPACK_IMPORTED_MODULE_9__["SwaggerLogger"].warning("No response is defined for worker - \"".concat(methodName, "\" inside controller \"").concat(className, "\"."));
+            _utils__WEBPACK_IMPORTED_MODULE_9__["SwaggerLogger"].warning(`No response is defined for worker - "${methodName}" inside controller "${className}".`);
         }
         return result;
-    };
-    SwaggerFormatter.prototype.getParams_ = function (className, methodName) {
-        var params = [];
-        var workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(function (qry) { return qry.className === className; })
-            .workers.find(function (qry) { return qry.methodName === methodName; });
+    }
+    getParams_(className, methodName) {
+        const params = [];
+        const workerInfo = _handlers_swagger_handler__WEBPACK_IMPORTED_MODULE_0__["SwaggerHandler"].controllers.find(qry => qry.className === className)
+            .workers.find(qry => qry.methodName === methodName);
         if (workerInfo != null) {
             // from route params
-            workerInfo.params.forEach(function (param) {
+            workerInfo.params.forEach(param => {
                 params.push({
                     in: _enums_swagger_output_param__WEBPACK_IMPORTED_MODULE_5__["SWAGGER_OUTPUT_PARAM"].Path,
                     name: param.variableName,
@@ -1227,7 +1200,7 @@ var SwaggerFormatter = /** @class */ (function () {
                 });
             });
             // from query
-            workerInfo.queries.forEach(function (query) {
+            workerInfo.queries.forEach(query => {
                 params.push({
                     in: _enums_swagger_output_param__WEBPACK_IMPORTED_MODULE_5__["SWAGGER_OUTPUT_PARAM"].Query,
                     name: query.variableName,
@@ -1237,7 +1210,7 @@ var SwaggerFormatter = /** @class */ (function () {
                 });
             });
             // from body
-            var body = workerInfo.body;
+            const body = workerInfo.body;
             if (body != null) {
                 params.push({
                     in: _enums_swagger_output_param__WEBPACK_IMPORTED_MODULE_5__["SWAGGER_OUTPUT_PARAM"].Body,
@@ -1249,10 +1222,8 @@ var SwaggerFormatter = /** @class */ (function () {
             }
         }
         return params;
-    };
-    return SwaggerFormatter;
-}());
-
+    }
+}
 
 
 /***/ }),
@@ -1339,108 +1310,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_swagger_formatter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/swagger_formatter */ "./src/helpers/swagger_formatter.ts");
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! path */ "path");
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_4__);
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+
+
+
+
+
+class Swagger extends fortjs__WEBPACK_IMPORTED_MODULE_0__["Router"] {
+    constructor() {
+        super();
     }
-};
-
-
-
-
-
-var Swagger = /** @class */ (function (_super) {
-    __extends(Swagger, _super);
-    function Swagger() {
-        return _super.call(this) || this;
+    static async create(option) {
+        _global__WEBPACK_IMPORTED_MODULE_1__["Global"].routes = this.instance.routesAsArray;
+        const formatedData = new _helpers_swagger_formatter__WEBPACK_IMPORTED_MODULE_3__["SwaggerFormatter"]().format(option);
+        //console.log("formmated data", JSON.stringify(formmatedData));
+        const isPathExist = await fs_extra__WEBPACK_IMPORTED_MODULE_2__["pathExists"](option.outputPath);
+        if (isPathExist === false) {
+            await fs_extra__WEBPACK_IMPORTED_MODULE_2__["mkdir"](option.outputPath);
+        }
+        const swaggerConfigPath = `${option.outputPath}/swagger.json`;
+        await fs_extra__WEBPACK_IMPORTED_MODULE_2__["writeFile"](swaggerConfigPath, JSON.stringify(formatedData));
+        //copy swagger files
+        await this.instance.copySwaggerAssets_(option.outputPath);
     }
-    Swagger.create = function (option) {
-        return __awaiter(this, void 0, void 0, function () {
-            var formatedData, isPathExist, swaggerConfigPath;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _global__WEBPACK_IMPORTED_MODULE_1__["Global"].routes = this.instance.routesAsArray;
-                        formatedData = new _helpers_swagger_formatter__WEBPACK_IMPORTED_MODULE_3__["SwaggerFormatter"]().format(option);
-                        return [4 /*yield*/, fs_extra__WEBPACK_IMPORTED_MODULE_2__["pathExists"](option.outputPath)];
-                    case 1:
-                        isPathExist = _a.sent();
-                        if (!(isPathExist === false)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, fs_extra__WEBPACK_IMPORTED_MODULE_2__["mkdir"](option.outputPath)];
-                    case 2:
-                        _a.sent();
-                        _a.label = 3;
-                    case 3:
-                        swaggerConfigPath = "".concat(option.outputPath, "/swagger.json");
-                        return [4 /*yield*/, fs_extra__WEBPACK_IMPORTED_MODULE_2__["writeFile"](swaggerConfigPath, JSON.stringify(formatedData))];
-                    case 4:
-                        _a.sent();
-                        //copy swagger files
-                        return [4 /*yield*/, this.instance.copySwaggerAssets_(option.outputPath)];
-                    case 5:
-                        //copy swagger files
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Swagger.prototype.copySwaggerAssets_ = function (contentPath) {
-        var assets = ['index.html', 'swagger.js'];
-        return Promise.all(assets.map(function (asset) {
-            return fs_extra__WEBPACK_IMPORTED_MODULE_2__["copy"](path__WEBPACK_IMPORTED_MODULE_4__["join"](__dirname, "swagger_ui/".concat(asset)), contentPath + asset);
+    copySwaggerAssets_(contentPath) {
+        const assets = ['index.html', 'swagger.js'];
+        return Promise.all(assets.map(asset => {
+            return fs_extra__WEBPACK_IMPORTED_MODULE_2__["copy"](path__WEBPACK_IMPORTED_MODULE_4__["join"](__dirname, `swagger_ui/${asset}`), contentPath + asset);
         }));
-    };
-    Swagger.instance = new Swagger();
-    return Swagger;
-}(fortjs__WEBPACK_IMPORTED_MODULE_0__["Router"]));
-
+    }
+}
+Swagger.instance = new Swagger();
 
 
 /***/ }),
@@ -1472,15 +1371,11 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwaggerLogger", function() { return SwaggerLogger; });
-var SwaggerLogger = /** @class */ (function () {
-    function SwaggerLogger() {
-    }
-    SwaggerLogger.warning = function (msg) {
+class SwaggerLogger {
+    static warning(msg) {
         console.log('Swagger Warning !', msg);
-    };
-    return SwaggerLogger;
-}());
-
+    }
+}
 
 
 /***/ }),

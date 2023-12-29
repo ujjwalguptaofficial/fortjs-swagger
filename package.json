@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/ujjwalguptaofficial/fortjs-swagger#readme",
   "peerDependencies": {
-    "fortjs": "^2.6.1"
+    "fortjs": "^2.6.2"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
