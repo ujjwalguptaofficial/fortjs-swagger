@@ -1,7 +1,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const copyPlugin = require('copy-webpack-plugin');
-const SmartBannerPlugin = require('smart-banner-webpack-plugin');
+const { BannerPlugin } = require('webpack');
 const banner = require('./src/license');
 
 module.exports = [{
@@ -16,10 +16,7 @@ module.exports = [{
         libraryTarget: "commonjs2"
     },
     node: {
-        console: false,
         global: false,
-        process: false,
-        Buffer: false,
         __filename: false,
         __dirname: false,
     },
@@ -41,7 +38,7 @@ module.exports = [{
             from: 'src/swagger_ui',
             to: 'swagger_ui'
         }]),
-        new SmartBannerPlugin(banner)
+        new BannerPlugin(banner)
     ],
     externals: [nodeExternals()]
 }];
