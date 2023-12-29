@@ -34,10 +34,12 @@ module.exports = [{
         extensions: ['.ts'] // '' is needed to find modules like "jquery"
     },
     plugins: [
-        new copyPlugin([{
-            from: 'src/swagger_ui',
-            to: 'swagger_ui'
-        }]),
+        new copyPlugin({
+            patterns: [{
+                from: 'src/swagger_ui',
+                to: 'swagger_ui'
+            }]
+        }),
         new BannerPlugin(banner)
     ],
     externals: [nodeExternals()]
