@@ -1,7 +1,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const copyPlugin = require('copy-webpack-plugin');
-const SmartBannerPlugin = require('smart-banner-webpack-plugin');
+const { BannerPlugin } = require('webpack');
 const banner = require('./src/license');
 
 module.exports = [{
@@ -10,16 +10,13 @@ module.exports = [{
     entry: "./src/index.ts",
     devtool: 'source-map',
     output: {
-        path: path.join(__dirname, "./build"),
+        path: path.join(__dirname, "./dist"),
         filename: "fortjs-swagger.js",
-        library: 'fortjs-swagger',
+        // library: 'fortjs-swagger',
         libraryTarget: "commonjs2"
     },
     node: {
-        console: false,
         global: false,
-        process: false,
-        Buffer: false,
         __filename: false,
         __dirname: false,
     },
@@ -37,11 +34,13 @@ module.exports = [{
         extensions: ['.ts'] // '' is needed to find modules like "jquery"
     },
     plugins: [
-        new copyPlugin([{
-            from: 'src/swagger_ui',
-            to: 'swagger_ui'
-        }]),
-        new SmartBannerPlugin(banner)
+        new copyPlugin({
+            patterns: [{
+                from: 'src/swagger_ui',
+                to: 'swagger_ui'
+            }]
+        }),
+        new BannerPlugin(banner)
     ],
     externals: [nodeExternals()]
 }];

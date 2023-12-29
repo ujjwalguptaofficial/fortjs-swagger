@@ -6,13 +6,21 @@
         "sourceMap": true,
         "inlineSources": true,
         "moduleResolution": "node",
-        "target": "es5",
+        "target": "ES2021",
         "preserveConstEnums": true,
-        "module": "es6",
+        "module": "CommonJS",
         "lib": [
             "es2015",
             "dom"
         ],
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "~/*": [
+                "./*"
+            ]
+        }
     }
 }
