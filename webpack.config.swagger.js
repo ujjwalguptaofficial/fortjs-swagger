@@ -18,7 +18,7 @@ module.exports = {
     },
     output: {
         filename: 'swagger.js',
-        path: path.join(__dirname, "./build/swagger_ui/"),
+        path: path.join(__dirname, "./dist/swagger_ui/"),
     },
     plugins: [
 
