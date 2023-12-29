@@ -12,11 +12,11 @@
     "openapi"
   ],
   "scripts": {
-    "webpack": "export NODE_OPTIONS=--openssl-legacy-provider; webpack --config webpack.config.js",
+    "webpack": "webpack --config webpack.config.js",
     "webpack:watch": "webpack --config webpack.config.js --watch",
     "lint": "tslint src/**/*.ts",
     "build": "npm run webpack",
-    "build:ui": "export NODE_OPTIONS=--openssl-legacy-provider; webpack --config webpack.config.swagger.js",
+    "build:ui": "webpack --config webpack.config.swagger.js",
     "buildpack": "npm run build:ui && npm run build && npm pack",
     "start": "npm run webpack:watch && opn http://localhost:4000",
     "install:lib": "npm i ../fortjs/fortjs-1.5.0.tgz --no-save",
