@@ -45,7 +45,7 @@
     "fortjs": "^2.6.2",
     "js-comments": "^0.5.4",
     "style-loader": "^3.3.3",
-    "swagger-ui": "^3.31.1",
+    "swagger-ui": "^5.10.5",
     "ts-loader": "^9.5.1",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
