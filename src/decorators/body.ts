@@ -1,7 +1,7 @@
-import { SwaggerHandler } from "../handlers/swagger_handler";
-import { extractAndSaveModel } from "../helpers/extract_model";
+import { SwaggerHandler } from "../handlers";
+import { extractAndSaveModel } from "../helpers";
 
-export const Body = (value: any, description?: string): MethodDecorator => {
+export const body = (value: any, description?: string): MethodDecorator => {
     return (target: any, methodName: string, descriptor: PropertyDescriptor) => {
         const className = (target.constructor.name as string);
         extractAndSaveModel(value);

@@ -2,41 +2,41 @@ import { Controller, textResult, defaultWorker, jsonResult, worker, route, HTTP_
 import { UserService } from '../services/user_service';
 import { ModelUserGuard } from '../guards/model_user_guard';
 import { User } from '../models/user';
-import { Response, Body, Param, Summary, Description, Security, Tag } from 'fortjs-swagger';
+import { swagger } from 'fortjs-swagger';
 import { AuthenticationShield } from '../shields/authentication_shield';
 
 
 @shields(AuthenticationShield)
-@Security('basicAuth')
-@Tag('User', 'All operations related to user' as any)
+@swagger.security('basicAuth')
+@swagger.tag('User', 'All operations related to user')
 export class UserController extends Controller {
 
-    @Summary('get all users')
-    @Description('return all saved users')
+    @swagger.summary('get all users')
+    @swagger.description('return all saved users')
     @defaultWorker()
-    @Response(HTTP_STATUS_CODE.Ok, [User])
+    @swagger.response(HTTP_STATUS_CODE.Ok, [User])
     async getUsers() {
         const service = new UserService();
         return jsonResult(service.getUsers());
     }
 
 
-    @Summary('Add user')
+    @swagger.summary('Add user')
     @worker(HTTP_METHOD.Post)
     @route("/")
     @guards(ModelUserGuard)
-    @Response(HTTP_STATUS_CODE.Created, User)
-    @Body(User, "User model")
-    async addUser() {
+    @swagger.response(HTTP_STATUS_CODE.Created, User)
+    @swagger.body(User, "User model")
+    async addUser<User, HTTP_STATUS_CODE>() {
         const user = this.data.user;
         const service = new UserService();
         const newUser = service.addUser(user);
         return jsonResult(newUser, HTTP_STATUS_CODE.Created);
     }
 
-    @Summary('Update user')
-    @Response(HTTP_STATUS_CODE.Ok, User)
-    @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
+    @swagger.summary('Update user')
+    @swagger.response(HTTP_STATUS_CODE.Ok, User)
+    @swagger.response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @worker(HTTP_METHOD.Put)
     @guards(ModelUserGuard)
     @route("/")
@@ -53,10 +53,10 @@ export class UserController extends Controller {
 
     }
 
-    @Summary('get a single user by id')
-    @Response(HTTP_STATUS_CODE.Ok, User)
-    @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
-    @Param('id', 1, 'user id')
+    @swagger.summary('get a single user by id')
+    @swagger.response(HTTP_STATUS_CODE.Ok, User)
+    @swagger.response(HTTP_STATUS_CODE.NotFound, 'invalid user')
+    @swagger.param('id', 1, 'user id')
     @worker(HTTP_METHOD.Get)
     @route("/{id}")
     async getUser() {
@@ -70,9 +70,9 @@ export class UserController extends Controller {
 
     }
 
-    @Summary('remove a single user by id')
-    @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
-    @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
+    @swagger.summary('remove a single user by id')
+    @swagger.response(HTTP_STATUS_CODE.Ok, 'user deleted')
+    @swagger.response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @worker(HTTP_METHOD.Delete)
     @route("/{id}")
     async removeUser() {
@@ -90,9 +90,9 @@ export class UserController extends Controller {
 
     }
 
-    @Summary('an api without response')
-    // @Response(HTTP_STATUS_CODE.Ok, 'user deleted')
-    // @Response(HTTP_STATUS_CODE.NotFound, 'invalid user')
+    @swagger.summary('an api without response')
+    // @swagger.response(HTTP_STATUS_CODE.Ok, 'user deleted')
+    // @swagger.response(HTTP_STATUS_CODE.NotFound, 'invalid user')
     @worker(HTTP_METHOD.Get)
     async apiWithoutResponse() {
         return textResult("api without response");

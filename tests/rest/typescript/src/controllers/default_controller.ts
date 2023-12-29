@@ -1,8 +1,8 @@
 import { Controller, defaultWorker, textResult, viewResult, worker, assign, HTTP_STATUS_CODE, HTTP_METHOD } from "fortjs";
-import { Summary, Response, Security, Body } from "fortjs-swagger";
+import { swagger } from "fortjs-swagger";
 import { Student } from "../models/student";
 
-@Security('')
+@swagger.security('')
 export class DefaultController extends Controller {
 
     @defaultWorker()
@@ -22,15 +22,15 @@ export class DefaultController extends Controller {
     }
 
     @worker(HTTP_METHOD.Post)
-    @Body({ id: "", name: "" })
-    @Response(200, { message: "", status: "", data: {} })
+    @swagger.body({ id: "", name: "" })
+    @swagger.response(200, { message: "", status: "", data: {} })
     async AnonymousBody() {
 
     }
 
     @worker(HTTP_METHOD.Post)
-    @Body(Student)
-    @Response(200, 'works ok')
+    @swagger.body(Student)
+    @swagger.response(200, 'works ok')
     async ModelBody() {
 
     }

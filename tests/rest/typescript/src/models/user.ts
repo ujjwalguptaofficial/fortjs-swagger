@@ -1,11 +1,11 @@
-import { IgnoreProperty, SwaggerModel, OptionalProperty, Tag } from "fortjs-swagger";
+import { swagger, SwaggerModel } from "fortjs-swagger";
 
 
 export class Friend implements SwaggerModel {
-    @OptionalProperty
+    @swagger.optionalProperty
     id?: number;
 
-    @IgnoreProperty
+    @swagger.ignoreProperty
     somePropertyIDontWantInSwagger?: any;
 
 
@@ -21,7 +21,7 @@ export class Friend implements SwaggerModel {
 export class User implements SwaggerModel {
 
 
-    @OptionalProperty
+    @swagger.optionalProperty
     id?: number;
 
     password?: string;
@@ -36,9 +36,9 @@ export class User implements SwaggerModel {
 
     friends?: Friend[];
 
-    wishList?= ["india", "america", "london"];
+    wishList? = ["india", "america", "london"];
 
-    @IgnoreProperty
+    @swagger.ignoreProperty
     init?(user) {
         this.id = Number(user.id);
         this.name = user.name;

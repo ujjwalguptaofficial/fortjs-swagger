@@ -2,7 +2,7 @@ import { HTTP_STATUS_CODE, MIME_TYPE } from "fortjs";
 import { SwaggerHandler } from "../handlers/swagger_handler";
 import { extractAndSaveModel } from "../helpers/extract_model";
 
-export const Response = (statusCode: HTTP_STATUS_CODE, value: any, contentType?: MIME_TYPE): MethodDecorator => {
+export const response = (statusCode: HTTP_STATUS_CODE, value: any, contentType?: MIME_TYPE): MethodDecorator => {
     return (target: any, methodName: string, descriptor: PropertyDescriptor) => {
         const className = (target.constructor.name as string);
         const modelName = extractAndSaveModel(value);

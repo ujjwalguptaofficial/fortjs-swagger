@@ -1,7 +1,6 @@
-import { SwaggerHandler } from "../handlers/swagger_handler";
-import { DATA_TYPE } from "../enums/data_type";
+import { SwaggerHandler } from "../handlers";
 
-export const Query = (variableName: string, value: any, description?: string): MethodDecorator => {
+export const query = (variableName: string, value: any, description?: string): MethodDecorator => {
     return (target: any, methodName: string, descriptor: PropertyDescriptor) => {
         const className = (target.constructor.name as string);
         SwaggerHandler.saveQuery(className, methodName, {
