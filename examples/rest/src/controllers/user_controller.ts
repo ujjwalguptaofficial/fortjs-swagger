@@ -18,9 +18,12 @@ export class UserController extends Controller {
 
     @swagger.summary('get all users')
     @swagger.description('return all saved users')
-    @http.get("/")
     @swagger.response(HTTP_STATUS_CODE.Ok, [User])
+    @swagger.query("offset", 1, "offset")
+    @swagger.query("limit", 10, "no of records in the response")
+    @http.get("/")
     async getUsers() {
+        const { offset, limit } = this.query;
         return jsonResult(this.service.getUsers());
     }
 
