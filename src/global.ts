@@ -1,5 +1,5 @@
 import { RouteInfo } from "fortjs";
 
-export class Global {
+export class SwaggerGlobal {
     static routes: RouteInfo[] = [];
 }

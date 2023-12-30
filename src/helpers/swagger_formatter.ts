@@ -6,7 +6,7 @@ import { getParamSchema } from "../helpers/get_param_schema";
 import { BodyInfo } from "../types/body_info";
 import { getDataType } from "../helpers/get_data_type";
 import { SwaggerOption } from "../types/swagger_option";
-import { Global } from "../global";
+import { SwaggerGlobal } from "../global";
 import { SwaggerStructure } from "../types/swagger_structure";
 import { SwaggerOutputPath } from "../types/swagger_output_path";
 import { SwaggerOutputModelInfo } from "../types/swagger_output_model_info";
@@ -39,7 +39,7 @@ export class SwaggerFormatter {
 
     format(option: SwaggerOption) {
 
-        const routes = Global.routes;
+        const routes = SwaggerGlobal.routes;
         const swaggerJson: SwaggerStructure = {
             openapi: "3.0.0",
             info: option.appInfo,

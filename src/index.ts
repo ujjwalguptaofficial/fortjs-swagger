@@ -1,4 +1,5 @@
-export * from './models/index';
-export * from './decorators/index';
+import { Swagger } from './models/swagger';
 export * from './enums/index';
-export * from './abstracts/index';
+export * from './abstracts';
+
+export const swagger = new Swagger();

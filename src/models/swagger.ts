@@ -1,40 +1,44 @@
 import { Router } from "fortjs";
-import { Global } from "../global";
-import * as Fs from "fs-extra";
+import { SwaggerGlobal } from "../global";
+import { copy, mkdir, pathExists, writeFile } from "fs-extra";
 import { SwaggerFormatter } from "../helpers/swagger_formatter";
-import * as Path from "path";
+import * as path from "path";
 import { SwaggerOption } from "../types/swagger_option";
+import { Summary, Tag, body, description, ignoreProperty, optionalProperty, param, query, response, security } from '../decorators';
 
-export class Swagger extends Router {
+export class Swagger {
 
-    static instance = new Swagger();
-
-    private constructor() {
-        super();
-    }
-
-    static async create(option?: SwaggerOption) {
-        Global.routes = this.instance.routesAsArray;
-
+    async create(option?: SwaggerOption) {
+        const router = new Router();
+        SwaggerGlobal.routes = router.routesAsArray;
         const formatedData = new SwaggerFormatter().format(option);
         //console.log("formmated data", JSON.stringify(formmatedData));
-        const isPathExist = await Fs.pathExists(option.outputPath);
+        const isPathExist = await pathExists(option.outputPath);
         if (isPathExist === false) {
-            await Fs.mkdir(option.outputPath);
+            await mkdir(option.outputPath);
         }
         const swaggerConfigPath = `${option.outputPath}/swagger.json`;
-        await Fs.writeFile(swaggerConfigPath, JSON.stringify(formatedData));
+        await writeFile(swaggerConfigPath, JSON.stringify(formatedData));
 
         //copy swagger files
-        await this.instance.copySwaggerAssets_(option.outputPath);
-
+        await this.copySwaggerAssets_(option.outputPath);
     }
 
     private copySwaggerAssets_(contentPath: string) {
         const assets = ['index.html', 'swagger.js'];
         return Promise.all(assets.map(asset => {
-            return Fs.copy(Path.join(__dirname, `swagger_ui/${asset}`), contentPath + asset);
+            return copy(path.join(__dirname, `swagger_ui/${asset}`), contentPath + asset);
         }));
     }
 
+    body = body;
+    description = description;
+    ignoreProperty = ignoreProperty;
+    optionalProperty = optionalProperty;
+    param = param;
+    query = query;
+    response = response;
+    security = security;
+    summary = Summary;
+    tag = Tag;
 }
