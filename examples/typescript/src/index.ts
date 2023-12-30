@@ -1,12 +1,12 @@
 import * as path from "path";
 import { Fort } from "fortjs";
 import { routes } from "@/routes";
-import { Swagger } from "fortjs-swagger";
+import { swagger } from "fortjs-swagger";
 
 const swaggerPath = path.join(__dirname, "../dist/swagger/");
 
 const initSwagger = async () => {
-    await Swagger.create({
+    await swagger.create({
         appInfo: {
             title: "Swagger Test",
             description: "Swagger Test",
