@@ -12,16 +12,13 @@ export class Swagger {
         const router = new Router();
         SwaggerGlobal.routes = router.routesAsArray;
         const formatedData = new SwaggerFormatter().format(option);
-        //console.log("formmated data", JSON.stringify(formmatedData));
-        // const isPathExist = await pathExists(option.outputPath);
-        // if (isPathExist === false) {
-        await ensureDir(option.outputPath);
-        // }
-        const swaggerConfigPath = `${option.outputPath}/swagger.json`;
+        const outputPath = option.outputPath;
+        await ensureDir(outputPath);
+        const swaggerConfigPath = `${outputPath}/swagger.json`;
         await writeFile(swaggerConfigPath, JSON.stringify(formatedData));
 
         //copy swagger files
-        await this.copySwaggerAssets_(option.outputPath);
+        await this.copySwaggerAssets_(outputPath);
     }
 
     private copySwaggerAssets_(contentPath: string) {
