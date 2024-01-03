@@ -1,6 +1,6 @@
 import { Router } from "fortjs";
 import { SwaggerGlobal } from "../global";
-import { copy, mkdir, pathExists, writeFile } from "fs-extra";
+import { copy, ensureDir, mkdir, pathExists, writeFile } from "fs-extra";
 import { SwaggerFormatter } from "../helpers/swagger_formatter";
 import * as path from "path";
 import { SwaggerOption } from "../types/swagger_option";
@@ -13,10 +13,10 @@ export class Swagger {
         SwaggerGlobal.routes = router.routesAsArray;
         const formatedData = new SwaggerFormatter().format(option);
         //console.log("formmated data", JSON.stringify(formmatedData));
-        const isPathExist = await pathExists(option.outputPath);
-        if (isPathExist === false) {
-            await mkdir(option.outputPath);
-        }
+        // const isPathExist = await pathExists(option.outputPath);
+        // if (isPathExist === false) {
+        await ensureDir(option.outputPath);
+        // }
         const swaggerConfigPath = `${option.outputPath}/swagger.json`;
         await writeFile(swaggerConfigPath, JSON.stringify(formatedData));
 
